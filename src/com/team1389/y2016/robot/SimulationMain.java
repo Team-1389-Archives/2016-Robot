@@ -5,6 +5,8 @@ import com.team1389.base.Simulator;
 
 public class SimulationMain {
 	public static void main(String[] args){
-		Simulator.simulate(new Robot(new IOSimulated()), Mode.TELEOP);
+		IOLayout io = new IOSimulated();
+		RobotLayout layout = new RobotLayout(io, new Subsystems(io));
+		Simulator.simulate(new Robot(layout), Mode.TELEOP);
 	}
 }

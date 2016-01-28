@@ -9,10 +9,12 @@ import com.team1389.base.Team1389RobotBase;
  * 
  *  It is the main class that gets run when the program starts on the roborio.
  */
-public class HardwareMain extends Team1389RobotBase<IOLayout>{
+public class HardwareMain extends Team1389RobotBase{
 
 	@Override
-	public RobotCode<IOLayout> getCode() {
-		return new Robot(new IOHardware());
+	public RobotCode getCode() {
+		IOLayout io = new IOHardware();
+		RobotLayout layout = new RobotLayout(io, new Subsystems(io));
+		return new Robot(layout);
 	}
 }
