@@ -1,10 +1,16 @@
+
 var connectImgURL  = "http://roborio-1389-frc.local:5801/?action=snapshot";
 var imageStreamURL = "http://roborio-1389-frc.local:5801/?action=stream";
+var sendMessageURL = "/servlet/armPosition";
 var canvasSize = {
 		width: 640,
 		height: 480
-}
-
+};
+var keyMessages = {
+	"a" : makeMessageSend("a yolo"),
+	"b" : makeMessageSend("quack"),
+	"h" : makeMessageSend("wut tho")
+};
 document.addEventListener("DOMContentLoaded", function() {
 
 	//var canvas = makeCanvas(cameraStream);
@@ -24,8 +30,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	]);
 
 	initDragElement(imageDiv);
-	
+	setupKeys(keyMessages);
 })
+
+function makeMessageSend(msg){
+	function sendMessage(){
+		console.log("sending: " + msg);
+		var msgObj = {
+				msg: msg
+		}
+		httpPostAsync(sendMessageURL, JSON.stringify(msgObj), function(msg){
+			console.log(msg);
+		})
+	}
+	return sendMessage;
+}
 
 function initDragElement(element){
 	var drag = false;
@@ -38,7 +57,7 @@ function initDragElement(element){
 			top: 0,
 			position: "absolute",
 			display: "inline",
-			visible: "hidden"
+			visibility: "hidden"
 		}})
 	var divInfo = {
 		x: 0,
@@ -121,4 +140,27 @@ function makeCanvas(drawFrame){
 
 	window.setInterval(doTick, 1);
 	return canvas;
+}
+function setupKeys(keyCallbacks){
+	for (var key in keyCallbacks){
+		var callback = keyCallbacks[key];
+	}
+	document.addEventListener("keypress", function(e){
+		var char = String.fromCharCode(e.which || e.keyCode);
+		var callback = keyCallbacks[char];
+		if (callback){
+			callback();
+		}
+	})
+}
+
+function httpPostAsync(theUrl, data, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+    xmlHttp.send(data);
 }
