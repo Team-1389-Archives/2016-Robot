@@ -1,7 +1,5 @@
 package com.team1389.y2016.robot;
 
-import java.net.URL;
-
 import com.team1389.base.BaseConstants;
 import com.team1389.base.RobotCode;
 import com.team1389.base.Team1389RobotBase;
@@ -29,9 +27,12 @@ public class HardwareMain extends Team1389RobotBase{
 
 	@Override
 	public WebServer getServer() {
-        URL webapp = HardwareMain.class.getClassLoader().getResource(BaseConstants.webappFolder);//this is where they are found if run from a jar
-        URL project = HardwareMain.class.getClassLoader().getResource(BaseConstants.projectWebappFolder);
-		WebServer server = WebserverSetup.initiateWebserver(code ,webapp.toExternalForm(), project.toExternalForm());
+        String webapp = HardwareMain.class.getClassLoader().getResource(BaseConstants.webappFolder).toExternalForm();//this is where they are found if run from a jar
+        String project = HardwareMain.class.getClassLoader().getResource(BaseConstants.projectWebappFolder).toExternalForm();
+        System.out.println("got here");
+        System.out.println("code is " + code);
+		WebServer server = WebserverSetup.initiateWebserver(code ,webapp , project);
+		System.out.println("got here 2");
 		return server;
 	}
 }
