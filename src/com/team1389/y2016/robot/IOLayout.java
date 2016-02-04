@@ -10,27 +10,27 @@ import com.team1389.base.wpiWrappers.PositionController;
 
 public abstract class IOLayout{
 	//driveTrain
-	TalonSRX leftDriveA;
-	TalonSRX leftDriveB;
-	TalonSRX leftDriveC;
-	TalonSRX rightDriveA;
-	TalonSRX rightDriveB;
-	TalonSRX rightDriveC;
+	public TalonSRX leftDriveA;
+	public TalonSRX leftDriveB;
+	public TalonSRX leftDriveC;
+	public TalonSRX rightDriveA;
+	public TalonSRX rightDriveB;
+	public TalonSRX rightDriveC;
 	
 	//arm
-	PositionController turntableMotor;
-	PositionController armElevationMotorA;
-	PositionController armElevationMotorB;
+	public PositionController turntableMotor;
+	public PositionController armElevationMotorA;
+	public PositionController armElevationMotorB;
 	
 	//Ball Manipulator
-	TalonSRX intakeMotor;
-	TalonSRX flywheelMotorA;
-	TalonSRX flywheelMotorB;
+	public TalonSRX intakeMotor;
+	public TalonSRX flywheelMotorA;
+	public TalonSRX flywheelMotorB;
 	
 	//Inputs
-	Switch ballHolderIR;
+	public Switch ballHolderIR;
 	
 	//Human Controlls
-	InputDevice controllerDriver;
-	InputDevice controllerManip;
+	public InputDevice controllerDriver;
+	public InputDevice controllerManip;
 }
