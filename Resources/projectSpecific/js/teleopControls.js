@@ -14,24 +14,48 @@ var keyMessages = {
 document.addEventListener("DOMContentLoaded", function() {
 
 	//var canvas = makeCanvas(cameraStream);
-	var imageDiv = only.html({div: [
+	var image = only.html(
 		{
 			img: "",
 			src: imageStreamURL,
-			css: canvasSize
-		}
-	]});
+			css: {
+				width: canvasSize.width,
+				height: canvasSize.height,
+				transform: "rotate(-90deg)"
+			}
+		});
 	
 	only.setHtml([
 		{p : "this message exists for debugging purposes"},
 		{center: [
-				imageDiv
+				image
 			]}
 	]);
+	
+	image.addEventListener("mousedown", function(e){
+		var x = e.pageX - image.offsetLeft;
+		var y = e.pageY - image.offsetTop;
+		var percentX = x / image.clientWidth;
+		var percentY = y / image.clientHeight;
+//		console.log("(x, y) === (" + percentX + ", " + percentY + ")");
+		
+		var res = getClickCoords(image, e);
+		console.log(res.x + " " + res.y);
+	});
 
-	initDragElement(imageDiv);
+//	initDragElement(image);
 	setupKeys(keyMessages);
 })
+
+function getClickCoords(element, event){
+	var rect = element.getBoundingClientRect();
+	console.log(rect.height);
+	var left = event.pageX - rect.left + document.body.scrollLeft;
+	var top = event.pageY - rect.top + document.body.scrollTop;
+	var x = left / (rect.width);
+	var y = top / (rect.height);
+	return {x: x, y: y};
+}
 
 function makeMessageSend(msg){
 	function sendMessage(){
