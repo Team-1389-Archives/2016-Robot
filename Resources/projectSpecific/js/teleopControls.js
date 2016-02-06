@@ -11,6 +11,17 @@ var keyMessages = {
 	"b" : makeMessageSend("quack"),
 	"h" : makeMessageSend("wut tho")
 };
+addEventListener("click", function() {
+    var
+          el = document.documentElement
+        , rfs =
+               el.requestFullScreen
+            || el.webkitRequestFullScreen
+            || el.mozRequestFullScreen
+    ;
+    rfs.call(el);
+});
+
 document.addEventListener("DOMContentLoaded", function() {
 
 	//var canvas = makeCanvas(cameraStream);
@@ -19,21 +30,28 @@ document.addEventListener("DOMContentLoaded", function() {
 			img: "",
 			src: imageStreamURL,
 			css: {
+				transform: "rotate(-90deg)",
 				width: canvasSize.width,
-				height: canvasSize.height,
-				transform: "rotate(-90deg)"
+				height: canvasSize.height
+				
 			}
 		});
 	
 	only.setHtml([
 		{p : "this message exists for debugging purposes"},
-		{center: [
-				image
-			]}
+		{p: "yollo"},
+		{div: [
+		       image
+		       ],
+			css: {
+				'margin-top': "" + (canvasSize.width - canvasSize.height) + "px",
+				width: canvasSize.height,
+				height: canvasSize.width
+			}}
 	]);
-	
+
 	image.addEventListener("mousedown", function(e){
-		var x = e.pageX - image.offsetLeft;
+		var x = e.pageX.clientWidth - image.offsetLeft;
 		var y = e.pageY - image.offsetTop;
 		var percentX = x / image.clientWidth;
 		var percentY = y / image.clientHeight;
