@@ -7,7 +7,7 @@ var canvasSize = {
 		height: 480
 };
 var keyMessages = {
-	"a" : makeMessageSend("a yolo"),
+	"a" : makeMessageSend("Yolo "),
 	"b" : makeMessageSend("quack"),
 	"h" : makeMessageSend("wut tho")
 };
@@ -37,9 +37,12 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 		});
 	
+	var lastSentCmd = makeMessageSend.sendMessage;
+	
 	only.setHtml([
 		{p : "this message exists for debugging purposes"},
 		{p: "yollo"},
+		{h3: "Last Cmd Sent: "},
 		{div: [
 		       image
 		       ],
@@ -49,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function() {
 				height: canvasSize.width
 			}}
 	]);
-
+	while(errorSending == true){
+		document.body.style.backgroundColor = "red";
+	}
 	image.addEventListener("mousedown", function(e){
 		var x = e.pageX.clientWidth - image.offsetLeft;
 		var y = e.pageY - image.offsetTop;
@@ -201,7 +206,10 @@ function httpPostAsync(theUrl, data, callback)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
+            callback(xmlHttp.responseText)
+    else
+    	throw "Error Sending Message"
+        document.body.style.backgroundColor = "red";
     }
     xmlHttp.open("POST", theUrl, true); // true for asynchronous
     xmlHttp.send(data);

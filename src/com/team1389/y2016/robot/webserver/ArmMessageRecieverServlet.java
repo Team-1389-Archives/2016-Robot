@@ -11,6 +11,7 @@ public class ArmMessageRecieverServlet extends JSONPostServlet<ArmMessageRecieve
 	@Override
 	public NoResponse onPost(Message fromClient) {
 		System.out.println(fromClient.msg);
+		
 		return new NoResponse();
 	}
 
