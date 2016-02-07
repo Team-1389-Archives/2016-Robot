@@ -52,9 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				height: canvasSize.width
 			}}
 	]);
-	while(errorSending == true){
-		document.body.style.backgroundColor = "red";
-	}
+
 	image.addEventListener("mousedown", function(e){
 		var x = e.pageX.clientWidth - image.offsetLeft;
 		var y = e.pageY - image.offsetTop;
