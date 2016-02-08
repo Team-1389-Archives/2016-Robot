@@ -2,7 +2,6 @@ package com.team1389.y2016.robot;
 
 import org.strongback.components.Motor;
 import org.strongback.components.Switch;
-import org.strongback.components.TalonSRX;
 import org.strongback.components.ui.InputDevice;
 
 import com.team1389.base.wpiWrappers.FollowerMotor;

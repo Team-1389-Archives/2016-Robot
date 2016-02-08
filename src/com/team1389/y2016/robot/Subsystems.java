@@ -1,7 +1,5 @@
 package com.team1389.y2016.robot;
 
-import java.awt.FlowLayout;
-
 import org.strongback.components.Motor;
 
 import com.team1389.y2016.robot.subsystems.Arm;

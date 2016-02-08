@@ -1,7 +1,5 @@
 package com.team1389.y2016.robot.subsystems;
 
-import java.util.Arrays;
-
 import org.strongback.components.Motor;
 
 import com.team1389.base.Subsystem;

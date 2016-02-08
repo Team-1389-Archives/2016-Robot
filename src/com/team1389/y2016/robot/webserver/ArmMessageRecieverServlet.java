@@ -2,6 +2,7 @@ package com.team1389.y2016.robot.webserver;
 
 import com.team1389.base.webserver.JSONPostServlet;
 
+@SuppressWarnings("serial")
 public class ArmMessageRecieverServlet extends JSONPostServlet<ArmMessageRecieverServlet.Message, ArmMessageRecieverServlet.NoResponse>{
 	public class Message{
 		public String msg;
