@@ -1,31 +1,31 @@
 package com.team1389.y2016.robot;
 
+import org.strongback.components.Motor;
 import org.strongback.components.Switch;
 import org.strongback.components.TalonSRX;
-import org.strongback.components.ui.FlightStick;
-import org.strongback.components.ui.Gamepad;
 import org.strongback.components.ui.InputDevice;
 
+import com.team1389.base.wpiWrappers.FollowerMotor;
 import com.team1389.base.wpiWrappers.PositionController;
 
 public abstract class IOLayout{
 	//driveTrain
-	public TalonSRX leftDriveA;
-	public TalonSRX leftDriveB;
-	public TalonSRX leftDriveC;
-	public TalonSRX rightDriveA;
-	public TalonSRX rightDriveB;
-	public TalonSRX rightDriveC;
+	public Motor leftDriveA;
+	public Motor leftDriveB;
+	public Motor leftDriveC;
+	public Motor rightDriveA;
+	public Motor rightDriveB;
+	public Motor rightDriveC;
 	
 	//arm
 	public PositionController turntableMotor;
 	public PositionController armElevationMotorA;
-	public PositionController armElevationMotorB;
+	public FollowerMotor armElevationMotorB;
 	
 	//Ball Manipulator
-	public TalonSRX intakeMotor;
-	public TalonSRX flywheelMotorA;
-	public TalonSRX flywheelMotorB;
+	public Motor intakeMotor;
+	public Motor flywheelMotorA;
+	public FollowerMotor flywheelMotorB;
 	
 	//Inputs
 	public Switch ballHolderIR;

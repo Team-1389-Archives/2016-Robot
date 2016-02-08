@@ -1,8 +1,9 @@
 package com.team1389.y2016.robot;
 
+import java.awt.FlowLayout;
+
 import org.strongback.components.Motor;
 
-import com.team1389.base.wpiWrappers.PositionController;
 import com.team1389.y2016.robot.subsystems.Arm;
 import com.team1389.y2016.robot.subsystems.BallManipulator;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
@@ -17,11 +18,8 @@ public class Subsystems {
 		Motor rightMotors = Motor.compose(io.rightDriveA, io.rightDriveB, io.rightDriveC);
 		drivetrain = new Drivetrain(leftMotors, rightMotors);
 		
-		PositionController elevationMotors =
-				PositionController.compose(io.armElevationMotorA, io.armElevationMotorB);
-		arm = new Arm(elevationMotors, io.turntableMotor);
+		arm = new Arm(io.armElevationMotorA, io.turntableMotor);
 		
-		Motor flywheels = Motor.compose(io.flywheelMotorA, io.flywheelMotorB);
-		ballManipulator = new BallManipulator(io.intakeMotor, flywheels);
+		ballManipulator = new BallManipulator(io.intakeMotor, io.flywheelMotorA);//flywheelMotorB automatically follower flywheelMotorA
 	}
 }

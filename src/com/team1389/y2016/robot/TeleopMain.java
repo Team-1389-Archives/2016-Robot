@@ -21,7 +21,10 @@ public class TeleopMain extends TeleopBase{
 
 	@Override
 	public  Command provideCommand() {
-		return null;
+//		return null;
+		return Command.create(() -> {
+			throw new RuntimeException("waaaaaaaaaaaaaaaa");
+		});
 	}
 
 }
