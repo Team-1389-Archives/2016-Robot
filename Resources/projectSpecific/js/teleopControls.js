@@ -1,6 +1,7 @@
 
 var connectImgURL  = "http://roborio-1389-frc.local:5801/?action=snapshot";
-var imageStreamURL = "http://roborio-1389-frc.local:5801/?action=stream";
+var imageStreamURL = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR0vgTiljth-6P1AeiPO-5ta_ByA7_6K0oNn9M7z8XSf-1JAst1";
+//	http://roborio-1389-frc.local:5801/?action=stream
 var sendMessageURL = "/servlet/armPosition";
 var canvasSize = {
 		width: 640,
@@ -40,17 +41,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	var lastSentCmd = makeMessageSend.sendMessage;
 	
 	only.setHtml([
-		{p : "this message exists for debugging purposes"},
-		{p: "yollo"},
-		{h3: "Last Cmd Sent: "},
+		
 		{div: [
 		       image
 		       ],
 			css: {
-				'margin-top': "" + (canvasSize.width - canvasSize.height) + "px",
+				'margin-top': "" + (canvasSize.width - canvasSize.height)/2 + "px",
 				width: canvasSize.height,
 				height: canvasSize.width
-			}}
+			}},
+		{p : "this message exists for debugging purposes"},
+		{p: "yollo"},
+		{h3: "Last Cmd Sent: "}
 	]);
 
 	image.addEventListener("mousedown", function(e){
