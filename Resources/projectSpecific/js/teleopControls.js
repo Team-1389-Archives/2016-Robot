@@ -1,7 +1,7 @@
 
 var connectImgURL  = "http://roborio-1389-frc.local:5801/?action=snapshot";
 var imageStreamURL = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR0vgTiljth-6P1AeiPO-5ta_ByA7_6K0oNn9M7z8XSf-1JAst1";
-//	http://roborio-1389-frc.local:5801/?action=stream
+	imageStreamURL = "http://roborio-1389-frc.local:5801/?action=stream";
 var sendMessageURL = "/servlet/armPosition";
 var canvasSize = {
 		width: 640,
@@ -12,6 +12,27 @@ var keyMessages = {
 	"b" : makeMessageSend("quack"),
 	"h" : makeMessageSend("wut tho")
 };
+var points = [
+	{dist: 6	y: .0.9781249999999999},
+	{dist: 7	y: 0.884375},
+	{dist: 8	y: 0.778125},
+	{dist: 9	y: 0.690625},
+	{dist: 10	y: 0.628125},
+	{dist: 11	y: 0.5875},
+	{dist: 12	y: 0.54375},
+	{dist: 13	y: 0.50625},
+	{dist: 14	y: 0.478125},
+	{dist: 15	y: 0.453125},
+	{dist: 16	y: 0.4375},
+	{dist: 17	y: 0.421875},
+	{dist: 18	y: 0.39375},
+	{dist: 19	y: 0.365625},
+	{dist: 20	y: 0.353125},
+	{dist: 21	y: 0.346875},
+	{dist: 22	y: 0.325},
+	{dist: 23	y: 0.321875}
+]
+
 addEventListener("click", function() {
     var
           el = document.documentElement
@@ -56,12 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	]);
 
 	image.addEventListener("mousedown", function(e){
-		var x = e.pageX.clientWidth - image.offsetLeft;
-		var y = e.pageY - image.offsetTop;
-		var percentX = x / image.clientWidth;
-		var percentY = y / image.clientHeight;
-//		console.log("(x, y) === (" + percentX + ", " + percentY + ")");
-		
 		var res = getClickCoords(image, e);
 		console.log(res.x + " " + res.y);
 	});
@@ -75,8 +90,10 @@ function getClickCoords(element, event){
 	console.log(rect.height);
 	var left = event.pageX - rect.left + document.body.scrollLeft;
 	var top = event.pageY - rect.top + document.body.scrollTop;
-	var x = left / (rect.width);
-	var y = top / (rect.height);
+	var xPre = left / (rect.width);
+	var yPre = top / (rect.height);
+	var x = xPre * 2 - 1;
+	var y = (1 - yPre) * 2 - 1;
 	return {x: x, y: y};
 }
 
