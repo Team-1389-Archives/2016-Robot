@@ -12,26 +12,24 @@ var keyMessages = {
 	"b" : makeMessageSend("quack"),
 	"h" : makeMessageSend("wut tho")
 };
-var points = [
-	{dist: 6,	y: 0.9781249999999999},
-	{dist: 7,	y: 0.884375},
-	{dist: 8,	y: 0.778125},
-	{dist: 9,	y: 0.690625},
-	{dist: 10,	y: 0.628125},
-	{dist: 11,	y: 0.5875},
-	{dist: 12,	y: 0.54375},
-	{dist: 13,	y: 0.50625},
-	{dist: 14,	y: 0.478125},
-	{dist: 15,	y: 0.453125},
-	{dist: 16,	y: 0.4375},
-	{dist: 17,	y: 0.421875},
-	{dist: 18,	y: 0.39375},
-	{dist: 19,	y: 0.365625},
-	{dist: 20,	y: 0.353125},
-	{dist: 21,	y: 0.346875},
-	{dist: 22,	y: 0.325},
-	{dist: 23,	y: 0.321875}
-]
+
+function calculateDistance(clickY){
+	if(clickY > 1){
+		return 5;
+	} else if(clickY < 0){
+		return 30;
+	}
+	var coefs = [ -5.11838963e+05,   3.10706727e+06,  -8.24748892e+06,
+	              1.25550886e+07,  -1.20704678e+07,   7.59497439e+06,
+	              -3.12578888e+06,   8.11071121e+05,  -1.20438332e+05,
+	               7.82740906e+03];
+	var total  = 0;
+	for (var i = 0; i < coefs.length; i++){
+		var power = coefs.length - i - 1;
+		total += coefs[i] * Math.pow(clickY, power);
+	}
+	return total;
+}
 
 addEventListener("click", function() {
     var
@@ -61,6 +59,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	var lastSentCmd = makeMessageSend.sendMessage;
 	
+	var distance = only.html({p: "click"});
+	
 	only.setHtml([
 		
 		{div: [
@@ -72,13 +72,14 @@ document.addEventListener("DOMContentLoaded", function() {
 				height: canvasSize.width
 			}},
 		{p : "this message exists for debugging purposes"},
-		{p: "yollo"},
+		distance,
 		{h3: "Last Cmd Sent: "}
 	]);
 
 	image.addEventListener("mousedown", function(e){
 		var res = getClickCoords(image, e);
 		console.log(res.x + " " + res.y);
+		distance.innerHTML = calculateDistance(res.y);
 	});
 
 //	initDragElement(image);
