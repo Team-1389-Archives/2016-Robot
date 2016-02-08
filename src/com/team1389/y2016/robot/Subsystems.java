@@ -16,7 +16,7 @@ public class Subsystems {
 		Motor rightMotors = Motor.compose(io.rightDriveA, io.rightDriveB, io.rightDriveC);
 		drivetrain = new Drivetrain(leftMotors, rightMotors);
 		
-		arm = new Arm(io.armElevationMotorA, io.turntableMotor);
+		arm = new Arm(io.armElevationMotorA, io.turntableMotor);//armElevationMotorB will automatically follow armElevationMotorA
 		
 		ballManipulator = new BallManipulator(io.intakeMotor, io.flywheelMotorA);//flywheelMotorB automatically follower flywheelMotorA
 	}
