@@ -2,6 +2,7 @@ package com.team1389.y2016.robot;
 
 import com.team1389.base.RobotCode;
 import com.team1389.base.TeleopBase;
+import com.team1389.base.TestBase;
 import com.team1389.base.auton.AutonomousBase;
 
 /**
@@ -11,12 +12,12 @@ import com.team1389.base.auton.AutonomousBase;
 public class Robot implements RobotCode{
 	TeleopMain teleopBase;
 	AutonomousMain autonomousBase;
-	RobotLayout io;
+	RobotLayout layout;
 	
-	public Robot(RobotLayout io) {
-		teleopBase = new TeleopMain(io);
-		autonomousBase = new AutonomousMain(io);
-		this.io = io;
+	public Robot(RobotLayout layout) {
+		teleopBase = new TeleopMain(layout);
+		autonomousBase = new AutonomousMain(layout);
+		this.layout = layout;
 	}
 
 	public TeleopBase getTeleopBase() {
@@ -30,5 +31,10 @@ public class Robot implements RobotCode{
 	@Override
 	public void setup() {
 		System.out.println("Robot is initialized");
+	}
+
+	@Override
+	public TestBase getTestBase() {
+		return new TestMain();
 	}
 }
