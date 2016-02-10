@@ -3,6 +3,7 @@ package com.team1389.y2016.robot;
 import org.strongback.command.Command;
 
 import com.team1389.base.TeleopBase;
+import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 
 //TODO: make this work the way AutonomousMain does, plus also a TestMain
 
@@ -21,10 +22,7 @@ public class TeleopMain extends TeleopBase{
 
 	@Override
 	public  Command provideCommand() {
-//		return null;
-		return Command.create(() -> {
-			throw new RuntimeException("waaaaaaaaaaaaaaaa");
-		});
+		return new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver);
 	}
 
 }
