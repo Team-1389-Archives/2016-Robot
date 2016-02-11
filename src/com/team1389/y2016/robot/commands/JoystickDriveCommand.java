@@ -13,7 +13,7 @@ public class JoystickDriveCommand extends Command {
 	InputDevice joyStick;
 
 	public JoystickDriveCommand(Drivetrain driveTrain, InputDevice joystick) {
-//		super(driveTrain.getRequirements());
+		super(driveTrain.getRequirements());
 		this.driveTrain = driveTrain;
 		this.joyStick = joystick;
 

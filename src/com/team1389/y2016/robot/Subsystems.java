@@ -1,7 +1,5 @@
 package com.team1389.y2016.robot;
 
-import org.strongback.components.Motor;
-
 import com.team1389.y2016.robot.subsystems.Arm;
 import com.team1389.y2016.robot.subsystems.BallManipulator;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
@@ -12,9 +10,7 @@ public class Subsystems {
 	public final BallManipulator ballManipulator;
 	
 	public Subsystems(IOLayout io) {
-		Motor leftMotors = Motor.compose(io.leftDriveA, io.leftDriveB, io.leftDriveC);//NOTE: This wont work. Should set two of the Talons to follower mode.
-		Motor rightMotors = Motor.compose(io.rightDriveA, io.rightDriveB, io.rightDriveC);
-		drivetrain = new Drivetrain(leftMotors, rightMotors);
+		drivetrain = new Drivetrain(io.leftDriveA, io.rightDriveA);
 		
 		arm = new Arm(io.armElevationMotorA, io.turntableMotor);//armElevationMotorB will automatically follow armElevationMotorA
 		

@@ -13,18 +13,20 @@ public class IOHardware extends IOLayout{
 		//Outputs:
 
 		//driveTrain
-		leftDriveA = Hardware.Motors.talonSRX(new CANTalon(RobotMap.leftMotorA_CAN));
-			if(RobotMap.leftMotorA_isInverted) {leftDriveA = leftDriveA.invert();}
-		leftDriveB = Hardware.Motors.talonSRX(new CANTalon(RobotMap.leftMotorB_CAN));
-			if(RobotMap.leftMotorB_isInverted) {leftDriveB = leftDriveB.invert();}
-		leftDriveC = Hardware.Motors.talonSRX(new CANTalon(RobotMap.leftMotorC_CAN));
-			if(RobotMap.leftMotorC_isInverted) {leftDriveC = leftDriveC.invert();}
-		rightDriveA = Hardware.Motors.talonSRX(new CANTalon(RobotMap.rightMotorA_CAN));
-			if(RobotMap.rightMotorA_isInverted) {rightDriveA = rightDriveA.invert();}
-		rightDriveB = Hardware.Motors.talonSRX(new CANTalon(RobotMap.rightMotorB_CAN));
-			if(RobotMap.rightMotorB_isInverted) {rightDriveB = rightDriveB.invert();}
-		rightDriveC = Hardware.Motors.talonSRX(new CANTalon(RobotMap.rightMotorC_CAN));
-			if(RobotMap.rightMotorC_isInverted) {rightDriveC = rightDriveC.invert();}
+		CANTalon leftATalon = new CANTalon(RobotMap.leftMotorA_CAN);
+		leftATalon.reverseOutput(RobotMap.leftMotorA_isInverted);
+		leftDriveA = Hardware.Motors.talonSRX(leftATalon);
+		leftDriveB = Hardware.Motors.talonSRX(RobotMap.leftMotorB_CAN, leftDriveA, RobotMap.leftMotorB_isInverted);
+		leftDriveC = Hardware.Motors.talonSRX(RobotMap.leftMotorC_CAN, leftDriveA, RobotMap.leftMotorC_isInverted);
+		
+		
+		CANTalon rightATalon = new CANTalon(RobotMap.rightMotorA_CAN);
+		rightATalon.reverseOutput(RobotMap.rightMotorA_isInverted);
+		rightDriveA = Hardware.Motors.talonSRX(rightATalon);
+		rightDriveB = Hardware.Motors.talonSRX(RobotMap.rightMotorB_CAN, rightDriveA, RobotMap.rightMotorB_isInverted);
+		rightDriveC = Hardware.Motors.talonSRX(RobotMap.rightMotorC_CAN, rightDriveA, RobotMap.rightMotorC_isInverted);
+
+
 		
 		//arm
 		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,

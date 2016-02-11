@@ -12,11 +12,13 @@ import com.team1389.base.auton.AutonomousBase;
 public class Robot implements RobotCode{
 	TeleopMain teleopBase;
 	AutonomousMain autonomousBase;
+	TestMain testMain;
 	RobotLayout layout;
 	
 	public Robot(RobotLayout layout) {
 		teleopBase = new TeleopMain(layout);
 		autonomousBase = new AutonomousMain(layout);
+		testMain = new TestMain(layout);
 		this.layout = layout;
 	}
 
@@ -35,6 +37,6 @@ public class Robot implements RobotCode{
 
 	@Override
 	public TestBase getTestBase() {
-		return new TestMain();
+		return testMain;
 	}
 }
