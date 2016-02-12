@@ -21,13 +21,18 @@ public class JoystickDriveCommand extends Command {
 
 	@Override
 	public boolean execute() {
-		ContinuousRange x, y;
+		
+		double speedMod = 0.5;
+		
+		double x, y;
 		double left, right;
-		x = joyStick.getAxis(0);
-		y = joyStick.getAxis(1);
-		left = y.read() - x.read();
-		right = y.read() + x.read();
-		driveTrain.set(left, right);
+		x = joyStick.getAxis(0).read() - 0.079;
+		y = joyStick.getAxis(1).read() - 0.071;
+		System.out.println("x: " + x + " y: " + y);
+		left = y - x;
+		right = y + x;
+//		System.out.println("left: " + left + " right: " + right);
+		driveTrain.set(left * speedMod, right * speedMod);
 
 		return false;
 	}

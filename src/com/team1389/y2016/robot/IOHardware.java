@@ -1,12 +1,15 @@
 package com.team1389.y2016.robot;
 
+import org.strongback.components.TalonSRX;
 import org.strongback.hardware.Hardware;
+import org.strongback.mock.Mock;
 
 import com.team1389.base.wpiWrappers.TalonSRXPositionFollower;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.base.wpiWrappers.TalonSRXSpeedFollower;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
 public class IOHardware extends IOLayout{
 	public IOHardware() {
@@ -14,17 +17,17 @@ public class IOHardware extends IOLayout{
 
 		//driveTrain
 		CANTalon leftATalon = new CANTalon(RobotMap.leftMotorA_CAN);
-		leftATalon.reverseOutput(RobotMap.leftMotorA_isInverted);
+		leftATalon.setInverted(RobotMap.leftMotorA_isInverted);
 		leftDriveA = Hardware.Motors.talonSRX(leftATalon);
-		leftDriveB = Hardware.Motors.talonSRX(RobotMap.leftMotorB_CAN, leftDriveA, RobotMap.leftMotorB_isInverted);
-		leftDriveC = Hardware.Motors.talonSRX(RobotMap.leftMotorC_CAN, leftDriveA, RobotMap.leftMotorC_isInverted);
+		leftDriveB = createFollwerTalon(RobotMap.leftMotorB_CAN, leftDriveA, RobotMap.leftMotorB_isInverted);
+		leftDriveC = createFollwerTalon(RobotMap.leftMotorC_CAN, leftDriveA, RobotMap.leftMotorC_isInverted);
 		
 		
 		CANTalon rightATalon = new CANTalon(RobotMap.rightMotorA_CAN);
-		rightATalon.reverseOutput(RobotMap.rightMotorA_isInverted);
+		rightATalon.setInverted(RobotMap.rightMotorA_isInverted);
 		rightDriveA = Hardware.Motors.talonSRX(rightATalon);
-		rightDriveB = Hardware.Motors.talonSRX(RobotMap.rightMotorB_CAN, rightDriveA, RobotMap.rightMotorB_isInverted);
-		rightDriveC = Hardware.Motors.talonSRX(RobotMap.rightMotorC_CAN, rightDriveA, RobotMap.rightMotorC_isInverted);
+		rightDriveB = createFollwerTalon(RobotMap.rightMotorB_CAN, rightDriveA, RobotMap.rightMotorB_isInverted);
+		rightDriveC = createFollwerTalon(RobotMap.rightMotorC_CAN, rightDriveA, RobotMap.rightMotorC_isInverted);
 
 
 		
@@ -51,5 +54,15 @@ public class IOHardware extends IOLayout{
 		//Human Inputs
 		controllerDriver = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.driveJoystickPort);
 		controllerManip = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.manipJoystickPort);
+	}
+	
+	private static TalonSRX createFollwerTalon(int port, TalonSRX toFollow, boolean invert){
+		CANTalon talon = new CANTalon(port);
+		talon.setInverted(invert);
+        talon.changeControlMode(TalonControlMode.Follower);
+        talon.set(toFollow.getDeviceID());
+//        talon.reverseOutput(invert);
+        return Hardware.Motors.talonSRX(talon);
+
 	}
 }

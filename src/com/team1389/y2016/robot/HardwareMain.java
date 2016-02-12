@@ -41,13 +41,14 @@ public class HardwareMain extends Team1389RobotBase {
 	}
 
 	public void initiate() {
-		String runCameraServer = "bash /home/admin/mjpeg-streamer-roborio/run_one.sh";
+		String runCameraServer = "bash /mjpg-streamer-roborio/run_one.sh";
 		System.out.println("starting webcam server...");
 		Process process;
 		try {
 			process = Runtime.getRuntime().exec(runCameraServer);
 			Runnable getResult = () -> {
 					try {
+						System.out.println("waiting for process...");
 						process.waitFor();
 					} catch (InterruptedException e) {
 						System.out.println("problem when waiting for process response: " + e.getMessage());
