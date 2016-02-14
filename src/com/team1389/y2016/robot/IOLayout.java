@@ -8,6 +8,8 @@ import org.strongback.components.ui.InputDevice;
 import com.team1389.base.wpiWrappers.FollowerMotor;
 import com.team1389.base.wpiWrappers.PositionController;
 
+import edu.wpi.first.wpilibj.CANTalon;
+
 public abstract class IOLayout{
 	//driveTrain
 	public TalonSRX leftDriveA;
@@ -22,10 +24,12 @@ public abstract class IOLayout{
 	public PositionController armElevationMotorA;
 	public FollowerMotor armElevationMotorB;
 	
+	public Motor simpleElevationA;
+	public Motor simpleElevationB;
+	
 	//Ball Manipulator
 	public Motor intakeMotor;
-	public Motor flywheelMotorA;
-	public FollowerMotor flywheelMotorB;
+	public CANTalon flywheelMotorA;
 	
 	//Inputs
 	public Switch ballHolderIR;

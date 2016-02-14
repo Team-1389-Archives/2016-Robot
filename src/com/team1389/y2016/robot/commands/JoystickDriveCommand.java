@@ -26,8 +26,8 @@ public class JoystickDriveCommand extends Command {
 		
 		double x, y;
 		double left, right;
-		x = joyStick.getAxis(0).read() - 0.079;
-		y = joyStick.getAxis(1).read() - 0.071;
+		x = joyStick.getAxis(0).read();
+		y = joyStick.getAxis(1).read();
 		System.out.println("x: " + x + " y: " + y);
 		left = y - x;
 		right = y + x;

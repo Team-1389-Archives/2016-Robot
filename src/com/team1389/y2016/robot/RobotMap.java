@@ -12,17 +12,16 @@ public class RobotMap {
 	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = true;
 	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = true;
 	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = true;
-	public static int rightMotorA_CAN = 1; public static boolean rightMotorA_isInverted = false;
-	public static int rightMotorB_CAN = 2; public static boolean rightMotorB_isInverted = false;
+	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = false;
+	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = false;
 	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = false;
 	//Arm
 	public static int turntableMotor_CAN = 9; public static boolean turntableMotor_isInverted = false;
 	public static int elevatorMotorA_CAN = 5; public static boolean elevatorMotorA_isInverted = false;
-	public static int elevatorMotorB_CAN = 6; public static boolean elevatorMotorB_isInverted = false;
+	public static int elevatorMotorB_CAN = 6; public static boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
-	public static int intakeMotor_CAN = 10; public static boolean intakeMotor_isInverted = false;
-	public static int flywheelMotorA_CAN = 11; public static boolean flywheelMotorA_isInverted = false;
-	public static int flywheelMotorB_CAN = 12; public static boolean flywheelMotorB_isInverted = false;
+	public static int intakeMotor_CAN = 11; public static boolean intakeMotor_isInverted = false;
+	public static int flywheelMotorA_CAN = 10; public static boolean flywheelMotorA_isInverted = false;
 	
 	//Inputs:
 	//Ball Manipulator

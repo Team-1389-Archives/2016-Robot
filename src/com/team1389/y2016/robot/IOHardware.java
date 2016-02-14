@@ -34,19 +34,26 @@ public class IOHardware extends IOLayout{
 		//arm
 		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,
 				RobotMap.turntableMotor_isInverted);
-		TalonSRXPositionHardware armElevatorMotorATalon = new TalonSRXPositionHardware(new CANTalon(RobotMap.elevatorMotorA_CAN),
-				RobotMap.armElevationTicksPerDegree, RobotMap.elevatorMotorA_isInverted);
-		armElevationMotorA  = armElevatorMotorATalon;
-		armElevationMotorB = new TalonSRXPositionFollower(new CANTalon(RobotMap.elevatorMotorB_CAN), RobotMap.elevatorMotorA_CAN,
-				RobotMap.elevatorMotorB_isInverted);
+//		TalonSRXPositionHardware armElevatorMotorATalon = new TalonSRXPositionHardware(new CANTalon(RobotMap.elevatorMotorA_CAN),
+//				RobotMap.armElevationTicksPerDegree, RobotMap.elevatorMotorA_isInverted);
+//		armElevationMotorA  = armElevatorMotorATalon;
+//		armElevationMotorB = new TalonSRXPositionFollower(new CANTalon(RobotMap.elevatorMotorB_CAN), RobotMap.elevatorMotorA_CAN,
+//				RobotMap.elevatorMotorB_isInverted);
+		
+		CANTalon simpleA = new CANTalon(RobotMap.elevatorMotorA_CAN);
+		simpleA.setInverted(RobotMap.elevatorMotorA_isInverted);
+		CANTalon simpleB = new CANTalon(RobotMap.elevatorMotorB_CAN);
+		simpleB.setInverted(RobotMap.elevatorMotorB_isInverted);
+		simpleElevationA = Hardware.Motors.talonSRX(simpleA);
+		simpleElevationB = Hardware.Motors.talonSRX(simpleB);
 		
 		//ball manipulator
 		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
 			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
-		flywheelMotorA = Hardware.Motors.talonSRX(new CANTalon(RobotMap.flywheelMotorA_CAN));
-			if(RobotMap.flywheelMotorA_isInverted) {flywheelMotorA = flywheelMotorA.invert();}
-		flywheelMotorB = new TalonSRXSpeedFollower(new CANTalon(RobotMap.flywheelMotorB_CAN),
-				RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorB_isInverted);
+			
+		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
+				TalonControlMode.PercentVbus);
+//		flywheelMotorA = Hardware.Motors.talonSRX(flywheelTalon);
 		
 		//Inputs
 		ballHolderIR = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR_DIO);
@@ -64,5 +71,12 @@ public class IOHardware extends IOLayout{
 //        talon.reverseOutput(invert);
         return Hardware.Motors.talonSRX(talon);
 
+	}
+	
+	private static CANTalon createCANTalon(int port, boolean reverse, TalonControlMode mode){
+		CANTalon talon = new CANTalon(port);
+		talon.setInverted(reverse);
+		talon.changeControlMode(mode);
+		return talon;
 	}
 }

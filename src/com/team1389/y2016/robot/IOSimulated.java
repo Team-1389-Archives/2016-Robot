@@ -24,8 +24,7 @@ public class IOSimulated extends IOLayout{
 		
 		//ball manipulator
 		intakeMotor = Mock.stoppedTalonSRX();
-		flywheelMotorA = Mock.stoppedTalonSRX();
-		flywheelMotorB = new MockMotorFollower(flywheelMotorA);
+//		flywheelMotorA = Mock.stoppedTalonSRX();
 		
 		//Inputs
 		ballHolderIR = Mock.notTriggeredSwitch();

@@ -4,11 +4,13 @@ import org.strongback.components.Motor;
 
 import com.team1389.base.Subsystem;
 
-public class BallManipulator extends Subsystem{
-	Motor intake, flywheels;
+import edu.wpi.first.wpilibj.CANTalon;
 
-	public BallManipulator(Motor intake, Motor flywheels) {
-		super(intake, flywheels);
+public class BallManipulator extends Subsystem{
+	Motor intake;
+	CANTalon flywheels;
+
+	public BallManipulator(Motor intake, CANTalon flywheels) {
 		this.intake = intake;
 		this.flywheels = flywheels;
 	}
