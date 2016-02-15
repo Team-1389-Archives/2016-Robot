@@ -7,15 +7,17 @@ import org.strongback.components.ui.ContinuousRange;
 public class JoystickMotorCommand extends Command{
 	Motor intake;
 	ContinuousRange joyAxis;
+	double speedMod;
 	
-	public JoystickMotorCommand(Motor intake, ContinuousRange joyAxis) {
+	public JoystickMotorCommand(Motor intake, ContinuousRange joyAxis, double speedMod) {
 		this.joyAxis = joyAxis;
 		this.intake = intake;
+		this.speedMod = speedMod;
 	}
 
 	@Override
 	public boolean execute() {
-		intake.setSpeed(joyAxis.read());
+		intake.setSpeed(joyAxis.read() * speedMod);
 		return false;
 	}
 

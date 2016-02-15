@@ -10,12 +10,12 @@ public class IOSimulated extends IOLayout{
 	public IOSimulated() {
 
 		//driveTrain
-		leftDriveA = Mock.stoppedTalonSRX();
-		leftDriveB = Mock.stoppedTalonSRX();
-		leftDriveC = Mock.stoppedTalonSRX();
-		rightDriveA = Mock.stoppedTalonSRX();
-		rightDriveB = Mock.stoppedTalonSRX();
-		rightDriveC = Mock.stoppedTalonSRX();
+//		leftDriveA = Mock.stoppedTalonSRX();
+//		leftDriveB = Mock.stoppedTalonSRX();
+//		leftDriveC = Mock.stoppedTalonSRX();
+//		rightDriveA = Mock.stoppedTalonSRX();
+//		rightDriveB = Mock.stoppedTalonSRX();
+//		rightDriveC = Mock.stoppedTalonSRX();
 		
 		//arm
 		turntableMotor = new MockPositionController(0);
@@ -28,7 +28,7 @@ public class IOSimulated extends IOLayout{
 		
 		//Inputs
 		ballHolderIR = Mock.notTriggeredSwitch();
-		leftDriveA.setSpeed(5);
+//		leftDriveA.setSpeed(5);
 		
 		//Human Inputs
 		controllerDriver = null;

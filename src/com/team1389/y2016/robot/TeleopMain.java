@@ -5,12 +5,7 @@ import org.strongback.command.CommandGroup;
 import org.strongback.components.Motor;
 
 import com.team1389.base.TeleopBase;
-import com.team1389.y2016.robot.commands.ButtonMotorCommand;
-import com.team1389.y2016.robot.commands.JoystickCANTalonCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
-import com.team1389.y2016.robot.commands.JoystickMotorCommand;
-
-//TODO: make this work the way AutonomousMain does, plus also a TestMain
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -38,14 +33,18 @@ public class TeleopMain extends TeleopBase{
 	
 	class TeleopCommand extends CommandGroup{
 		public TeleopCommand() {
+			Motor elevation = Motor.compose(layout.io.simpleElevationA, layout.io.simpleElevationB);
 			simultaneously(
-					new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0)),
+//					new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0)),
 //					new ButtonMotorCommand(layout.io.flywheelMotorA, layout.io.controllerDriver.getButton(1), false));
-					new JoystickCANTalonCommand(layout.io.flywheelMotorA, layout.io.controllerDriver.getAxis(2))
-//					new MonitorCommand(layout.io.flywheelMotorA, "flywheel")
-//					new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver),
+//					new JoystickCANTalonCommand(layout.io.flywheelMotorA, layout.io.controllerDriver.getAxis(2))
+					new MonitorCommand(layout.io.leftDriveA, "left"),
+					new MonitorCommand(layout.io.rightDriveA, "right"),
+					new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver)
 //					new MonitorStrongbackTalonCommand(layout.io.rightDriveA, "right-drive"),
 //					new MonitorStrongbackTalonCommand(layout.io.leftDriveA, "left-drive")
+//					new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver)
+//					new JoystickMotorCommand(elevation, layout.io.controllerDriver.getAxis(1), .75)
 					);
 		}
 		

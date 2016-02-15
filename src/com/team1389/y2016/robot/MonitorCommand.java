@@ -19,7 +19,6 @@ public class MonitorCommand extends Command{
 	public boolean execute() {
 		double speed = talon.getEncPosition();
 		System.out.println("Talon " + name + ": " + speed);
-		System.out.println("is in vel control mode: " + talon.getControlMode().equals(TalonControlMode.PercentVbus));
 		return false;
 	}
 

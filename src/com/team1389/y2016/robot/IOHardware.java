@@ -2,11 +2,8 @@ package com.team1389.y2016.robot;
 
 import org.strongback.components.TalonSRX;
 import org.strongback.hardware.Hardware;
-import org.strongback.mock.Mock;
 
-import com.team1389.base.wpiWrappers.TalonSRXPositionFollower;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
-import com.team1389.base.wpiWrappers.TalonSRXSpeedFollower;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -16,20 +13,14 @@ public class IOHardware extends IOLayout{
 		//Outputs:
 
 		//driveTrain
-		CANTalon leftATalon = new CANTalon(RobotMap.leftMotorA_CAN);
-		leftATalon.setInverted(RobotMap.leftMotorA_isInverted);
-		leftDriveA = Hardware.Motors.talonSRX(leftATalon);
-		leftDriveB = createFollwerTalon(RobotMap.leftMotorB_CAN, leftDriveA, RobotMap.leftMotorB_isInverted);
-		leftDriveC = createFollwerTalon(RobotMap.leftMotorC_CAN, leftDriveA, RobotMap.leftMotorC_isInverted);
+		leftDriveA = createCANTalon(RobotMap.leftMotorA_CAN, RobotMap.leftMotorA_isInverted, TalonControlMode.PercentVbus);
+		leftDriveB = createCANFollower(RobotMap.leftMotorB_CAN, RobotMap.leftMotorB_isInverted, leftDriveA);
+		leftDriveC = createCANFollower(RobotMap.leftMotorC_CAN, RobotMap.leftMotorC_isInverted, leftDriveA);
 		
 		
-		CANTalon rightATalon = new CANTalon(RobotMap.rightMotorA_CAN);
-		rightATalon.setInverted(RobotMap.rightMotorA_isInverted);
-		rightDriveA = Hardware.Motors.talonSRX(rightATalon);
-		rightDriveB = createFollwerTalon(RobotMap.rightMotorB_CAN, rightDriveA, RobotMap.rightMotorB_isInverted);
-		rightDriveC = createFollwerTalon(RobotMap.rightMotorC_CAN, rightDriveA, RobotMap.rightMotorC_isInverted);
-
-
+		rightDriveA = createCANTalon(RobotMap.rightMotorA_CAN, RobotMap.rightMotorA_isInverted, TalonControlMode.PercentVbus);
+		rightDriveB = createCANFollower(RobotMap.rightMotorB_CAN, RobotMap.rightMotorB_isInverted, rightDriveA);
+		rightDriveC = createCANFollower(RobotMap.rightMotorC_CAN, RobotMap.rightMotorC_isInverted, rightDriveA);
 		
 		//arm
 		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,
@@ -77,6 +68,14 @@ public class IOHardware extends IOLayout{
 		CANTalon talon = new CANTalon(port);
 		talon.setInverted(reverse);
 		talon.changeControlMode(mode);
+		return talon;
+	}
+	
+	private static CANTalon createCANFollower(int port, boolean reverse, CANTalon toFollow){
+		CANTalon talon = new CANTalon(port);
+		talon.changeControlMode(TalonControlMode.Follower);
+		talon.setInverted(reverse);
+		talon.set(toFollow.getDeviceID());
 		return talon;
 	}
 }

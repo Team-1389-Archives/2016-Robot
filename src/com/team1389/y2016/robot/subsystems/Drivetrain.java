@@ -4,18 +4,20 @@ import org.strongback.components.Motor;
 
 import com.team1389.base.Subsystem;
 
+import edu.wpi.first.wpilibj.CANTalon;
+
 public class Drivetrain extends Subsystem{
-	Motor left;
-	Motor right;
-	public Drivetrain(Motor leftMotors, Motor rightMotors) {
-		super(leftMotors, rightMotors);
+	CANTalon left;
+	CANTalon right;
+	public Drivetrain(CANTalon leftMotors, CANTalon rightMotors) {
+//		super(leftMotors, rightMotors);
 		left = leftMotors;
 		right = rightMotors;
 	}
 	
 	public void set(double leftSpeed, double rightSpeed){
 
-		left.setSpeed(leftSpeed);
-		right.setSpeed(rightSpeed);
+		left.set(leftSpeed);
+		right.set(rightSpeed);
 	}
 }
