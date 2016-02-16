@@ -9,9 +9,9 @@ package com.team1389.y2016.robot;
 public class RobotMap {
 	//Outputs:
 	//Drivetrain
-	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = true;
-	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = true;
-	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = true;
+	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = false;
+	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = false;
+	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = false;
 	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = false;
 	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = false;
 	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = false;
@@ -25,6 +25,10 @@ public class RobotMap {
 	
 	//Inputs:
 	//Ball Manipulator
+	public static boolean leftEncoderInverted = true;
+	public static double leftEncoderSpeedMod = -100;
+	public static boolean rightEncoderInverted = false;
+	public static double rightEncoderSpeedMod = 160;
 	public static int ballHolderIR_DIO = 0; public static boolean ballHolderIR_isInverted = false;
 	
 	//Misc

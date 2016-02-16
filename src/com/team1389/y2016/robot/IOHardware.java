@@ -6,6 +6,7 @@ import org.strongback.hardware.Hardware;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
 public class IOHardware extends IOLayout{
@@ -13,12 +14,16 @@ public class IOHardware extends IOLayout{
 		//Outputs:
 
 		//driveTrain
-		leftDriveA = createCANTalon(RobotMap.leftMotorA_CAN, RobotMap.leftMotorA_isInverted, TalonControlMode.PercentVbus);
+		leftDriveA = createCANTalon(RobotMap.leftMotorA_CAN, RobotMap.leftMotorA_isInverted,
+				TalonControlMode.PercentVbus, RobotMap.leftEncoderInverted);
+		leftDriveA.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		
 		leftDriveB = createCANFollower(RobotMap.leftMotorB_CAN, RobotMap.leftMotorB_isInverted, leftDriveA);
 		leftDriveC = createCANFollower(RobotMap.leftMotorC_CAN, RobotMap.leftMotorC_isInverted, leftDriveA);
 		
 		
-		rightDriveA = createCANTalon(RobotMap.rightMotorA_CAN, RobotMap.rightMotorA_isInverted, TalonControlMode.PercentVbus);
+		rightDriveA = createCANTalon(RobotMap.rightMotorA_CAN, RobotMap.rightMotorA_isInverted,
+				TalonControlMode.PercentVbus, RobotMap.rightEncoderInverted);
 		rightDriveB = createCANFollower(RobotMap.rightMotorB_CAN, RobotMap.rightMotorB_isInverted, rightDriveA);
 		rightDriveC = createCANFollower(RobotMap.rightMotorC_CAN, RobotMap.rightMotorC_isInverted, rightDriveA);
 		
@@ -43,7 +48,7 @@ public class IOHardware extends IOLayout{
 			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
 			
 		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
-				TalonControlMode.PercentVbus);
+				TalonControlMode.PercentVbus, false);
 //		flywheelMotorA = Hardware.Motors.talonSRX(flywheelTalon);
 		
 		//Inputs
@@ -64,10 +69,11 @@ public class IOHardware extends IOLayout{
 
 	}
 	
-	private static CANTalon createCANTalon(int port, boolean reverse, TalonControlMode mode){
+	private static CANTalon createCANTalon(int port, boolean reverse, TalonControlMode mode, boolean sensorReversed){
 		CANTalon talon = new CANTalon(port);
 		talon.setInverted(reverse);
 		talon.changeControlMode(mode);
+		talon.reverseSensor(sensorReversed);
 		return talon;
 	}
 	

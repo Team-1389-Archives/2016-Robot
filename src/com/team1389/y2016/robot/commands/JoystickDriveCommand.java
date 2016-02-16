@@ -1,7 +1,6 @@
 package com.team1389.y2016.robot.commands;
 
 import org.strongback.command.Command;
-import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.InputDevice;
 
 import com.team1389.y2016.robot.subsystems.Drivetrain;
@@ -11,18 +10,22 @@ public class JoystickDriveCommand extends Command {
 
 	Drivetrain driveTrain;
 	InputDevice joyStick;
+	double overAllSpeedMod;
 
-	public JoystickDriveCommand(Drivetrain driveTrain, InputDevice joystick) {
+	public JoystickDriveCommand(Drivetrain driveTrain, InputDevice joystick, double speedMod) {
 		super(driveTrain.getRequirements());
 		this.driveTrain = driveTrain;
 		this.joyStick = joystick;
-
+		this.overAllSpeedMod = speedMod;
+	}
+	public JoystickDriveCommand(Drivetrain driveTrain, InputDevice joystick) {
+		this(driveTrain, joystick, 1.0);
 	}
 
 	@Override
 	public boolean execute() {
 		
-		double speedMod = 0.65;
+		double speedMod = 0.65 * overAllSpeedMod;
 		double turnMod = .65;
 		double turnAlotMod = 0.8;
 		

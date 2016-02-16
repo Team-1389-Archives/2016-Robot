@@ -9,9 +9,9 @@ public class JoystickMotorCommand extends Command{
 	ContinuousRange joyAxis;
 	double speedMod;
 	
-	public JoystickMotorCommand(Motor intake, ContinuousRange joyAxis, double speedMod) {
+	public JoystickMotorCommand(Motor motor, ContinuousRange joyAxis, double speedMod) {
 		this.joyAxis = joyAxis;
-		this.intake = intake;
+		this.intake = motor;
 		this.speedMod = speedMod;
 	}
 

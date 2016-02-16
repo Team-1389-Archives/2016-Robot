@@ -17,7 +17,7 @@ public class MonitorCommand extends Command{
 
 	@Override
 	public boolean execute() {
-		double speed = talon.getEncPosition();
+		double speed = talon.getEncVelocity();
 		System.out.println("Talon " + name + ": " + speed);
 		return false;
 	}
