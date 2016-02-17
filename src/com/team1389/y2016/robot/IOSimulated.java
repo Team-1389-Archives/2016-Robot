@@ -34,4 +34,10 @@ public class IOSimulated extends IOLayout{
 		controllerDriver = null;
 		controllerManip = null;
 	}
+
+	@Override
+	public void configFollowerTalonsToWorkAroundDumbGlitch() {
+		// TODO Auto-generated method stub
+		
+	}
 }

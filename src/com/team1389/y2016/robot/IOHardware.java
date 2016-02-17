@@ -18,14 +18,17 @@ public class IOHardware extends IOLayout{
 				TalonControlMode.PercentVbus, RobotMap.leftEncoderInverted);
 		leftDriveA.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		
-		leftDriveB = createCANFollower(RobotMap.leftMotorB_CAN, RobotMap.leftMotorB_isInverted, leftDriveA);
-		leftDriveC = createCANFollower(RobotMap.leftMotorC_CAN, RobotMap.leftMotorC_isInverted, leftDriveA);
+		leftDriveB = new CANTalon(RobotMap.leftMotorB_CAN);
+		leftDriveC = new CANTalon(RobotMap.leftMotorC_CAN);
 		
 		
 		rightDriveA = createCANTalon(RobotMap.rightMotorA_CAN, RobotMap.rightMotorA_isInverted,
 				TalonControlMode.PercentVbus, RobotMap.rightEncoderInverted);
-		rightDriveB = createCANFollower(RobotMap.rightMotorB_CAN, RobotMap.rightMotorB_isInverted, rightDriveA);
-		rightDriveC = createCANFollower(RobotMap.rightMotorC_CAN, RobotMap.rightMotorC_isInverted, rightDriveA);
+		rightDriveB = new CANTalon(RobotMap.rightMotorB_CAN);
+		rightDriveC = new CANTalon(RobotMap.rightMotorC_CAN);
+
+		
+		configFollowerTalonsToWorkAroundDumbGlitch();
 		
 		//arm
 		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,
@@ -83,5 +86,24 @@ public class IOHardware extends IOLayout{
 		talon.setInverted(reverse);
 		talon.set(toFollow.getDeviceID());
 		return talon;
+	}
+	
+	private static void configFollowerTalon(CANTalon talon, boolean reverse, CANTalon toFollow){
+		talon.changeControlMode(TalonControlMode.Follower);
+		talon.setInverted(reverse);
+		talon.set(toFollow.getDeviceID());
+	}
+	
+	/**
+	 * when test mode is enabled, follower talons stop following.
+	 */
+	@Override
+	public void configFollowerTalonsToWorkAroundDumbGlitch() {
+		System.out.println("configging talons");
+		configFollowerTalon(leftDriveB, RobotMap.leftMotorB_isInverted, leftDriveA);
+		configFollowerTalon(leftDriveC, RobotMap.leftMotorC_isInverted, leftDriveA);
+		
+		configFollowerTalon(rightDriveB, RobotMap.rightMotorB_isInverted, rightDriveA);
+		configFollowerTalon(rightDriveC, RobotMap.rightMotorC_isInverted, rightDriveA);
 	}
 }

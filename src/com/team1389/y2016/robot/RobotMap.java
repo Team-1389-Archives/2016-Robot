@@ -12,9 +12,9 @@ public class RobotMap {
 	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = false;
 	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = false;
 	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = false;
-	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = false;
-	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = false;
-	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = false;
+	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = true;
+	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = true;
+	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = true;
 	//Arm
 	public static int turntableMotor_CAN = 9; public static boolean turntableMotor_isInverted = false;
 	public static int elevatorMotorA_CAN = 5; public static boolean elevatorMotorA_isInverted = false;
@@ -27,7 +27,7 @@ public class RobotMap {
 	//Ball Manipulator
 	public static boolean leftEncoderInverted = true;
 	public static double leftEncoderSpeedMod = -100;
-	public static boolean rightEncoderInverted = false;
+	public static boolean rightEncoderInverted = true;
 	public static double rightEncoderSpeedMod = 160;
 	public static int ballHolderIR_DIO = 0; public static boolean ballHolderIR_isInverted = false;
 	
@@ -41,4 +41,7 @@ public class RobotMap {
 	
 	public static double armElevationTicksPerDegree = 1;
 	public static double turnTableTicksPerDegree = 1;
+	
+	public static double encoderTicksPerRotation = 4096;
 }
+

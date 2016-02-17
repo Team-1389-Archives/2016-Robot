@@ -12,10 +12,10 @@ import com.team1389.base.auton.AutonomousBase;
  */
 public class AutonomousMain extends AutonomousBase{
 	
-	RobotLayout io;
+	RobotLayout layout;
 
 	public AutonomousMain(RobotLayout io) {
-		this.io = io;
+		this.layout = io;
 	}
 
 	@Override
@@ -25,5 +25,10 @@ public class AutonomousMain extends AutonomousBase{
 		//add modes to mode list here
 		
 		return modes;
+	}
+
+	@Override
+	protected void setup() {
+		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
 	}
 }
