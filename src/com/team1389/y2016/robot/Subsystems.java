@@ -12,7 +12,7 @@ public class Subsystems {
 	public Subsystems(IOLayout io) {
 		drivetrain = new Drivetrain(io.leftDriveA, io.rightDriveA);
 		
-		arm = new Arm(io.armElevationMotorA, io.turntableMotor);//armElevationMotorB will automatically follow armElevationMotorA
+		arm = new Arm(io.armElevationMotor, io.turntableMotor);//armElevationMotorB will automatically follow armElevationMotorA
 		
 		ballManipulator = new BallManipulator(io.intakeMotor, io.flywheelMotorA);//flywheelMotorB automatically follower flywheelMotorA
 	}

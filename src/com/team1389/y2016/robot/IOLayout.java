@@ -4,8 +4,8 @@ import org.strongback.components.Motor;
 import org.strongback.components.Switch;
 import org.strongback.components.ui.InputDevice;
 
-import com.team1389.base.wpiWrappers.FollowerMotor;
-import com.team1389.base.wpiWrappers.PositionController;
+import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
+import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
 import edu.wpi.first.wpilibj.CANTalon;
 
@@ -19,9 +19,8 @@ public abstract class IOLayout{
 	public CANTalon rightDriveC;
 	
 	//arm
-	public PositionController turntableMotor;
-	public PositionController armElevationMotorA;
-	public FollowerMotor armElevationMotorB;
+	public TalonSRXPositionHardware turntableMotor;
+	public TalonSRXPositionHardware armElevationMotor;
 	
 	public CANTalon simpleElevationA;
 	public CANTalon simpleElevationB;

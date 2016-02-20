@@ -17,7 +17,7 @@ public class MonitorCommand extends Command{
 
 	@Override
 	public boolean execute() {
-		double speed = talon.getPosition();
+		double speed = talon.getPulseWidthPosition();
 		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
 		return false;
 	}

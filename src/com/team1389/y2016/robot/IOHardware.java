@@ -29,20 +29,16 @@ public class IOHardware extends IOLayout{
 
 		
 		//arm
-		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,
-				RobotMap.turntableMotor_isInverted);
-//		TalonSRXPositionHardware armElevatorMotorATalon = new TalonSRXPositionHardware(new CANTalon(RobotMap.elevatorMotorA_CAN),
-//				RobotMap.armElevationTicksPerDegree, RobotMap.elevatorMotorA_isInverted);
-//		armElevationMotorA  = armElevatorMotorATalon;
-//		armElevationMotorB = new TalonSRXPositionFollower(new CANTalon(RobotMap.elevatorMotorB_CAN), RobotMap.elevatorMotorA_CAN,
-//				RobotMap.elevatorMotorB_isInverted);
 		
 		simpleElevationA = createCANTalon(RobotMap.elevatorMotorA_CAN, RobotMap.elevatorMotorA_isInverted,
 				TalonControlMode.PercentVbus, RobotMap.elevatorEncoderInverted);
 		simpleElevationB = new CANTalon(RobotMap.elevatorMotorB_CAN);
 		
-		CANTalon simpleTurn = new CANTalon(RobotMap.turntableMotor_CAN);
-		simpleTurntable = simpleTurn;
+		armElevationMotor = new TalonSRXPositionHardware(simpleElevationA, RobotMap.armElevationTicksPerRotation);
+		
+		simpleTurntable = createCANTalon(RobotMap.turntableMotor_CAN, RobotMap.turntableMotor_isInverted,
+				TalonControlMode.PercentVbus, RobotMap.turntableEncoderInverted);
+		turntableMotor = new TalonSRXPositionHardware(simpleTurntable, RobotMap.turnTableTicksPerRotation);
 		
 		
 		configFollowerTalonsToWorkAroundDumbGlitch();
@@ -63,29 +59,12 @@ public class IOHardware extends IOLayout{
 		controllerManip = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.manipJoystickPort);
 	}
 	
-	private static TalonSRX createFollwerTalon(int port, TalonSRX toFollow, boolean invert){
-		CANTalon talon = new CANTalon(port);
-		talon.setInverted(invert);
-        talon.changeControlMode(TalonControlMode.Follower);
-        talon.set(toFollow.getDeviceID());
-//        talon.reverseOutput(invert);
-        return Hardware.Motors.talonSRX(talon);
-
-	}
-	
 	private static CANTalon createCANTalon(int port, boolean reverse, TalonControlMode mode, boolean sensorReversed){
 		CANTalon talon = new CANTalon(port);
 		talon.setInverted(reverse);
+		talon.reverseOutput(reverse);
 		talon.changeControlMode(mode);
 		talon.reverseSensor(sensorReversed);
-		return talon;
-	}
-	
-	private static CANTalon createCANFollower(int port, boolean reverse, CANTalon toFollow){
-		CANTalon talon = new CANTalon(port);
-		talon.changeControlMode(TalonControlMode.Follower);
-		talon.setInverted(reverse);
-		talon.set(toFollow.getDeviceID());
 		return talon;
 	}
 	

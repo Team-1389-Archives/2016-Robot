@@ -87,7 +87,7 @@ public class PIDTestCommand extends Command{
         if(joystick.getButton(1).isTriggered()){
         	double target = leftYstick * this.target; /* 1500 RPM in either direction */
         	talon.changeControlMode(speedOrPosition? TalonControlMode.Speed : TalonControlMode.Position);
-        	if (!decouple){
+        	if (decouple){
         		talon.setP(0);
         		talon.setI(0);
         		talon.setD(0);
