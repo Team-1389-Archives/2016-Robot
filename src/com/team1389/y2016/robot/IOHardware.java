@@ -28,8 +28,6 @@ public class IOHardware extends IOLayout{
 		rightDriveC = new CANTalon(RobotMap.rightMotorC_CAN);
 
 		
-		configFollowerTalonsToWorkAroundDumbGlitch();
-		
 		//arm
 		turntableMotor = new TalonSRXPositionHardware(new CANTalon(RobotMap.turntableMotor_CAN), RobotMap.turnTableTicksPerDegree,
 				RobotMap.turntableMotor_isInverted);
@@ -39,12 +37,15 @@ public class IOHardware extends IOLayout{
 //		armElevationMotorB = new TalonSRXPositionFollower(new CANTalon(RobotMap.elevatorMotorB_CAN), RobotMap.elevatorMotorA_CAN,
 //				RobotMap.elevatorMotorB_isInverted);
 		
-		CANTalon simpleA = new CANTalon(RobotMap.elevatorMotorA_CAN);
-		simpleA.setInverted(RobotMap.elevatorMotorA_isInverted);
-		CANTalon simpleB = new CANTalon(RobotMap.elevatorMotorB_CAN);
-		simpleB.setInverted(RobotMap.elevatorMotorB_isInverted);
-		simpleElevationA = Hardware.Motors.talonSRX(simpleA);
-		simpleElevationB = Hardware.Motors.talonSRX(simpleB);
+		simpleElevationA = createCANTalon(RobotMap.elevatorMotorA_CAN, RobotMap.elevatorMotorA_isInverted,
+				TalonControlMode.PercentVbus, RobotMap.elevatorEncoderInverted);
+		simpleElevationB = new CANTalon(RobotMap.elevatorMotorB_CAN);
+		
+		CANTalon simpleTurn = new CANTalon(RobotMap.turntableMotor_CAN);
+		simpleTurntable = simpleTurn;
+		
+		
+		configFollowerTalonsToWorkAroundDumbGlitch();
 		
 		//ball manipulator
 		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
@@ -105,5 +106,7 @@ public class IOHardware extends IOLayout{
 		
 		configFollowerTalon(rightDriveB, RobotMap.rightMotorB_isInverted, rightDriveA);
 		configFollowerTalon(rightDriveC, RobotMap.rightMotorC_isInverted, rightDriveA);
+		
+		configFollowerTalon(simpleElevationB, RobotMap.elevatorMotorB_isInverted, simpleElevationA);
 	}
 }

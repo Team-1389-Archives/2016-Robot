@@ -23,8 +23,9 @@ public abstract class IOLayout{
 	public PositionController armElevationMotorA;
 	public FollowerMotor armElevationMotorB;
 	
-	public Motor simpleElevationA;
-	public Motor simpleElevationB;
+	public CANTalon simpleElevationA;
+	public CANTalon simpleElevationB;
+	public CANTalon simpleTurntable;
 	
 	//Ball Manipulator
 	public Motor intakeMotor;

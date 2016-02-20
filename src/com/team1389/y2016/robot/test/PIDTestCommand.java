@@ -1,4 +1,4 @@
-package com.team1389.y2016.robot.commands;
+package com.team1389.y2016.robot.test;
 
 import org.strongback.command.Command;
 import org.strongback.components.ui.InputDevice;
@@ -12,7 +12,7 @@ import com.team1389.base.webserver.chart.WebChartManager;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
-public class SpeedPIDTestCommand extends Command{
+public class PIDTestCommand extends Command{
 	
 	PIDConstants constants;
 	CANTalon talon;
@@ -20,9 +20,12 @@ public class SpeedPIDTestCommand extends Command{
 	StringBuilder builder;
 	Chart output;
 	Timer timer;
-	double targetSpeed;
+	double target;
+	boolean speedOrPosition;
+	double mod;
+	boolean decouple;
 	
-	public SpeedPIDTestCommand(PIDConstants constants, CANTalon talon, InputDevice joystick, double targetSpeed) {
+	public PIDTestCommand(PIDConstants constants, CANTalon talon, InputDevice joystick, double target, boolean speedOrPosition, double mod, boolean decouple) {
 		this.constants = constants;
 		this.talon = talon;
 		this.joystick = joystick;
@@ -30,7 +33,10 @@ public class SpeedPIDTestCommand extends Command{
 		this.output = new Chart(.001, .1, "time", "output");
 		WebChartManager.getInstance().addChart("pidTester", output);
 		timer = new Timer();
-		this.targetSpeed = targetSpeed;
+		this.target = target;
+		this.speedOrPosition = speedOrPosition;
+		this.mod = mod;
+		this.decouple = decouple;
 	}
 	
 	@Override
@@ -46,6 +52,8 @@ public class SpeedPIDTestCommand extends Command{
 		builder.append(constants.kv);
 		builder.append(" ka=");
 		builder.append(constants.ka);
+		builder.append(" target=");
+		builder.append(target);
 		System.out.println(builder.toString());
 		
 		talon.configNominalOutputVoltage(0, 0);
@@ -68,29 +76,50 @@ public class SpeedPIDTestCommand extends Command{
     	/* prepare line to print */
 		builder.append("\tout:");
 		builder.append(motorOutput);
-        builder.append("\tspd:");
-        builder.append(talon.getSpeed() );
+		if (speedOrPosition){
+			builder.append("\tspd:");
+			builder.append(talon.getSpeed());
+		} else {
+			builder.append("\tpos:");
+			builder.append(talon.getPosition());
+		}
         
         if(joystick.getButton(1).isTriggered()){
-        	/* Speed mode */
-        	double targetSpeed = leftYstick * this.targetSpeed; /* 1500 RPM in either direction */
-        	talon.changeControlMode(TalonControlMode.Speed);
-        	talon.set(targetSpeed); /* 1500 RPM in either direction */
+        	double target = leftYstick * this.target; /* 1500 RPM in either direction */
+        	talon.changeControlMode(speedOrPosition? TalonControlMode.Speed : TalonControlMode.Position);
+        	if (!decouple){
+        		talon.setP(0);
+        		talon.setI(0);
+        		talon.setD(0);
+        		talon.setF(0);
+        	}
+       		talon.set(target * mod); /* 1500 RPM in either direction */
+        	builder.append("\tset:");
+        	builder.append(target);
 
         	/* append more signals to print when in speed mode. */
             builder.append("\terr:");
             builder.append(talon.getClosedLoopError());
             builder.append("\ttrg:");
-            builder.append(targetSpeed);
+            builder.append(target);
+            builder.append("\tstpt:");
+            builder.append(talon.getSetpoint());
             
-            output.addPoint(new DataPoint(timer.get(), talon.getClosedLoopError()));
+            output.addPoint(new DataPoint(timer.get(), talon.getPosition()));
         } else {
         	/* Percent voltage mode */
         	talon.changeControlMode(TalonControlMode.PercentVbus);
-        	talon.set(leftYstick);
-        	
+        	if (!decouple){
+        		talon.set(leftYstick);
+        	}
+        	builder.append("\tset:");
+        	builder.append(leftYstick);
         	builder.append("\tpvb=");
         	builder.append(leftYstick);
+        }
+        
+        if (joystick.getButton(2).isTriggered()){
+        	talon.setPosition(0);
         }
 
         System.out.println(builder.toString());

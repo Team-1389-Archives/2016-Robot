@@ -1,4 +1,4 @@
-package com.team1389.y2016.robot;
+package com.team1389.y2016.robot.commands;
 
 import org.strongback.command.Command;
 import org.strongback.components.TalonSRX;

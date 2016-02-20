@@ -18,17 +18,19 @@ public class RobotMap {
 	//Arm
 	public static int turntableMotor_CAN = 9; public static boolean turntableMotor_isInverted = false;
 	public static int elevatorMotorA_CAN = 5; public static boolean elevatorMotorA_isInverted = false;
-	public static int elevatorMotorB_CAN = 6; public static boolean elevatorMotorB_isInverted = true;
+	public static int elevatorMotorB_CAN = 6; public static boolean elevatorMotorB_isInverted = false;
 	//Ball Manipulator
 	public static int intakeMotor_CAN = 11; public static boolean intakeMotor_isInverted = false;
 	public static int flywheelMotorA_CAN = 10; public static boolean flywheelMotorA_isInverted = false;
 	
 	//Inputs:
-	//Ball Manipulator
+	public static double encoderTicksPerRotation = 4096;
+
 	public static boolean leftEncoderInverted = true;
-	public static double leftEncoderSpeedMod = -100;
 	public static boolean rightEncoderInverted = true;
-	public static double rightEncoderSpeedMod = 160;
+	public static boolean elevatorEncoderInverted = true;
+	
+	//Ball Manipulator
 	public static int ballHolderIR_DIO = 0; public static boolean ballHolderIR_isInverted = false;
 	
 	//Misc
@@ -39,9 +41,10 @@ public class RobotMap {
 	public static double referenceTurntableAngle = -17;//the angle that the turntable uses as a reference to zero itself
 	public static double referenceArmElevationAngle = 0;//the angle that the arm is completely down
 	
-	public static double armElevationTicksPerDegree = 1;
+	public static double leftEncoderTicksPerRotation = encoderTicksPerRotation * .75;
+	public static double rightEncoderSpeedMod = encoderTicksPerRotation * .75;
+	public static double armElevationTicksPerRotation = encoderTicksPerRotation * 2;
 	public static double turnTableTicksPerDegree = 1;
 	
-	public static double encoderTicksPerRotation = 4096;
 }
 

@@ -1,4 +1,4 @@
-package com.team1389.y2016.robot;
+package com.team1389.y2016.robot.commands;
 
 import org.strongback.command.Command;
 
@@ -17,7 +17,7 @@ public class MonitorCommand extends Command{
 
 	@Override
 	public boolean execute() {
-		double speed = talon.getEncVelocity();
+		double speed = talon.getPosition();
 		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
 		return false;
 	}
