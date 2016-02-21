@@ -25,7 +25,7 @@ public class JoystickDriveCommand extends Command {
 	@Override
 	public boolean execute() {
 		
-		double speedMod = 0.65 * overAllSpeedMod;
+		double speedMod = 1.0;//0.65 * overAllSpeedMod;
 		double turnMod = .65;
 		double turnAlotMod = 0.8;
 		

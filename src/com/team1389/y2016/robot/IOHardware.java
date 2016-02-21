@@ -57,6 +57,7 @@ public class IOHardware extends IOLayout{
 		//Human Inputs
 		controllerDriver = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.driveJoystickPort);
 		controllerManip = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.manipJoystickPort);
+		controllerFake = Hardware.HumanInterfaceDevices.driverStationJoystick(2);
 	}
 	
 	private static CANTalon createCANTalon(int port, boolean reverse, TalonControlMode mode, boolean sensorReversed){

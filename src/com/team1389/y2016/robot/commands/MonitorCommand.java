@@ -3,6 +3,8 @@ package com.team1389.y2016.robot.commands;
 import org.strongback.command.Command;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDeviceStatus;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
 public class MonitorCommand extends Command{
@@ -17,8 +19,10 @@ public class MonitorCommand extends Command{
 
 	@Override
 	public boolean execute() {
-		double speed = talon.getPulseWidthPosition();
-		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
+//		double speed = talon.getPulseWidthPosition();
+//		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
+		FeedbackDeviceStatus isConnected = talon.isSensorPresent(FeedbackDevice.PulseWidth);
+		System.out.println(isConnected);
 		return false;
 	}
 

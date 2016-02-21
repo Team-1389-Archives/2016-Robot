@@ -36,6 +36,7 @@ public abstract class IOLayout{
 	//Human Controlls
 	public InputDevice controllerDriver;
 	public InputDevice controllerManip;
+	public InputDevice controllerFake;
 	
 	public abstract void configFollowerTalonsToWorkAroundDumbGlitch();
 }
