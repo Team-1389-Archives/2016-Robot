@@ -11,6 +11,8 @@ import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.ButtonMotorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
+import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.test.GraphVoltageCommand;
 import com.team1389.y2016.robot.test.PositionControllerRampCommand;
 import com.team1389.y2016.robot.test.PositionControllerRampCommand.SetpointProvider;
 
@@ -44,18 +46,23 @@ public class TeleopMain extends TeleopBase{
 		SetpointProvider xAxis = new JoystickSetpointControlAriStyle(layout.io.controllerDriver.getAxis(3), 0, .2, 0.001, 0);
 		
 		Command elevation = new PositionControllerRampCommand(layout.io.armElevationMotor, 
-				yAxis, new PIDConstants(1, 0, 0, 0, 0), .2, 0, .1);
+				yAxis, new PIDConstants(.7, 0, 0, 0, 0), .2, 0, .1);
 		
-//		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
-//				pidC.get(), .5, -.5, .1);
+		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
+				pidC.get(), .5, -.5, .1);
 		
-		Command intake = new ButtonMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getButton(0), RobotMap.intakeMotor_isInverted);
-		Command flyWheel = new ButtonMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerManip.getButton(1), RobotMap.flywheelMotorA_isInverted);
-		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 0.5);
+//		Command intake = new ButtonMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getButton(0), RobotMap.intakeMotor_isInverted);
+//		Command flyWheel = new ButtonMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerManip.getButton(1), RobotMap.flywheelMotorA_isInverted);
+//		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerManip, 0.5);
 		
-		return CommandsUtil.combineSimultaneous(elevation,intake, drive, flyWheel);
+//		return CommandsUtil.combineSimultaneous(elevation,intake, drive, flyWheel);
 //		return new MonitorCommand(layout.io.simpleTurntable, "turntable");
+
+//		Command intake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
+//		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerDriver.getAxis(3), 1.0);
+//		Command voltTest = new GraphVoltageCommand(layout.io.flywheelMotorA);
 		
+		return CommandsUtil.combineSimultaneous(elevation, yaw);
 
 
 	}

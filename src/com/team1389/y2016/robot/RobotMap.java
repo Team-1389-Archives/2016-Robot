@@ -12,9 +12,9 @@ public class RobotMap {
 	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = false;
 	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = false;
 	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = false;
-	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = true;
-	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = true;
-	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = true;
+	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = false;
+	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = false;
+	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = false;
 	//Arm
 	public static int turntableMotor_CAN = 9; public static boolean turntableMotor_isInverted = false;
 	public static int elevatorMotorA_CAN = 5; public static boolean elevatorMotorA_isInverted = true;
