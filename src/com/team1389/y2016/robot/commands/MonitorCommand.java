@@ -19,10 +19,10 @@ public class MonitorCommand extends Command{
 
 	@Override
 	public boolean execute() {
-//		double speed = talon.getPulseWidthPosition();
-//		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
-		FeedbackDeviceStatus isConnected = talon.isSensorPresent(FeedbackDevice.PulseWidth);
-		System.out.println(isConnected);
+		double speed = talon.getPulseWidthPosition();
+		System.out.println("Talon " + name + ": " + speed + " mode:" + talon.getControlMode());
+//		FeedbackDeviceStatus isConnected = talon.isSensorPresent(FeedbackDevice.PulseWidth);
+//		System.out.println(isConnected);
 		return false;
 	}
 

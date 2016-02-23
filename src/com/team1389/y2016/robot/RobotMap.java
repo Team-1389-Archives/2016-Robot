@@ -9,9 +9,9 @@ package com.team1389.y2016.robot;
 public class RobotMap {
 	//Outputs:
 	//Drivetrain
-	public static int leftMotorA_CAN = 7; public static boolean leftMotorA_isInverted = false;
-	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = false;
-	public static int leftMotorC_CAN = 4; public static boolean leftMotorC_isInverted = false;
+	public static int leftMotorA_CAN = 4; public static boolean leftMotorA_isInverted = true;
+	public static int leftMotorB_CAN = 8; public static boolean leftMotorB_isInverted = true;
+	public static int leftMotorC_CAN = 7; public static boolean leftMotorC_isInverted = true;
 	public static int rightMotorA_CAN = 2; public static boolean rightMotorA_isInverted = false;
 	public static int rightMotorB_CAN = 1; public static boolean rightMotorB_isInverted = false;
 	public static int rightMotorC_CAN = 3; public static boolean rightMotorC_isInverted = false;
@@ -39,7 +39,7 @@ public class RobotMap {
 	public static int manipJoystickPort = 1;
 	public static double referenceArmElevationAngle = 0;//the angle that the arm is completely down
 	
-	public static double leftEncoderTicksPerRotation = encoderTicksPerRotation * .75;
+	public static double wheelTicksPerRotation = encoderTicksPerRotation * .75;
 	public static double rightEncoderSpeedMod = encoderTicksPerRotation * .75;
 	public static double armElevationTicksPerRotation = encoderTicksPerRotation * 2;
 	public static double turnTableTicksPerRotation= 23567;

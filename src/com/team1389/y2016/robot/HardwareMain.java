@@ -33,10 +33,7 @@ public class HardwareMain extends Team1389RobotBase {
 		String webapp = HardwareMain.class.getClassLoader().getResource(BaseConstants.webappFolder).toExternalForm();// this
 		String project = HardwareMain.class.getClassLoader().getResource(BaseConstants.projectWebappFolder)
 				.toExternalForm();
-		System.out.println("got here");
-		System.out.println("code is " + code);
 		WebServer server = WebserverSetup.initiateWebserver(code, webapp, project);
-		System.out.println("got here 2");
 		return server;
 	}
 
