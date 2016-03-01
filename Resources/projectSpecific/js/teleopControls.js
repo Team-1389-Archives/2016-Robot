@@ -13,22 +13,53 @@ var keyMessages = {
 	"h" : makeMessageSend("wut tho")
 };
 
-function calculateDistance(clickY){
-	if(clickY > 1){
-		return 5;
-	} else if(clickY < 0){
-		return 30;
+function phiFromR(r){
+	var scaled = r/2 + .5;
+	var coefs = [
+		-70.68, 11.1, 79.3, 67.09, -21.95, -106.1, -74.28, 87.32, 176, -94.8
+	];
+
+
+	var total = 0;
+	for (var i = 0; i < coefs.length; i += 1){
+		var index = coefs.length - i - 1;
+		total += coefs[index] * Math.pow(scaled, i);
 	}
-	var coefs = [ -5.11838963e+05,   3.10706727e+06,  -8.24748892e+06,
-	              1.25550886e+07,  -1.20704678e+07,   7.59497439e+06,
-	              -3.12578888e+06,   8.11071121e+05,  -1.20438332e+05,
-	               7.82740906e+03];
-	var total  = 0;
-	for (var i = 0; i < coefs.length; i++){
-		var power = coefs.length - i - 1;
-		total += coefs[i] * Math.pow(clickY, power);
+	
+	var rad = degToRad(total);
+	return Math.PI/2 - rad;
+}
+
+function thetaFromXY(x, y){
+	return Math.atan(y / x);
+}
+
+function radToDeg(rad){
+	return rad / Math.PI * 180;
+}
+
+function degToRad(deg){
+	return deg * Math.PI / 180;
+}
+
+function calculateAlpha(theta, phi){
+	return Math.atan((Math.cos(phi) * Math.cos(theta)) / Math.sin(phi));
+}
+
+function calculateD(h, theta, phi){
+	return h * Math.sin(theta) * Math.tan(phi);
+}
+
+function calculateTowerPos(h, x, y){
+	var r = Math.sqrt(x*x + y*y);
+	var phi = phiFromR(r);
+	var theta = thetaFromXY(x, y);
+	var d = calculateD(h, theta, phi);
+	var alpha = calculateAlpha(theta, phi);
+	return {
+		alpha: alpha,
+		distance: d
 	}
-	return total;
 }
 
 addEventListener("click", function() {
