@@ -3,9 +3,7 @@ package com.team1389.y2016.robot;
 import org.strongback.components.Switch;
 import org.strongback.components.ui.ContinuousRange;
 
-import com.team1389.y2016.robot.test.PositionControllerRampCommand.SetpointProvider;
-
-import edu.wpi.first.wpilibj.buttons.Button;
+import com.team1389.base.util.control.PositionControllerRampCommand.SetpointProvider;
 
 public class JoystickSetpointControlAriStyleWithReset implements SetpointProvider {
 	double position;

@@ -2,7 +2,7 @@ package com.team1389.y2016.robot.control;
 
 import org.strongback.components.ui.InputDevice;
 
-import com.team1389.y2016.robot.test.PositionControllerRampCommand.SetpointProvider;
+import com.team1389.base.util.control.PositionControllerRampCommand.SetpointProvider;
 
 public class VerticalArmControl implements SetpointProvider{
 	InputDevice joystick;

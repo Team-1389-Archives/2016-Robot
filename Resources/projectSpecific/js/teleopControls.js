@@ -31,7 +31,12 @@ function phiFromR(r){
 }
 
 function thetaFromXY(x, y){
-	return Math.atan(y / x);
+	var angle = Math.atan(Math.abs(y) / Math.abs(x));
+	if (x >= 0){
+		return angle;
+	} else {
+		return Math.PI - angle;
+	}
 }
 
 function radToDeg(rad){
@@ -109,8 +114,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	image.addEventListener("mousedown", function(e){
 		var res = getClickCoords(image, e);
-		console.log(res.x + " " + res.y);
-		distance.innerHTML = calculateDistance(res.y);
+		console.log("x:" + res.x + " " + "y:" + res.y);
+		distance.innerHTML = JSON.stringify(calculateTowerPos(1, res.x, res.y));
 	});
 
 //	initDragElement(image);
@@ -119,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function getClickCoords(element, event){
 	var rect = element.getBoundingClientRect();
-	console.log(rect.height);
 	var left = event.pageX - rect.left + document.body.scrollLeft;
 	var top = event.pageY - rect.top + document.body.scrollTop;
 	var xPre = left / (rect.width);

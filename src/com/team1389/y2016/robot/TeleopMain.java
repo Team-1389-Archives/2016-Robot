@@ -2,29 +2,18 @@ package com.team1389.y2016.robot;
 
 import org.strongback.command.Command;
 import org.strongback.components.ui.ContinuousRange;
-import org.strongback.components.ui.InputDevice;
 
 import com.team1389.base.TeleopBase;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
-import com.team1389.base.util.control.ConstantAccellerationMotionProfile;
 import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
-import com.team1389.base.util.control.MotionProfile;
-import com.team1389.base.wpiWrappers.PositionController;
+import com.team1389.base.util.control.PositionControllerRampCommand;
+import com.team1389.base.util.control.PositionControllerRampCommand.SetpointProvider;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
-import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.y2016.robot.commands.ButtonMotorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
-import com.team1389.y2016.robot.commands.JoystickMotorCommandAsButton;
-import com.team1389.y2016.robot.commands.MonitorCommand;
-import com.team1389.y2016.robot.commands.PositionControllerFollowMotionProfileCommand;
-import com.team1389.y2016.robot.commands.TwoButtonMotor;
-import com.team1389.y2016.robot.control.LowGoalElevationControl;
-import com.team1389.y2016.robot.test.GraphVoltageCommand;
-import com.team1389.y2016.robot.test.PositionControllerRampCommand;
-import com.team1389.y2016.robot.test.PositionControllerRampCommand.SetpointProvider;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -62,8 +51,6 @@ public class TeleopMain extends TeleopBase{
 		Command intake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 //		Command flywheel = new JoystickMotorCommandAsButton(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerDriver.getAxis(2), 1.0);
 		Command flywheel = new ButtonMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerDriver.getButton(2), false);
-		
-		
 		
 		return CommandsUtil.combineSimultaneous(elevation, drive, intake, flywheel);
 //		return new MonitorCommand(layout.io.simpleTurntable , "turn");
