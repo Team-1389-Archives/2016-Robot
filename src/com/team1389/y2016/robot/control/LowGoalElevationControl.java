@@ -2,7 +2,7 @@ package com.team1389.y2016.robot.control;
 
 import org.strongback.components.ui.ContinuousRange;
 
-import com.team1389.base.util.control.PositionControllerRampCommand.SetpointProvider;
+import com.team1389.base.util.control.SetpointProvider;
 
 public class LowGoalElevationControl implements SetpointProvider{
 	

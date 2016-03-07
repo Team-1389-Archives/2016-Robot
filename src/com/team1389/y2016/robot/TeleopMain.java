@@ -9,7 +9,7 @@ import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
 import com.team1389.base.util.control.PositionControllerRampCommand;
-import com.team1389.base.util.control.PositionControllerRampCommand.SetpointProvider;
+import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.ButtonMotorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
