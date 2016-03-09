@@ -1,6 +1,5 @@
 package com.team1389.y2016.robot;
 
-import org.strongback.components.TalonSRX;
 import org.strongback.hardware.Hardware;
 
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
@@ -17,15 +16,23 @@ public class IOHardware extends IOLayout{
 		leftDriveA = createCANTalon(RobotMap.leftMotorA_CAN, RobotMap.leftMotorA_isInverted,
 				TalonControlMode.PercentVbus, RobotMap.leftEncoderInverted);
 		leftDriveA.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		leftDriveA.reverseOutput(false);//NOTE THIS IS HERE
 		
 		leftDriveB = new CANTalon(RobotMap.leftMotorB_CAN);
 		leftDriveC = new CANTalon(RobotMap.leftMotorC_CAN);
 		
+		leftDriveController = new TalonSRXPositionHardware(leftDriveA, RobotMap.wheelTicksPerRotation);
+		
 		
 		rightDriveA = createCANTalon(RobotMap.rightMotorA_CAN, RobotMap.rightMotorA_isInverted,
 				TalonControlMode.PercentVbus, RobotMap.rightEncoderInverted);
+		rightDriveA.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		rightDriveA.reverseOutput(true);
+
 		rightDriveB = new CANTalon(RobotMap.rightMotorB_CAN);
 		rightDriveC = new CANTalon(RobotMap.rightMotorC_CAN);
+		
+		rightDriveController = new TalonSRXPositionHardware(rightDriveA, RobotMap.wheelTicksPerRotation);
 
 		
 		//arm

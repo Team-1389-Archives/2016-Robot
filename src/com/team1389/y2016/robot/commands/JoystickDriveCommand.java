@@ -38,6 +38,7 @@ public class JoystickDriveCommand extends Command {
 		double left, right;
 		normalTurn = joyStick.getAxis(2).read() * turnMod;
 		y = joyStick.getAxis(1).read();
+		System.out.println("y: " + y);
 		extraTurn = joyStick.getAxis(0).read() * turnAlotMod;
 		System.out.println("extra: " + extraTurn);
 		double x = absMax(normalTurn, extraTurn);

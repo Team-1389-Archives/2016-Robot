@@ -10,6 +10,8 @@ import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
 import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetpointProvider;
+import com.team1389.base.util.control.TalonDriveControl;
+import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.ButtonMotorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
@@ -33,6 +35,12 @@ public class TeleopMain extends TeleopBase{
 
 	@Override
 	public  Command provideCommand() {
+		
+		layout.io.leftDriveController.setPID(RobotMap.drivePid.get());
+		layout.io.rightDriveController.setPID(RobotMap.drivePid.get());
+		return layout.subsystems.drive.teleopControl(layout.io.controllerDriver, RobotMap.teleopDriveSpeed);
+//		return new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
+		/*
 		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
 //		SetpointProvider yAxis = new LowGoalElevationControl(layout.io.controllerDriver.getAxis(1));
@@ -53,11 +61,15 @@ public class TeleopMain extends TeleopBase{
 		Command flywheel = new ButtonMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerDriver.getButton(2), false);
 		
 		return CommandsUtil.combineSimultaneous(elevation, drive, intake, flywheel);
-//		return new MonitorCommand(layout.io.simpleTurntable , "turn");
-//		return testWheels;
-//		return CommandsUtil.combineSimultaneous(testWheels, drive);
-//		return CommandsUtil.combineSimultaneous(new MonitorCommand(layout.io.rightDriveA, "right"), drive);
+		*/
 
+		//monitors
+//		Command monitorTurntable = new TalonMonitorCommand(layout.io.simpleTurntable, "turn");
+//		Command monitorElevation = new TalonMonitorCommand(layout.io.simpleElevationA, "elev");
+//		Command monitorLeft = new TalonMonitorCommand(layout.io.leftDriveA, "left");
+//		Command monitorRight = new TalonMonitorCommand(layout.io.rightDriveA, "right");
+//	
+//		return CommandsUtil.combineSimultaneous(monitorLeft, monitorRight);
 
 	}
 	

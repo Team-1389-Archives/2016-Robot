@@ -18,6 +18,9 @@ public abstract class IOLayout{
 	public CANTalon rightDriveB;
 	public CANTalon rightDriveC;
 	
+	public TalonSRXPositionHardware leftDriveController;
+	public TalonSRXPositionHardware rightDriveController;
+	
 	//arm
 	public TalonSRXPositionHardware turntableMotor;
 	public TalonSRXPositionHardware armElevationMotor;

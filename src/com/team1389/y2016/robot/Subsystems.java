@@ -1,19 +1,15 @@
 package com.team1389.y2016.robot;
 
-import com.team1389.y2016.robot.subsystems.Arm;
-import com.team1389.y2016.robot.subsystems.BallManipulator;
+import com.team1389.base.util.control.TalonDriveControl;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
 
 public class Subsystems {
-	public final Drivetrain drivetrain;
-	public final Arm arm;
-	public final BallManipulator ballManipulator;
+	TalonDriveControl drive;
+	Drivetrain drivetrain;
 	
 	public Subsystems(IOLayout io) {
+		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,
+				RobotMap.maxAutonAcceleration, RobotMap.wheelRotationsPerTurn, RobotMap.drivePid.get());
 		drivetrain = new Drivetrain(io.leftDriveA, io.rightDriveA);
-		
-		arm = new Arm(io.armElevationMotor, io.turntableMotor);//armElevationMotorB will automatically follow armElevationMotorA
-		
-		ballManipulator = new BallManipulator(io.intakeMotor, io.flywheelMotorA);//flywheelMotorB automatically follower flywheelMotorA
 	}
 }

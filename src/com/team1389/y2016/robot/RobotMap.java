@@ -1,5 +1,8 @@
 package com.team1389.y2016.robot;
 
+import com.team1389.base.util.control.ConfigurablePid;
+import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -27,7 +30,7 @@ public class RobotMap {
 	public static double encoderTicksPerRotation = 4096;
 
 	public static boolean leftEncoderInverted = true;
-	public static boolean rightEncoderInverted = true;
+	public static boolean rightEncoderInverted = false;
 	public static boolean elevatorEncoderInverted = true;
 	public static boolean turntableEncoderInverted = false;
 	
@@ -43,6 +46,13 @@ public class RobotMap {
 	public static double rightEncoderSpeedMod = encoderTicksPerRotation * .75;
 	public static double armElevationTicksPerRotation = encoderTicksPerRotation * 2;
 	public static double turnTableTicksPerRotation= 23567;
+	
+	//Driving
+	public static double teleopDriveSpeed = 1;
+	public static double wheelRotationsPerTurn = 7.5 / 22.5;
+	public static double maxAutonVelocity = 1;
+	public static double maxAutonAcceleration = .5;
+	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.5, 0, 0, 0, 0));
 	
 }
 
