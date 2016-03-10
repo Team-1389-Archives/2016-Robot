@@ -11,11 +11,13 @@ import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
 import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.util.control.TalonDriveControl;
+import com.team1389.base.util.testing.JoystickTalonCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.ButtonMotorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.control.LowGoalElevationControl;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -38,7 +40,27 @@ public class TeleopMain extends TeleopBase{
 		
 		layout.io.leftDriveController.setPID(RobotMap.drivePid.get());
 		layout.io.rightDriveController.setPID(RobotMap.drivePid.get());
-		return layout.subsystems.drive.teleopControl(layout.io.controllerDriver, RobotMap.teleopDriveSpeed);
+		
+		SetpointProvider yAxis = new LowGoalElevationControl(layout.io.controllerManip.getAxis(1));
+
+		Command elevation = new PositionControllerRampCommand(layout.io.armElevationMotor, 
+				yAxis, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .12);
+		
+		layout.io.armElevationMotor.setCurrentPositionAs(0);
+		Command drive = layout.subsystems.drive.teleopControl(layout.io.controllerDriver, 2);
+
+		Command intake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(3), 1.0);
+
+		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA),
+				layout.io.controllerManip.getAxis(0), 1.0);
+		
+		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel);
+		
+//		return new JoystickTalonCommand(layout.io.simpleElevationA,layout.io.controllerManip.getAxis(1), 0.2);
+//		return layout.subsystems.arm.getTeleopControlCommand(layout.io.controllerManip);
+		
+//		return layout.subsystems.drive.teleopControl(layout.io.controllerDriver, RobotMap.teleopDriveSpeed);
+		
 //		return new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
 		/*
 		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),

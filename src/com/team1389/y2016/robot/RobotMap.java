@@ -25,6 +25,7 @@ public class RobotMap {
 	//Ball Manipulator
 	public static int intakeMotor_CAN = 11; public static boolean intakeMotor_isInverted = false;
 	public static int flywheelMotorA_CAN = 10; public static boolean flywheelMotorA_isInverted = false;
+	public static int flywheelMotorB_CAN = 12; public static boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static double encoderTicksPerRotation = 4096;
@@ -52,7 +53,10 @@ public class RobotMap {
 	public static double wheelRotationsPerTurn = 7.5 / 22.5;
 	public static double maxAutonVelocity = 1;
 	public static double maxAutonAcceleration = .5;
-	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.5, 0, 0, 0, 0));
+	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.3, 0, 0, 0, 0));
+	
+	//Arm config
+	public static ConfigurablePid armPid = new ConfigurablePid("armPID", new PIDConstants(.3, 0, 0, 0, 0));
 	
 }
 

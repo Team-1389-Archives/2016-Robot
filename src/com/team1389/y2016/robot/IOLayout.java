@@ -32,6 +32,7 @@ public abstract class IOLayout{
 	//Ball Manipulator
 	public Motor intakeMotor;
 	public CANTalon flywheelMotorA;
+	public CANTalon flywheelMotorB;
 	
 	//Inputs
 	public Switch ballHolderIR;

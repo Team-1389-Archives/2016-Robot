@@ -13,7 +13,7 @@ public class ArmPositions {
 	public static final double TURNTABLE_MAX = 0.3;
 	public static final double TURNTABLE_MIN = -0.3;
 	
-	public static final double ELEVATION_MAX_SPEED = 0.01;
+	public static final double ELEVATION_MAX_SPEED = 0.04;
 	public static final double TURNTABLE_MAX_SPEED = 0.01;
 	
 	
@@ -57,9 +57,9 @@ public class ArmPositions {
 	
 	public static ArmPos getPosFromJoystick(InputDevice joystick){
 		List<ButtonPosition> positions = new ArrayList<ButtonPosition>();
-		positions.add(new ButtonPosition(0, Position.DOWN));
-		positions.add(new ButtonPosition(1, Position.LOW_BAR));
-		positions.add(new ButtonPosition(2, Position.LOW_GOAL));
+		positions.add(new ButtonPosition(5, Position.DOWN));
+		positions.add(new ButtonPosition(2, Position.LOW_BAR));
+		positions.add(new ButtonPosition(6, Position.LOW_GOAL));
 		
 		Position pos = null;
 		

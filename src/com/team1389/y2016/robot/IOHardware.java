@@ -48,15 +48,17 @@ public class IOHardware extends IOLayout{
 		turntableMotor = new TalonSRXPositionHardware(simpleTurntable, RobotMap.turnTableTicksPerRotation);
 		
 		
-		configFollowerTalonsToWorkAroundDumbGlitch();
-		
 		//ball manipulator
 		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
 			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
 			
 		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
 				TalonControlMode.PercentVbus, false);
-//		flywheelMotorA = Hardware.Motors.talonSRX(flywheelTalon);
+		
+		flywheelMotorB = createCANTalon(RobotMap.flywheelMotorB_CAN, RobotMap.flywheelMotorB_isInverted,
+				TalonControlMode.Follower, false);
+
+		configFollowerTalonsToWorkAroundDumbGlitch();
 		
 		//Inputs
 		ballHolderIR = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR_DIO);
@@ -95,5 +97,7 @@ public class IOHardware extends IOLayout{
 		configFollowerTalon(rightDriveC, RobotMap.rightMotorC_isInverted, rightDriveA);
 		
 		configFollowerTalon(simpleElevationB, RobotMap.elevatorMotorB_isInverted, simpleElevationA);
+		
+		configFollowerTalon(flywheelMotorB, RobotMap.flywheelMotorB_isInverted, flywheelMotorA);
 	}
 }

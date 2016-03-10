@@ -19,7 +19,7 @@ public class LowGoalElevationControl implements SetpointProvider{
 		if (read > 0.5){
 			value = 0.15;
 		} else if (read < -0.5){
-			value = 0.09;
+			value = 0.12;
 		} else {
 			value = 0.0;
 		}
