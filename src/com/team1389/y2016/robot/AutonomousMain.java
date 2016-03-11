@@ -30,5 +30,8 @@ public class AutonomousMain extends AutonomousBase{
 	@Override
 	protected void setup() {
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
+		//uncomment for new setup
+//		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
+		//then copy these two to TeleopMain
 	}
 }
