@@ -53,7 +53,7 @@ public class RobotMap {
 	public static double wheelRotationsPerTurn = 7.5 / 22.5;
 	public static double maxAutonVelocity = 1;
 	public static double maxAutonAcceleration = .5;
-	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.3, 0, 0, 0, 0));
+	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.2, 0, 0, 0, 0));
 	
 	//Arm config
 	public static ConfigurablePid armPid = new ConfigurablePid("armPID", new PIDConstants(.3, 0, 0, 0, 0));

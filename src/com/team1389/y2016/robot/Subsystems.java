@@ -30,7 +30,7 @@ public class Subsystems {
 //		armSetpointProvider = new LowGoalElevationControl(io.controllerManip.getAxis(1));
 
 		elevation = new PositionControllerRampCommand(io.armElevationMotor, 
-				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .12);//TODO: extract these numbers to RobotMap
+				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .2);//TODO: extract these numbers to RobotMap
 
 
 //		arm = new ArmControl(io.armElevationMotor, io.turntableMotor, RobotMap.armPid.get());
@@ -44,5 +44,6 @@ public class Subsystems {
 	public void initArm(){
 		io.armElevationMotor.setCurrentPositionAs(io.armElevationMotor.getPosition());
 		io.armElevationMotor.disable();
+		io.turntableMotor.setCurrentPositionAs(io.turntableMotor.getPosition());
 	}
 }

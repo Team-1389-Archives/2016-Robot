@@ -7,9 +7,12 @@ import com.team1389.base.TeleopBase;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
+import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
+import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.commands.MonitorCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
@@ -59,10 +62,16 @@ public class TeleopMain extends TeleopBase{
 		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA),
 				layout.io.controllerManip.getAxis(0), 1.0);
 		
+//		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
+//				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
+//		
+//		
+//		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
+//				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
 		
 		
-		
-		
+//		Command monitorTurret = new MonitorCommand(layout.io.simpleTurntable, "turn");
+//		return monitorTurret;
 		
 		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel);
 		/*
