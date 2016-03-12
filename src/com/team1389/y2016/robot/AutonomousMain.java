@@ -30,7 +30,12 @@ public class AutonomousMain extends AutonomousBase{
 //		Command moveArmDown = CommandsUtil.combineSimultaneous(
 //				new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
 //				layout.subsystems.elevation);
+//		Command moveArmDown = new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0);
 		Command moveArmDown = Command.create(() -> {return true;});
+		
+		System.out.println("layout:" + layout);
+//		System.out.println("subsystems:" + layout.subsystems);
+//		System.out.println("armSetpointProvider:" + layout.subsystems.armSetpointProvider);
 		
 		modes.add(new AutonMode() {
 			
