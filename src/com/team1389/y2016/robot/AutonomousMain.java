@@ -3,8 +3,12 @@ package com.team1389.y2016.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.strongback.command.Command;
+
 import com.team1389.base.auton.AutonMode;
 import com.team1389.base.auton.AutonomousBase;
+import com.team1389.base.util.CommandsUtil;
+import com.team1389.base.util.control.SetASetpointCommand;
 
 /**
  * This class defines which autonomous modes are available to be run. The first in the
@@ -22,6 +26,25 @@ public class AutonomousMain extends AutonomousBase{
 	public List<AutonMode> provideAutonModes(){
 		ArrayList<AutonMode> modes = new ArrayList<AutonMode>();
 		
+		
+//		Command moveArmDown = CommandsUtil.combineSimultaneous(
+//				new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+//				layout.subsystems.elevation);
+		Command moveArmDown = Command.create(() -> {return true;});
+		
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "basic";
+			}
+			
+			@Override
+			public Command getCommand() {
+				return moveArmDown;
+			}
+		});
+		
 		//add modes to mode list here
 		
 		return modes;
@@ -32,6 +55,6 @@ public class AutonomousMain extends AutonomousBase{
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
 		//uncomment for new setup
 //		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
-		//then copy these two to TeleopMain
+		layout.subsystems.initArm();
 	}
 }

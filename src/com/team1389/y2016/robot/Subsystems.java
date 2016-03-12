@@ -17,7 +17,9 @@ public class Subsystems {
 //	ArmControl arm;
 	SetableSetpointProvider armSetpointProvider;
 	Command elevation;
+	IOLayout io;
 	public Subsystems(IOLayout io) {
+		this.io = io;
 		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,
 				RobotMap.maxAutonAcceleration, RobotMap.wheelRotationsPerTurn, RobotMap.drivePid.get());
 		drivetrain = new Drivetrain(io.leftDriveA, io.rightDriveA);
@@ -37,5 +39,10 @@ public class Subsystems {
 		//calibrate arm
 		io.armElevationMotor.setCurrentPositionAs(0);
 		
+	}
+	
+	public void initArm(){
+		io.armElevationMotor.setCurrentPositionAs(io.armElevationMotor.getPosition());
+		io.armElevationMotor.disable();
 	}
 }

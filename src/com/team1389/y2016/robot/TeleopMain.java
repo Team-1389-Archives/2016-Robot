@@ -28,7 +28,8 @@ public class TeleopMain extends TeleopBase{
 	@Override
 	public void setupTeleop() {
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
-		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
+//		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
+		layout.subsystems.initArm();
 	}
 
 	@Override
