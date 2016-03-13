@@ -34,6 +34,8 @@ public abstract class IOLayout{
 	public CANTalon flywheelMotorA;
 	public CANTalon flywheelMotorB;
 	
+	public TalonSRXPositionHardware flywheelFancy;
+	
 	//Inputs
 	public Switch ballHolderIR;
 	

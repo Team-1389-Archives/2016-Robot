@@ -17,7 +17,7 @@ public class ArmSetpointProvider extends Command{
 		this.joystick = joystick;
 		this.setpoint = setpoint;
 		this.point = 0;
-		highGoalPoint = new DoubleConstant("high goal setpoint", 0.14);
+		highGoalPoint = new DoubleConstant("high goal setpoint", 0.155);
 	}
 
 	private double getSetpoint() {

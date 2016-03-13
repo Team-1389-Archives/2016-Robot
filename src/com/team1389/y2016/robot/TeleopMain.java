@@ -8,9 +8,9 @@ import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.SetpointProvider;
-import com.team1389.base.wpiWrappers.TalonMotorWrapper;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
-import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.commands.MonitorCommand;
+import com.team1389.y2016.robot.commands.MonitorStrongbackTalonCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
@@ -33,7 +33,7 @@ public class TeleopMain extends TeleopBase{
 	public void setupTeleop() {
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
 //		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
-		layout.subsystems.initArm();
+		layout.subsystems.initAll();
 	}
 
 	@Override
@@ -66,6 +66,10 @@ public class TeleopMain extends TeleopBase{
 //				layout.io.controllerManip.getAxis(1), 1.0);
 		
 		Command flywheel = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
+//		Command flywheel = CommandsUtil.combineSimultaneous(
+//				new FlywheelControlRPM(layout.subsystems.flywheelSetpointProvider, layout.io.controllerManip),
+//				layout.subsystems.flywheelFollowCommand
+//		);
 		
 //		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 //				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
@@ -77,6 +81,8 @@ public class TeleopMain extends TeleopBase{
 		
 //		Command monitorTurret = new MonitorCommand(layout.io.simpleTurntable, "turn");
 //		return monitorTurret;
+		
+		Command monitorFlywheel = new MonitorCommand(layout.io.simpleElevationA, "flywheel speed");
 		
 		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable);
 		/*

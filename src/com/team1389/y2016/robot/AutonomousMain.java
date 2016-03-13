@@ -98,6 +98,22 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});
+		
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "turn test";
+			}
+			
+			@Override
+			public Command getCommand() {
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
+						layout.subsystems.drive.turnAmount(.5));
+				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
+			}
+		});
 
 		// add modes to mode list here
 
@@ -109,6 +125,6 @@ public class AutonomousMain extends AutonomousBase {
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
 		// uncomment for new setup
 		// layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
-		layout.subsystems.initArm();
+		layout.subsystems.initAll();
 	}
 }

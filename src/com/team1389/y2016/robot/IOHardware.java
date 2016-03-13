@@ -58,6 +58,9 @@ public class IOHardware extends IOLayout{
 		
 		flywheelMotorB = createCANTalon(RobotMap.flywheelMotorB_CAN, RobotMap.flywheelMotorB_isInverted,
 				TalonControlMode.Follower, false);
+		
+		flywheelFancy = new TalonSRXPositionHardware(flywheelMotorA, 4096 * (18 / 42));
+		
 
 		configFollowerTalonsToWorkAroundDumbGlitch();
 		
