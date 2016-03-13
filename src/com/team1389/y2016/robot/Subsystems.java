@@ -30,14 +30,14 @@ public class Subsystems {
 //		armSetpointProvider = new LowGoalElevationControl(io.controllerManip.getAxis(1));
 
 		elevation = new PositionControllerRampCommand(io.armElevationMotor, 
-				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .2);//TODO: extract these numbers to RobotMap
+				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .26, 0, .2);//TODO: extract these numbers to RobotMap
 
 
 //		arm = new ArmControl(io.armElevationMotor, io.turntableMotor, RobotMap.armPid.get());
 		
 		
 		//calibrate arm
-		io.armElevationMotor.setCurrentPositionAs(0);
+		io.armElevationMotor.setCurrentPositionAs(.25);
 		
 	}
 	
