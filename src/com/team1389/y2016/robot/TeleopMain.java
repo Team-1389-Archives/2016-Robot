@@ -13,6 +13,7 @@ import com.team1389.y2016.robot.commands.MonitorCommand;
 import com.team1389.y2016.robot.commands.MonitorStrongbackTalonCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
+import com.team1389.y2016.robot.control.FlywheelControlRPM;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
@@ -65,11 +66,11 @@ public class TeleopMain extends TeleopBase{
 //		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA),
 //				layout.io.controllerManip.getAxis(1), 1.0);
 		
-		Command flywheel = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
-//		Command flywheel = CommandsUtil.combineSimultaneous(
-//				new FlywheelControlRPM(layout.subsystems.flywheelSetpointProvider, layout.io.controllerManip),
-//				layout.subsystems.flywheelFollowCommand
-//		);
+//		Command flywheel = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
+		Command flywheel = CommandsUtil.combineSimultaneous(
+				new FlywheelControlRPM(layout.subsystems.flywheelSetpointProvider, layout.io.controllerManip),
+				layout.subsystems.flywheelFollowCommand
+		);
 		
 //		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 //				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
@@ -77,14 +78,15 @@ public class TeleopMain extends TeleopBase{
 //		
 //		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 //				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
+				
+		Command monitorFlywheel = new MonitorCommand(layout.io.flywheelMotorA, "flywheel speed");
 		
+		return flywheel;
 		
-//		Command monitorTurret = new MonitorCommand(layout.io.simpleTurntable, "turn");
-//		return monitorTurret;
+//		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable, monitorFlywheel);
 		
-		Command monitorFlywheel = new MonitorCommand(layout.io.simpleElevationA, "flywheel speed");
+//		return monitorFlywheel;
 		
-		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable);
 		/*
 		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);

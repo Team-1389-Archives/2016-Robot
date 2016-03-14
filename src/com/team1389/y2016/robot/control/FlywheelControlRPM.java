@@ -13,19 +13,24 @@ public class FlywheelControlRPM extends Command{
 
 	ConstantSpeedSetpointProvider motor;
 	InputDevice joy;
+	double speedMod;
 	
 	public FlywheelControlRPM(ConstantSpeedSetpointProvider motor, InputDevice joy) {
 		this.motor = motor;
 		this.joy = joy;
+		speedMod = 1;
 	}
 	
 	@Override
 	public boolean execute() {
+		double speed;
 		if (joy.getButton(1).isTriggered()){
-			motor.setSpeed(-1.0);
+			speed = -1.0;
 		} else {
-			motor.setSpeed(joy.getAxis(1).read());
+			speed = joy.getAxis(1).read();
 		}
+		double moddedSpeed = speed * speedMod;
+		motor.setSpeed(moddedSpeed);
 		return false;
 	}
 

@@ -25,7 +25,7 @@ public class Subsystems {
 	ConfigurablePid flywheelPid;
 	
 	public Subsystems(IOLayout io) {
-		flywheelPid = new ConfigurablePid("flywheel pid", new PIDConstants(.5, 0, 0, 0, 0));
+		flywheelPid = new ConfigurablePid("flywheel pid", new PIDConstants(10, 0, 0, 0, 0));
 		
 		this.io = io;
 		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,
@@ -41,8 +41,8 @@ public class Subsystems {
 				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .26, 0, .2);//TODO: extract these numbers to RobotMap
 
 		flywheelSetpointProvider = new ConstantSpeedSetpointProvider(0.0);
-		flywheelFollowCommand = new PositionControllerControlCommand(flywheelSetpointProvider, io.flywheelFancy);
-		flywheelFollowCommand = new PositionControllerRampCommand(io.flywheelFancy, flywheelSetpointProvider, flywheelPid.get());
+		flywheelFollowCommand = new PositionControllerControlCommand(flywheelSetpointProvider, io.flywheelFancy, flywheelPid.get());
+//		flywheelFollowCommand = new PositionControllerRampCommand(io.flywheelFancy, flywheelSetpointProvider, flywheelPid.get());
 		
 		
 		//calibrate arm
