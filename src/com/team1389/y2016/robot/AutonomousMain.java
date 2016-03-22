@@ -9,6 +9,7 @@ import org.strongback.mock.MockVoltageSensor;
 import com.team1389.base.auton.AutonMode;
 import com.team1389.base.auton.AutonomousBase;
 import com.team1389.base.util.CommandsUtil;
+import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetASetpointCommand;
 import com.team1389.y2016.robot.control.WaitUntilControllerWithinRangeCommand;
 
@@ -19,6 +20,8 @@ import com.team1389.y2016.robot.control.WaitUntilControllerWithinRangeCommand;
 public class AutonomousMain extends AutonomousBase {
 
 	RobotLayout layout;
+
+	DoubleConstant turnMod = new DoubleConstant("turn mod", 1.0);
 
 	public AutonomousMain(RobotLayout io) {
 		this.layout = io;
@@ -110,7 +113,7 @@ public class AutonomousMain extends AutonomousBase {
 			public Command getCommand() {
 				Command waitThenDrive = CommandsUtil.combineSequential(
 						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
-						layout.subsystems.drive.turnAmount(.5));
+						layout.subsystems.drive.turnAmount(turnMod.get()));
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});

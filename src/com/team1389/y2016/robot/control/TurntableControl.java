@@ -18,11 +18,12 @@ public class TurntableControl extends Command{
 	@Override
 	public boolean execute() {
 		turn.changeControlMode(TalonControlMode.PercentVbus);
-		if (joy.getButton(7).isTriggered()){
-			turn.set(joy.getAxis(3).read());
-		} else {
-			turn.set(0);
-		}
+		turn.set(joy.getAxis(4).read());
+//		if (joy.getButton(7).isTriggered()){
+//			turn.set(joy.getAxis(4).read());
+//		} else {
+//			turn.set(0);
+//		}
 		return false;
 	}
 

@@ -52,7 +52,7 @@ public class RobotMap {
 	
 	//Driving
 	public static double teleopDriveSpeed = 1;
-	public static double wheelRotationsPerTurn = 7.5 / 22.5;
+	public static double wheelRotationsPerTurn = 22.5 / 7.5;
 	public static double maxAutonVelocity = 1;
 	public static double maxAutonAcceleration = .5;
 	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.2, 0, 0, 0, 0));

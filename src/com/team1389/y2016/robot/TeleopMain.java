@@ -7,16 +7,15 @@ import com.team1389.base.TeleopBase;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
+import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
+import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.util.control.SpeedControllerSetCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
-import com.team1389.y2016.robot.commands.MonitorCommand;
-import com.team1389.y2016.robot.commands.MonitorStrongbackTalonCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
-import com.team1389.y2016.robot.control.FlywheelControlRPS;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
@@ -56,18 +55,10 @@ public class TeleopMain extends TeleopBase{
 		Command elevationControl = new ArmSetpointProvider(layout.io.controllerManip, layout.subsystems.armSetpointProvider);
 		Command elevation = CommandsUtil.combineSimultaneous(elevationControl, elevationPidDo);
 		Command turntable = new TurntableControl(layout.io.controllerManip, layout.io.simpleTurntable);
-		
-		//this was breaking things
-//		layout.io.armElevationMotor.setCurrentPositionAs(0);
-//		Command drive = layout.subsystems.drive.teleopControl(layout.io.controllerDriver, 2.5);
 
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
 
-//		Command intake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(3), 1.0);
 		Command intake = new IntakeControlCommand(layout.io.intakeMotor, layout.io.controllerManip.getDPad(0));
-
-//		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA),
-//				layout.io.controllerManip.getAxis(1), 1.0);
 		
 		Command flywheelBasic = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
 //		Command flywheel = CommandsUtil.combineSimultaneous(
@@ -89,7 +80,25 @@ public class TeleopMain extends TeleopBase{
 		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 //		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
 		
-		return CommandsUtil.combineSimultaneous(flywheel, monitorFlywheel, testIntake);
+//		return CommandsUtil.combineSimultaneous(flywheel, monitorFlywheel, testIntake);
+		
+		Command monitorTurntable = new TalonMonitorCommand(layout.io.simpleTurntable, "turntable");
+
+		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerManip.getAxis(0),
+				 layout.io.controllerManip.getButton(1), -.3, .3, 0.003, 0);
+		
+//		xAxis = new SetpointProvider() {
+//			
+//			@Override
+//			public double getSetpoint() {
+//				return 0;
+//			}
+//		};
+
+		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
+				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
+		
+		return CommandsUtil.combineSimultaneous(drive, yaw, monitorTurntable, elevation, intake);
 		
 //		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable, monitorFlywheel);
 		

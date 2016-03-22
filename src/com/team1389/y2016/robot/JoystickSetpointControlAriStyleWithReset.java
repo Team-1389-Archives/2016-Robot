@@ -23,13 +23,19 @@ public class JoystickSetpointControlAriStyleWithReset implements SetpointProvide
 	
 	@Override
 	public double getSetpoint() {
-		position += joystickAxis.read() * speed;
+		double joy = joystickAxis.read();
+		
+		if (Math.abs(joy) <= 0.2){
+			joy = 0.0;
+		}
+		
+		position += joy * speed;
 		if (position > max) {
 			position = max;
 		} else if (position < min) {
 			position = min;
-		}
-		
+		}	
+
 		if (button.isTriggered()){
 			position = start;
 		}
