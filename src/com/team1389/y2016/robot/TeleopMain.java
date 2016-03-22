@@ -8,6 +8,7 @@ import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.SetpointProvider;
+import com.team1389.base.util.control.SpeedControllerSetCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
@@ -74,10 +75,7 @@ public class TeleopMain extends TeleopBase{
 //				layout.subsystems.flywheelFollowCommand
 //		);
 		
-		layout.subsystems.flywheelSetpointProvider.setSpeed(flySpeed.get());
-		Command flywheel = CommandsUtil.combineSimultaneous(
-				layout.subsystems.flywheelFollowCommand
-		);
+		Command flywheel = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, flySpeed.get());
 		
 //		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 //				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
@@ -88,10 +86,10 @@ public class TeleopMain extends TeleopBase{
 				
 		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel speed");
 		
-		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(3), 1.0);
+		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 //		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
 		
-		return CommandsUtil.combineSimultaneous(flywheel, monitorFlywheel);
+		return CommandsUtil.combineSimultaneous(flywheel, monitorFlywheel, testIntake);
 		
 //		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable, monitorFlywheel);
 		

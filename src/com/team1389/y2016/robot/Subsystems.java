@@ -9,6 +9,7 @@ import com.team1389.base.util.control.PositionControllerControlCommand;
 import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetableSetpointProvider;
 import com.team1389.base.util.control.TalonDriveControl;
+import com.team1389.base.wpiWrappers.TalonSRXSpeedHardware;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
 
 public class Subsystems {
@@ -20,9 +21,10 @@ public class Subsystems {
 	IOLayout io;
 	
 	//flywheel
-	Command flywheelFollowCommand;
-	ConstantSpeedSetpointProvider flywheelSetpointProvider;
+	TalonSRXSpeedHardware flywheelSpeedController;
 	ConfigurablePid flywheelPid;
+	
+	
 	
 	public Subsystems(IOLayout io) {
 		flywheelPid = new ConfigurablePid("flywheel pid", new PIDConstants(.501, 0, 0, 0, 0));
@@ -39,11 +41,10 @@ public class Subsystems {
 
 		elevation = new PositionControllerRampCommand(io.armElevationMotor, 
 				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .26, 0, .2);//TODO: extract these numbers to RobotMap
-
-		flywheelSetpointProvider = new ConstantSpeedSetpointProvider(0.0);
-		flywheelFollowCommand = new PositionControllerControlCommand(flywheelSetpointProvider, io.flywheelFancy);
-//		flywheelFollowCommand = new PositionControllerRampCommand(io.flywheelFancy, flywheelSetpointProvider, flywheelPid.get());
 		
+		//flywheel
+		flywheelSpeedController = new TalonSRXSpeedHardware(io.flywheelMotorA);
+
 		
 		//calibrate arm
 		io.armElevationMotor.setCurrentPositionAs(.25);
