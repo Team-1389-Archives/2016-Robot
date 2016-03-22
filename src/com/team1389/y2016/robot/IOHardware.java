@@ -50,11 +50,12 @@ public class IOHardware extends IOLayout{
 		
 		
 		//ball manipulator
-		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
-			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
+//		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
+//			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
+		intakeMotor = Hardware.Motors.victor(0);
 			
 		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
-				TalonControlMode.PercentVbus, false);
+				TalonControlMode.PercentVbus, RobotMap.flywheelEncoderInverted);
 		
 		flywheelMotorB = createCANTalon(RobotMap.flywheelMotorB_CAN, RobotMap.flywheelMotorB_isInverted,
 				TalonControlMode.Follower, false);

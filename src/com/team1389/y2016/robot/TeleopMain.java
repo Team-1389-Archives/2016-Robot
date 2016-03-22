@@ -8,12 +8,14 @@ import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.SetpointProvider;
+import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
+import com.team1389.y2016.robot.commands.JoystickMotorCommand;
 import com.team1389.y2016.robot.commands.MonitorCommand;
 import com.team1389.y2016.robot.commands.MonitorStrongbackTalonCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
-import com.team1389.y2016.robot.control.FlywheelControlRPM;
+import com.team1389.y2016.robot.control.FlywheelControlRPS;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
@@ -21,7 +23,7 @@ import com.team1389.y2016.robot.control.TurntableControl;
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
 	ConfigurablePid pidC;
-	DoubleConstant target;
+	DoubleConstant flySpeed = new DoubleConstant("flywheel speed", 10.0);
 	
 	public TeleopMain(RobotLayout layout) {
 		this.layout = layout;
@@ -66,9 +68,14 @@ public class TeleopMain extends TeleopBase{
 //		Command flywheel = new JoystickMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA),
 //				layout.io.controllerManip.getAxis(1), 1.0);
 		
-//		Command flywheel = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
+		Command flywheelBasic = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
+//		Command flywheel = CommandsUtil.combineSimultaneous(
+//				new FlywheelControlRPS(layout.subsystems.flywheelSetpointProvider, layout.io.controllerManip),
+//				layout.subsystems.flywheelFollowCommand
+//		);
+		
+		layout.subsystems.flywheelSetpointProvider.setSpeed(flySpeed.get());
 		Command flywheel = CommandsUtil.combineSimultaneous(
-				new FlywheelControlRPM(layout.subsystems.flywheelSetpointProvider, layout.io.controllerManip),
 				layout.subsystems.flywheelFollowCommand
 		);
 		
@@ -79,9 +86,12 @@ public class TeleopMain extends TeleopBase{
 //		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 //				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
 				
-		Command monitorFlywheel = new MonitorCommand(layout.io.flywheelMotorA, "flywheel speed");
+		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel speed");
 		
-		return flywheel;
+		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(3), 1.0);
+//		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
+		
+		return CommandsUtil.combineSimultaneous(flywheel, monitorFlywheel);
 		
 //		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable, monitorFlywheel);
 		

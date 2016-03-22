@@ -24,8 +24,9 @@ public class RobotMap {
 	public static int elevatorMotorB_CAN = 6; public static boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
 	public static int intakeMotor_CAN = 11; public static boolean intakeMotor_isInverted = false;
-	public static int flywheelMotorA_CAN = 10; public static boolean flywheelMotorA_isInverted = false;
-	public static int flywheelMotorB_CAN = 12; public static boolean flywheelMotorB_isInverted = true;
+	//DONT COMMIT THIS
+	public static int flywheelMotorA_CAN = 7; public static boolean flywheelMotorA_isInverted = false;
+	public static int flywheelMotorB_CAN = 62; public static boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static double encoderTicksPerRotation = 4096;
@@ -34,6 +35,7 @@ public class RobotMap {
 	public static boolean rightEncoderInverted = false;
 	public static boolean elevatorEncoderInverted = true;
 	public static boolean turntableEncoderInverted = false;
+	public static boolean flywheelEncoderInverted = true;
 	
 	//Ball Manipulator
 	public static int ballHolderIR_DIO = 0; public static boolean ballHolderIR_isInverted = false;
