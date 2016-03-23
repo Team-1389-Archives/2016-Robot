@@ -37,7 +37,8 @@ public abstract class IOLayout{
 	public TalonSRXPositionHardware flywheelFancy;
 	
 	//Inputs
-	public Switch ballHolderIR;
+	public Switch ballHolderIR1;
+	public Switch ballHolderIR2;
 	
 	//Human Controlls
 	public InputDevice controllerDriver;

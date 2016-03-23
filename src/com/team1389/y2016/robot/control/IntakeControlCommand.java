@@ -2,30 +2,40 @@ package com.team1389.y2016.robot.control;
 
 import org.strongback.command.Command;
 import org.strongback.components.Motor;
-import org.strongback.components.ui.DirectionalAxis;
+import org.strongback.components.Switch;
+import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.InputDevice;
 
 public class IntakeControlCommand extends Command{
 	
 	Motor motor;
 	InputDevice joystick;
-	DirectionalAxis pov;
+	ContinuousRange axis;
+	Switch button, ir;
 	
-	public IntakeControlCommand(Motor motor, DirectionalAxis pov) {
+	public IntakeControlCommand(Motor motor, ContinuousRange axis, Switch button, Switch ir) {
 		this.motor = motor;
-		this.pov = pov;
+		this.axis = axis;
+		this.button = button;
+		this.ir = ir;
 	}
 
 	@Override
 	public boolean execute() {
-		double dir = pov.getDirection();
-		if (dir == 0 || dir == 315 || dir == 45){
-			motor.setSpeed(-1);
-		} else if (dir == 225 || dir == 180 || dir == 135){
-			motor.setSpeed(1);
+		double speed;
+		
+		boolean canGoIn = !ir.isTriggered() || button.isTriggered();
+		speed = axis.read();
+		
+		double finalSpeed;
+		
+		if (canGoIn){
+			finalSpeed = speed;
 		} else {
-			motor.setSpeed(0);
+			finalSpeed = -1.0;
 		}
+		
+		motor.setSpeed(finalSpeed);
 		return false;
 	}
 

@@ -17,18 +17,18 @@ public class ArmSetpointProvider extends Command{
 		this.joystick = joystick;
 		this.setpoint = setpoint;
 		this.point = 0;
-		highGoalPoint = new DoubleConstant("high goal setpoint", 0.155);
+		highGoalPoint = new DoubleConstant("high goal setpoint", 0.14);
 	}
 
 	private double getSetpoint() {
 
-		if (joystick.getButton(2).isTriggered()){
+		if (joystick.getButton(4).isTriggered()){
 			point =  0.15;
-		} else if (joystick.getButton(3).isTriggered()){
+		} else if (joystick.getButton(1).isTriggered()){
 			point =  0.0;
-		} else if (joystick.getButton(4).isTriggered()){
+		} else if (joystick.getButton(2).isTriggered()){
 			point = 0.25;
-		} else if (joystick.getButton(5).isTriggered()){
+		} else if (joystick.getButton(3).isTriggered()){
 			point = 0.07;
 		} else if (joystick.getButton(6).isTriggered()){
 			point = highGoalPoint.get();

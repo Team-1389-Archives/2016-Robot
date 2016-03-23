@@ -24,7 +24,7 @@ public class IOSimulated extends IOLayout{
 //		flywheelMotorA = Mock.stoppedTalonSRX();
 		
 		//Inputs
-		ballHolderIR = Mock.notTriggeredSwitch();
+		ballHolderIR1 = Mock.notTriggeredSwitch();
 //		leftDriveA.setSpeed(5);
 		
 		//Human Inputs

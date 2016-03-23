@@ -16,6 +16,7 @@ import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
+import com.team1389.y2016.robot.control.FlywheelControlCommand;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
@@ -23,7 +24,6 @@ import com.team1389.y2016.robot.control.TurntableControl;
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
 	ConfigurablePid pidC;
-	DoubleConstant flySpeed = new DoubleConstant("flywheel speed", 10.0);
 	
 	public TeleopMain(RobotLayout layout) {
 		this.layout = layout;
@@ -42,9 +42,6 @@ public class TeleopMain extends TeleopBase{
 	@Override
 	public  Command provideCommand() {
 		
-		layout.io.leftDriveController.setPID(RobotMap.drivePid.get());
-		layout.io.rightDriveController.setPID(RobotMap.drivePid.get());
-		
 		SetpointProvider yAxis = new LowGoalElevationControl(layout.io.controllerManip.getAxis(1));
 
 //		Command elevation = new PositionControllerRampCommand(layout.io.armElevationMotor, 
@@ -58,7 +55,8 @@ public class TeleopMain extends TeleopBase{
 
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
 
-		Command intake = new IntakeControlCommand(layout.io.intakeMotor, layout.io.controllerManip.getDPad(0));
+		Command intake = new IntakeControlCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(1),
+				layout.io.controllerManip.getButton(9), layout.io.ballHolderIR1);
 		
 		Command flywheelBasic = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
 //		Command flywheel = CommandsUtil.combineSimultaneous(
@@ -66,7 +64,9 @@ public class TeleopMain extends TeleopBase{
 //				layout.subsystems.flywheelFollowCommand
 //		);
 		
-		Command flywheel = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, flySpeed.get());
+		SpeedControllerSetCommand flywheelSpeed = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
+		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
 		
 //		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
 //				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
@@ -87,42 +87,19 @@ public class TeleopMain extends TeleopBase{
 		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerManip.getAxis(0),
 				 layout.io.controllerManip.getButton(1), -.3, .3, 0.003, 0);
 		
-//		xAxis = new SetpointProvider() {
-//			
-//			@Override
-//			public double getSetpoint() {
-//				return 0;
-//			}
-//		};
+		//comment out this section for arm control
+		xAxis = new SetpointProvider() {
+			
+			@Override
+			public double getSetpoint() {
+				return 0;
+			}
+		};
 
 		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
 		
-		return CommandsUtil.combineSimultaneous(drive, yaw, monitorTurntable, elevation, intake);
-		
-//		return CommandsUtil.combineSimultaneous(drive, elevation, intake, flywheel, turntable, monitorFlywheel);
-		
-//		return monitorFlywheel;
-		
-		/*
-		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
-				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
-//		SetpointProvider yAxis = new LowGoalElevationControl(layout.io.controllerDriver.getAxis(1));
-		SetpointProvider yAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(1),
-				layout.io.controllerDriver.getButton(7), 0.0, 0.24, 0.004, 0);
-		
-		Command elevation = new PositionControllerRampCommand(layout.io.armElevationMotor, 
-				yAxis, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .12);
-		
-		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
-				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
-		
-		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerManip, 1.0);
-		
-		Command flywheel = new ButtonMotorCommand(new TalonMotorWrapper(layout.io.flywheelMotorA), layout.io.controllerDriver.getButton(2), false);
-		
-		return CommandsUtil.combineSimultaneous(elevation, drive, intake, flywheel);
-		*/
+		return CommandsUtil.combineSimultaneous(drive, yaw, monitorTurntable, elevation, intake, flywheelAll);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

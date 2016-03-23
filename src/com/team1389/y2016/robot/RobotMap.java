@@ -25,8 +25,8 @@ public class RobotMap {
 	//Ball Manipulator
 	public static int intakeMotor_CAN = 11; public static boolean intakeMotor_isInverted = false;
 	//DONT COMMIT THIS
-	public static int flywheelMotorA_CAN = 7; public static boolean flywheelMotorA_isInverted = false;
-	public static int flywheelMotorB_CAN = 62; public static boolean flywheelMotorB_isInverted = true;
+	public static int flywheelMotorA_CAN = 10; public static boolean flywheelMotorA_isInverted = false;
+	public static int flywheelMotorB_CAN = 12; public static boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static double encoderTicksPerRotation = 4096;
@@ -35,10 +35,11 @@ public class RobotMap {
 	public static boolean rightEncoderInverted = false;
 	public static boolean elevatorEncoderInverted = true;
 	public static boolean turntableEncoderInverted = false;
-	public static boolean flywheelEncoderInverted = true;
+	public static boolean flywheelEncoderInverted = false;
 	
 	//Ball Manipulator
-	public static int ballHolderIR_DIO = 0; public static boolean ballHolderIR_isInverted = false;
+	public static int ballHolderIR1_DIO = 0; public static boolean ballHolderIR1_isInverted = false;
+	public static int ballHolderIR2_DIO = 1; public static boolean ballHolderIR2_isInverted = false;
 	
 	//Misc
 	public static int driveJoystickPort = 0;
@@ -52,10 +53,11 @@ public class RobotMap {
 	
 	//Driving
 	public static double teleopDriveSpeed = 1;
-	public static double wheelRotationsPerTurn = 22.5 / 7.5;
+	public static double wheelRotationsPerTurn = (22.5 / 7.5) * 1.25;
 	public static double maxAutonVelocity = 1;
 	public static double maxAutonAcceleration = .5;
-	public static ConfigurablePid drivePid = new ConfigurablePid("drivePID", new PIDConstants(.2, 0, 0, 0, 0));
+	public static ConfigurablePid driveForwardPid = new ConfigurablePid("driveForwardPID", new PIDConstants(.2, 0, 0, 0, 0));
+	public static ConfigurablePid driveTurnPid = new ConfigurablePid("driveTurnPID", new PIDConstants(2, 0, 0, 0, 0));
 	
 	//Arm config
 	public static ConfigurablePid armPid = new ConfigurablePid("armPID", new PIDConstants(.3, 0, 0, 0, 0));

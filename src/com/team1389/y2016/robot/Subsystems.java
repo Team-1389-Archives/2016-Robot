@@ -31,7 +31,7 @@ public class Subsystems {
 		
 		this.io = io;
 		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,
-				RobotMap.maxAutonAcceleration, RobotMap.wheelRotationsPerTurn, RobotMap.drivePid.get());
+				RobotMap.maxAutonAcceleration, RobotMap.wheelRotationsPerTurn, RobotMap.driveForwardPid.get(), RobotMap.driveTurnPid.get());
 		drivetrain = new Drivetrain(io.leftDriveA, io.rightDriveA);
 
 		armSetpointProvider= new SetableSetpointProvider(false);

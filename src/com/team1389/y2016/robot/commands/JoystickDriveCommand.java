@@ -28,18 +28,17 @@ public class JoystickDriveCommand extends Command {
 		
 		double speedMod = 0.65 * overAllSpeedMod;
 		double turnMod = .45;
-		double turnAlotMod = 0.65;
 		
 		if(joyStick.getButton(1).isTriggered()){
 			speedMod = 1.0;
+			turnMod = 0.9;
 		}
 		
-		double y, normalTurn, extraTurn;
+		double y, normalTurn;
 		double left, right;
 		normalTurn = joyStick.getAxis(2).read() * turnMod;
 		y = joyStick.getAxis(1).read();
-		extraTurn = joyStick.getAxis(0).read() * turnAlotMod;
-		double x = absMax(normalTurn, extraTurn);
+		double x = normalTurn;
 		left = y - x;
 		right = y + x;
 //		System.out.println("left: " + left + " right: " + right);

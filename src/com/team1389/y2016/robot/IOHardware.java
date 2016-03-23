@@ -50,9 +50,8 @@ public class IOHardware extends IOLayout{
 		
 		
 		//ball manipulator
-//		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
-//			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
-		intakeMotor = Hardware.Motors.victor(0);
+		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
+			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
 			
 		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
 				TalonControlMode.PercentVbus, RobotMap.flywheelEncoderInverted);
@@ -66,7 +65,8 @@ public class IOHardware extends IOLayout{
 		configFollowerTalonsToWorkAroundDumbGlitch();
 		
 		//Inputs
-		ballHolderIR = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR_DIO);
+		ballHolderIR1 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR1_DIO);
+		ballHolderIR2 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR2_DIO);
 		
 		//Human Inputs
 		controllerDriver = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.driveJoystickPort);
