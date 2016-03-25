@@ -1,5 +1,6 @@
 package com.team1389.y2016.robot;
 
+import org.strongback.components.Switch;
 import org.strongback.hardware.Hardware;
 
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;

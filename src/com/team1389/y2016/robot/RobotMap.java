@@ -1,5 +1,6 @@
 package com.team1389.y2016.robot;
 
+import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
 
@@ -53,14 +54,15 @@ public class RobotMap {
 	
 	//Driving
 	public static double teleopDriveSpeed = 1;
-	public static double wheelRotationsPerTurn = (22.5 / 7.5) * 1.25;
-	public static double maxAutonVelocity = 1;
-	public static double maxAutonAcceleration = .5;
+	public static double wheelRotationsPerTurn = (22.5 / 7.5) * 1.25 * 0.95;
+	public static double maxAutonVelocity = 1.5;
+	public static double maxAutonAcceleration = 1.5;
 	public static ConfigurablePid driveForwardPid = new ConfigurablePid("driveForwardPID", new PIDConstants(.2, 0, 0, 0, 0));
 	public static ConfigurablePid driveTurnPid = new ConfigurablePid("driveTurnPID", new PIDConstants(2, 0, 0, 0, 0));
 	
-	//Arm config
-	public static ConfigurablePid armPid = new ConfigurablePid("armPID", new PIDConstants(.3, 0, 0, 0, 0));
+	//Arm
 	
+	public static DoubleConstant highGoalPoint = new DoubleConstant("high goal setpoint", 0.12);
+	public static DoubleConstant flySpeed = new DoubleConstant("flywheel speed", -27000.0);
 }
 

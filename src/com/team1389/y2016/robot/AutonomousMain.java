@@ -3,14 +3,23 @@ package com.team1389.y2016.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.strongback.Strongback;
 import org.strongback.command.Command;
+import org.strongback.hardware.Hardware;
 
 import com.team1389.base.auton.AutonMode;
 import com.team1389.base.auton.AutonomousBase;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetASetpointCommand;
+import com.team1389.base.util.control.SpeedControlSetCommandSetCommand;
+import com.team1389.base.util.control.SpeedControllerSetCommand;
+import com.team1389.base.util.control.WaitTimeCommand;
+import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
+import com.team1389.base.wpiWrappers.TalonSRXSpeedHardware;
+import com.team1389.y2016.robot.control.SetMotorCommand;
 import com.team1389.y2016.robot.control.WaitUntilControllerWithinRangeCommand;
+import com.team1389.y2016.robot.control.WaitUntilSpeedControllerWithinRange;
 
 /**
  * This class defines which autonomous modes are available to be run. The first
@@ -45,6 +54,12 @@ public class AutonomousMain extends AutonomousBase {
 
 		Command moveArmTo60 = CommandsUtil.combineSimultaneous(
 				new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.15), layout.subsystems.elevation);
+		
+		Command waitUntilDownIsh = new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.3, .3);
+		
+		Command armWaitThenDown = CommandsUtil.combineSequential(
+				new WaitTimeCommand(4),
+				new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0));
 		// Command moveArmDown = new
 		// SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0);
 		// Command moveArmDown = Command.create(() -> {return true;});
@@ -104,9 +119,12 @@ public class AutonomousMain extends AutonomousBase {
 			@Override
 			public Command getCommand() {
 				Command waitThenDrive = CommandsUtil.combineSequential(
-						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
-						layout.subsystems.drive.driveDistanceCommand(-7));
-				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
+//						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
+						CommandsUtil.combineSimultaneous(
+								armWaitThenDown,
+								CommandsUtil.combineSequential(
+										layout.subsystems.drive.driveDistanceCommand(-7))));
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, waitThenDrive);
 			}
 		});
 		
@@ -159,10 +177,51 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});
+		
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "low bar back turn forward high goal";
+			}
+			
+			@Override
+			public Command getCommand() {
+				SpeedControllerSetCommand flywheelSpeedControl =
+						new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+						CommandsUtil.combineSimultaneous(
+								armWaitThenDown,
+								CommandsUtil.combineSequential(
+											layout.subsystems.drive.driveDistanceCommand(-8.4),
+											layout.subsystems.drive.turnAmount((1.0/6.0) * .95),
+											layout.subsystems.drive.driveDistanceCommand(-3),
+											new SetASetpointCommand(layout.subsystems.armSetpointProvider, RobotMap.highGoalPoint.get()),
+											waitTillSetpoint(layout.io.armElevationMotor, RobotMap.highGoalPoint.get()),
+											new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
+											waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
+											Command.create(() -> {System.out.println("on to intake");}),
+											new SetMotorCommand(layout.io.intakeMotor, 1.0)			
+										))
+						);
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
+			}
+		});
 
 		// add modes to mode list here
 
 		return modes;
+	}
+	
+	private Command waitTillSetpoint(TalonSRXPositionHardware controller, double point){
+		return new WaitUntilControllerWithinRangeCommand(controller, point - 0.06, point + 0.06);
+	}
+	
+	private Command waitTillSpeedSetpoint(TalonSRXSpeedHardware controller, double point){
+		double absPoint = Math.abs(point);
+		return new WaitUntilSpeedControllerWithinRange(controller, absPoint - (absPoint * .10),
+				absPoint + (absPoint * .10));
 	}
 
 	@Override

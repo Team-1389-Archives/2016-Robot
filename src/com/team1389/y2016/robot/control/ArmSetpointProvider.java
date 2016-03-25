@@ -5,19 +5,18 @@ import org.strongback.components.ui.InputDevice;
 
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetableSetpointProvider;
+import com.team1389.y2016.robot.RobotMap;
 
 public class ArmSetpointProvider extends Command{
 	
 	InputDevice joystick;
 	SetableSetpointProvider setpoint;
 	double point;
-	DoubleConstant highGoalPoint;
-	
+
 	public ArmSetpointProvider(InputDevice joystick, SetableSetpointProvider setpoint) {
 		this.joystick = joystick;
 		this.setpoint = setpoint;
 		this.point = 0;
-		highGoalPoint = new DoubleConstant("high goal setpoint", 0.14);
 	}
 
 	private double getSetpoint() {
@@ -31,7 +30,7 @@ public class ArmSetpointProvider extends Command{
 		} else if (joystick.getButton(3).isTriggered()){
 			point = 0.07;
 		} else if (joystick.getButton(6).isTriggered()){
-			point = highGoalPoint.get();
+			point = RobotMap.highGoalPoint.get();
 		}
 		
 		return point;

@@ -17,8 +17,9 @@ public class Subsystems {
 	Drivetrain drivetrain;
 //	ArmControl arm;
 	SetableSetpointProvider armSetpointProvider;
-	Command elevation;
+	PositionControllerRampCommand elevation;
 	IOLayout io;
+	ConfigurablePid armPid;
 	
 	//flywheel
 	TalonSRXSpeedHardware flywheelSpeedController;
@@ -28,6 +29,7 @@ public class Subsystems {
 	
 	public Subsystems(IOLayout io) {
 		flywheelPid = new ConfigurablePid("flywheel pid", new PIDConstants(.501, 0, 0, 0, 0));
+		armPid = new ConfigurablePid("arm pid", new PIDConstants(.8, 0, 0, 0, 0));
 		
 		this.io = io;
 		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,
@@ -40,7 +42,7 @@ public class Subsystems {
 //		armSetpointProvider = new LowGoalElevationControl(io.controllerManip.getAxis(1));
 
 		elevation = new PositionControllerRampCommand(io.armElevationMotor, 
-				armSetpointProvider, new PIDConstants(.6, 0, 0, 0, 0), .26, 0, .2);//TODO: extract these numbers to RobotMap
+				armSetpointProvider, armPid.get(), .26, 0, .2);//TODO: extract these numbers to RobotMap
 		
 		//flywheel
 		flywheelSpeedController = new TalonSRXSpeedHardware(io.flywheelMotorA);
@@ -58,5 +60,9 @@ public class Subsystems {
 		
 		System.out.println("setting flywheel pid in Subsystems");
 		io.flywheelFancy.setPID(flywheelPid.get());
+		
+		elevation.setPID(armPid.get());
+		
+		drive.setPids(RobotMap.driveForwardPid.get(), RobotMap.driveTurnPid.get());
 	}
 }

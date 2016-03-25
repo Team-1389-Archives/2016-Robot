@@ -1,9 +1,11 @@
 package com.team1389.y2016.robot.control;
 
 import org.strongback.command.Command;
+import org.strongback.components.Switch;
 import org.strongback.components.ui.InputDevice;
 
 import com.team1389.base.util.DoubleConstant;
+import com.team1389.base.util.control.AxisAsButton;
 import com.team1389.base.util.control.SpeedControllerSetCommand;
 import com.team1389.y2016.robot.RobotMap;
 
@@ -15,14 +17,15 @@ public class FlywheelControlCommand extends Command{
 	SpeedControllerSetCommand speedControlCommand;
 	InputDevice joystick;
 	double speed;
-	DoubleConstant flySpeed;
 	Joystick rumbler;
+	Switch batterFly, batterArm;
 
 	public FlywheelControlCommand(InputDevice joystick, SpeedControllerSetCommand speedControlCommand) {
 		this.speedControlCommand = speedControlCommand;
 		this.joystick = joystick;
-		flySpeed = new DoubleConstant("flywheel speed", -27000.0);
 		rumbler = new Joystick(RobotMap.manipJoystickPort);
+		batterFly = new AxisAsButton(joystick.getAxis(2));
+		batterArm = new AxisAsButton(joystick.getAxis(3));
 	}
 	
 	@Override
@@ -31,17 +34,19 @@ public class FlywheelControlCommand extends Command{
 
 	@Override
 	public boolean execute() {
-		speed = flySpeed.get();
+		speed = RobotMap.flySpeed.get();
 		boolean spinning = joystick.getButton(SPIN_UP_BUTTON).isTriggered();
 		
 		if (spinning){
 			speedControlCommand.setSpeed(speed);
 		} else {
 			speedControlCommand.setSpeed(0);
+			if (joystick.getAxis(1).read() < -0.5){
+				speedControlCommand.setSpeed(2500);
+			}
 		}
 		
 		boolean rumble;
-		System.out.println("FlywheelControl speed: " + speedControlCommand.getController().getSpeed());
 		if (Math.abs(speed * .90) < Math.abs(speedControlCommand.getController().getSpeed())){
 			rumble = true;
 		} else {
