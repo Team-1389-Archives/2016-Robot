@@ -23,12 +23,16 @@ public class AutonomousMain extends AutonomousBase {
 	DoubleConstant autonForwardFirst;
 	DoubleConstant autonTurn;
 	DoubleConstant autonForwardSecond;
+	
+	public static final double rotationsPerInch = 1.0 / 22.5;
+	public static final double rotationsPerDegree = 1.0 / 360.0;
+	// Should we move these to RobotMap?
 
 	public AutonomousMain(RobotLayout io) {
 		this.layout = io;
 		
-		final double rotationsPerInch = 1.0 / 22.5;
-		final double rotationsPerDegree = 1.0 / 360.0;
+//		final double rotationsPerInch = 1.0 / 22.5;
+//		final double rotationsPerDegree = 1.0 / 360.0;
 		
 		autonForwardFirst = new DoubleConstant("auton forward first", 228.0 * rotationsPerInch);
 		autonTurn = new DoubleConstant("auton turn", 60.0 * rotationsPerDegree);
