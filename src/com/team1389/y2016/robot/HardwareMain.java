@@ -38,7 +38,12 @@ public class HardwareMain extends Team1389RobotBase {
 	}
 
 	public void initiate() {
-		String runCameraServer = "bash /mjpg-streamer-roborio/run_one.sh";
+		runCommand("bash /mjpg-streamer-roborio/run_one.sh");
+		runCommand("bash /mjpg-streamer-roborio/run_two.sh");
+	}
+
+	private void runCommand(String cmd) {
+		String runCameraServer = cmd;
 		System.out.println("starting webcam server...");
 		Process process;
 		try {

@@ -99,7 +99,7 @@ public class TeleopMain extends TeleopBase{
 		Command monitorArm = new PositionControllerMonitorCommand(layout.io.armElevationMotor, "arm");
 		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel");
 		
-		return CommandsUtil.combineSimultaneous(drive, yaw, elevation, intake, flywheelAll, monitorFlywheel);
+		return CommandsUtil.combineSimultaneous(drive, yaw, elevation, intake, flywheelAll, monitorArm);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

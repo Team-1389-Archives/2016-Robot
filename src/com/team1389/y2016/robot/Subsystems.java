@@ -1,11 +1,7 @@
 package com.team1389.y2016.robot;
 
-import org.strongback.command.Command;
-
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
-import com.team1389.base.util.control.ConstantSpeedSetpointProvider;
-import com.team1389.base.util.control.PositionControllerControlCommand;
 import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetableSetpointProvider;
 import com.team1389.base.util.control.TalonDriveControl;
@@ -16,7 +12,7 @@ public class Subsystems {
 	TalonDriveControl drive;
 	Drivetrain drivetrain;
 //	ArmControl arm;
-	SetableSetpointProvider armSetpointProvider;
+	final SetableSetpointProvider armSetpointProvider;
 	PositionControllerRampCommand elevation;
 	IOLayout io;
 	ConfigurablePid armPid;

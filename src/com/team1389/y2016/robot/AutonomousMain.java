@@ -35,13 +35,13 @@ public class AutonomousMain extends AutonomousBase {
 
 	public AutonomousMain(RobotLayout io) {
 		this.layout = io;
-		
+
 		final double rotationsPerInch = 1.0 / 22.5;
 		final double rotationsPerDegree = 1.0 / 360.0;
-		
-		autonForwardFirst = new DoubleConstant("auton forward first", 228.0 * rotationsPerInch);
-		autonTurn = new DoubleConstant("auton turn", 60.0 * rotationsPerDegree);
-		autonForwardSecond = new DoubleConstant("auton straight second", 122.0 * rotationsPerInch);
+
+		autonForwardFirst = new DoubleConstant("auton forward first", -9.2);
+		autonTurn = new DoubleConstant("auton turn", .159);
+		autonForwardSecond = new DoubleConstant("auton straight second", -3.5);
 		construct();
 	}
 
@@ -108,7 +108,27 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(moveArmTo60, waitThenDrive);
 			}
 		});
-		
+		modes.add(new AutonMode() {
+
+			@Override
+			public String getName() {
+				return "ball denial";
+			}
+
+			@Override
+			public Command getCommand() {
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .12, .18),
+						layout.subsystems.drive.driveDistanceCommand(7),
+						new SetMotorCommand(layout.io.intakeMotor, -1.0),
+						new WaitTimeCommand(2),
+						new SetMotorCommand(layout.io.intakeMotor, 0.0),
+						layout.subsystems.drive.turnAmount(.5),
+						layout.subsystems.drive.driveDistanceCommand(5.5)
+						);
+				return CommandsUtil.combineSimultaneous(moveArmTo60, waitThenDrive);
+			}
+		});
 		modes.add(new AutonMode() {
 
 			@Override
@@ -191,20 +211,26 @@ public class AutonomousMain extends AutonomousBase {
 						new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
 				Command waitThenDrive = CommandsUtil.combineSequential(
 						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
-						CommandsUtil.combineSimultaneous(
-								armWaitThenDown,
 								CommandsUtil.combineSequential(
-											layout.subsystems.drive.driveDistanceCommand(-8.4),
-											layout.subsystems.drive.turnAmount((1.0/6.0) * .95),
-											layout.subsystems.drive.driveDistanceCommand(-3),
-											new SetASetpointCommand(layout.subsystems.armSetpointProvider, RobotMap.highGoalPoint.get()),
-											waitTillSetpoint(layout.io.armElevationMotor, RobotMap.highGoalPoint.get()),
-											new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
-											waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
-											Command.create(() -> {System.out.println("on to intake");}),
-											new SetMotorCommand(layout.io.intakeMotor, 1.0)			
-										))
-						);
+										CommandsUtil.combineSimultaneous(
+												layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get()),
+												CommandsUtil.combineSequential(
+														new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()) / 2.0 - 0.5),
+														new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
+										layout.subsystems.drive.turnAmount(autonTurn.get()),
+										Command.create(() -> {System.out.println("arm set to zero");}),
+										new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+										layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()),
+										new SetASetpointCommand(layout.subsystems.armSetpointProvider, RobotMap.highGoalPoint.get()),
+										waitTillSetpoint(layout.io.armElevationMotor, RobotMap.highGoalPoint.get()),
+										new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
+										waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
+										Command.create(() -> {System.out.println("on to intake");}),
+										new SetMotorCommand(layout.io.intakeMotor, 1.0),
+										new WaitTimeCommand(2),
+										new SetMotorCommand(layout.io.intakeMotor, 0.0),
+										new SpeedControlSetCommandSetCommand(flywheelSpeedControl, 0.0)
+						));
 				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
 			}
 		});
@@ -213,12 +239,12 @@ public class AutonomousMain extends AutonomousBase {
 
 		return modes;
 	}
-	
-	private Command waitTillSetpoint(TalonSRXPositionHardware controller, double point){
+
+	private Command waitTillSetpoint(TalonSRXPositionHardware controller, double point) {
 		return new WaitUntilControllerWithinRangeCommand(controller, point - 0.06, point + 0.06);
 	}
-	
-	private Command waitTillSpeedSetpoint(TalonSRXSpeedHardware controller, double point){
+
+	private Command waitTillSpeedSetpoint(TalonSRXSpeedHardware controller, double point) {
 		double absPoint = Math.abs(point);
 		return new WaitUntilSpeedControllerWithinRange(controller, absPoint - (absPoint * .10),
 				absPoint + (absPoint * .10));

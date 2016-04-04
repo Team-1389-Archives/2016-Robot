@@ -35,12 +35,24 @@ public class JoystickDriveCommand extends Command {
 			turnMod = 0.9;
 		}
 		
-		double y, normalTurn, extraTurn;
+		double y, normalTurn, extraTurn, smallTurn;
 		double left, right;
 		normalTurn = joyStick.getAxis(2).read() * turnMod;
 		y = joyStick.getAxis(1).read();
 		extraTurn = joyStick.getAxis(0).read();
-		double x = absMax(normalTurn, extraTurn);
+		
+		int pov = joyStick.getDPad(0).getDirection();
+		System.out.println(pov);
+		
+		if (pov == 315 || pov == 270 || pov == 225){
+			smallTurn = -.3;
+		} else if (pov == 135 || pov == 90 || pov == 45){
+			smallTurn = .3;
+		} else {
+			smallTurn = 0;
+		}
+		
+		double x = absMax(absMax(normalTurn, smallTurn), extraTurn);
 		left = y - x;
 		right = y + x;
 //		System.out.println("left: " + left + " right: " + right);
@@ -48,6 +60,7 @@ public class JoystickDriveCommand extends Command {
 
 		return false;
 	}
+	
 	
 	public double absMax(double a, double b){
 		if (Math.abs(a) > Math.abs(b)){
