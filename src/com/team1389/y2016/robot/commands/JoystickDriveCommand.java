@@ -26,13 +26,12 @@ public class JoystickDriveCommand extends Command {
 	@Override
 	public boolean execute() {
 		
-		double speedMod = 0.65 * overAllSpeedMod;
-		double turnMod = .45;
-		double turnAlotMod = 0.65;
+		double speedMod = 0.5 * overAllSpeedMod;
+		double turnMod = .6;
 		
-		if(joyStick.getButton(1).isTriggered()){
+		if(!joyStick.getButton(1).isTriggered()){
 			speedMod = 1.0;
-			turnMod = 0.9;
+			turnMod = 1.0;
 		}
 		
 		double y, normalTurn, extraTurn, smallTurn;
@@ -44,10 +43,12 @@ public class JoystickDriveCommand extends Command {
 		int pov = joyStick.getDPad(0).getDirection();
 		System.out.println(pov);
 		
+		final double smallTurnVoltage = 0.35;
+		
 		if (pov == 315 || pov == 270 || pov == 225){
-			smallTurn = -.3;
+			smallTurn = -smallTurnVoltage;
 		} else if (pov == 135 || pov == 90 || pov == 45){
-			smallTurn = .3;
+			smallTurn = smallTurnVoltage;
 		} else {
 			smallTurn = 0;
 		}

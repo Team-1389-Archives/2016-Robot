@@ -22,12 +22,14 @@ public abstract class IOLayout{
 	public TalonSRXPositionHardware rightDriveController;
 	
 	//arm
-	public TalonSRXPositionHardware turntableMotor;
+		//uncomment for turntable
+//	public TalonSRXPositionHardware turntableMotor;
 	public TalonSRXPositionHardware armElevationMotor;
 	
 	public CANTalon simpleElevationA;
 	public CANTalon simpleElevationB;
-	public CANTalon simpleTurntable;
+		//uncomment for turntable
+//	public CANTalon simpleTurntable;
 	
 	//Ball Manipulator
 	public Motor intakeMotor;

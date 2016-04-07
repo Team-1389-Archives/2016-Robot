@@ -54,7 +54,8 @@ public class TeleopMain extends TeleopBase{
 		Command elevationPidDo = layout.subsystems.elevation;
 		Command elevationControl = new ArmSetpointProvider(layout.io.controllerManip, layout.subsystems.armSetpointProvider);
 		Command elevation = CommandsUtil.combineSimultaneous(elevationControl, elevationPidDo);
-		Command turntable = new TurntableControl(layout.io.controllerManip, layout.io.simpleTurntable);
+		//uncomment for turntable
+//		Command turntable = new TurntableControl(layout.io.controllerManip, layout.io.simpleTurntable);
 
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
 
@@ -68,18 +69,11 @@ public class TeleopMain extends TeleopBase{
 		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
 		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
 		
-//		SetpointProvider xAxis = new JoystickSetpointControlAriStyleWithReset(layout.io.controllerDriver.getAxis(3),
-//				 layout.io.controllerDriver.getButton(1), -.3, .3, 0.003, 0);
-//		
-//		
-//		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
-//				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
-				
 		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 //		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
 		
 		
-		Command monitorTurntable = new TalonMonitorCommand(layout.io.simpleTurntable, "turntable");
+//		Command monitorTurntable = new TalonMonitorCommand(layout.io.simpleTurntable, "turntable");
 
 		SetpointProvider xAxis = new JoystickSetpointControlWithSafety(layout.io.controllerManip.getAxis(4),
 				 layout.io.controllerManip.getButton(10), -.3, .3, 0.003, 0);
@@ -93,13 +87,15 @@ public class TeleopMain extends TeleopBase{
 //			}
 //		};
 
-		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
-				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
+		//uncomment for turntable
+//		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
+//				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
 		
 		Command monitorArm = new PositionControllerMonitorCommand(layout.io.armElevationMotor, "arm");
 		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel");
 		
-		return CommandsUtil.combineSimultaneous(drive, yaw, elevation, intake, flywheelAll, monitorArm);
+		//uncomment for turntable
+		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll, monitorArm);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

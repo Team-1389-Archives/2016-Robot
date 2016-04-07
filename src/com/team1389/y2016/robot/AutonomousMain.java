@@ -12,8 +12,10 @@ import com.team1389.base.auton.AutonomousBase;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetASetpointCommand;
+import com.team1389.base.util.control.SetableSetpointProvider;
 import com.team1389.base.util.control.SpeedControlSetCommandSetCommand;
 import com.team1389.base.util.control.SpeedControllerSetCommand;
+import com.team1389.base.util.control.TalonDriveControl;
 import com.team1389.base.util.control.WaitTimeCommand;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.base.wpiWrappers.TalonSRXSpeedHardware;
@@ -43,10 +45,11 @@ public class AutonomousMain extends AutonomousBase {
 		final double rotationsPerInch = 1.0 / 22.5;
 		final double rotationsPerDegree = 1.0 / 360.0;
 
-		autonForwardFirst = new DoubleConstant("auton forward first", -9.2);
+		autonForwardFirst = new DoubleConstant("auton forward first", -8.66);
 		autonTurn = new DoubleConstant("auton turn", .159);
-		autonForwardSecond = new DoubleConstant("auton straight second", -3.5);
+		autonForwardSecond = new DoubleConstant("auton straight second", -3.85);
 		construct();
+		setSelectedAuton("high goal motion but don't shoot");
 	}
 
 	@Override
@@ -239,9 +242,75 @@ public class AutonomousMain extends AutonomousBase {
 			}
 		});
 
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "high goal motion but don't shoot";
+			}
+			
+			@Override
+			public Command getCommand() {
+				SpeedControllerSetCommand flywheelSpeedControl =
+						new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+								CommandsUtil.combineSequential(
+										CommandsUtil.combineSimultaneous(
+												layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get()),
+												CommandsUtil.combineSequential(
+														new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()) / 2.0 - 0.5),
+														new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
+										layout.subsystems.drive.turnAmount(autonTurn.get()),
+										Command.create(() -> {System.out.println("arm set to zero");}),
+										layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()),
+										layout.subsystems.drive.turnAmount(.5),
+										new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0)
+						));
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
+			}
+		});
+
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "high goal rock wall center";
+			}
+			
+			@Override
+			public Command getCommand() {
+				SpeedControllerSetCommand flywheelSpeedControl =
+						new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						layout.subsystems.drive.driveDistanceCommand(4),
+						layout.subsystems.drive.turnAmount(-.25),
+						layout.subsystems.drive.driveDistanceCommand(.5),
+						layout.subsystems.drive.turnAmount(.25),
+						shootHighFromCenter(flywheelSpeedControl, layout.subsystems.drive, layout.subsystems.armSetpointProvider)
+						);
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
+			}
+		});
+
 		// add modes to mode list here
 
 		return modes;
+	}
+	
+	private Command shootHighFromCenter(SpeedControllerSetCommand flywheel, TalonDriveControl drive, SetableSetpointProvider armSetpoinpt){
+		return CommandsUtil.combineSequential(
+				drive.driveDistanceCommand(6),
+				new SetASetpointCommand(layout.subsystems.armSetpointProvider, RobotMap.highGoalPoint.get()),
+				waitTillSetpoint(layout.io.armElevationMotor, RobotMap.highGoalPoint.get()),
+				new SpeedControlSetCommandSetCommand(flywheel, RobotMap.flySpeed.get()),
+				waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
+				Command.create(() -> {System.out.println("on to intake");}),
+				new SetMotorCommand(layout.io.intakeMotor, 1.0),
+				new WaitTimeCommand(2),
+				new SetMotorCommand(layout.io.intakeMotor, 0.0),
+				new SpeedControlSetCommandSetCommand(flywheel, 0.0)
+				);
 	}
 
 	private Command waitTillSetpoint(TalonSRXPositionHardware controller, double point) {

@@ -52,7 +52,8 @@ public class Subsystems {
 	public void initAll(){
 		io.armElevationMotor.setCurrentPositionAs(io.armElevationMotor.getPosition());
 		io.armElevationMotor.disable();
-		io.turntableMotor.setCurrentPositionAs(io.turntableMotor.getPosition());
+		//uncomment for turntable
+//		io.turntableMotor.setCurrentPositionAs(io.turntableMotor.getPosition());
 		
 		System.out.println("setting flywheel pid in Subsystems");
 		io.flywheelFancy.setPID(flywheelPid.get());

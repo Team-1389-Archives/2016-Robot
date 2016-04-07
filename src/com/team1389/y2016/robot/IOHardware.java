@@ -45,9 +45,10 @@ public class IOHardware extends IOLayout{
 		armElevationMotor = new TalonSRXPositionHardware(simpleElevationA, RobotMap.armElevationTicksPerRotation);
 		System.out.println("ELEVATOR CONFIGURED AND READY");
 		
-		simpleTurntable = createCANTalon(RobotMap.turntableMotor_CAN, RobotMap.turntableMotor_isInverted,
-				TalonControlMode.PercentVbus, RobotMap.turntableEncoderInverted);
-		turntableMotor = new TalonSRXPositionHardware(simpleTurntable, RobotMap.turnTableTicksPerRotation);
+		//uncomment for turntable
+//		simpleTurntable = createCANTalon(RobotMap.turntableMotor_CAN, RobotMap.turntableMotor_isInverted,
+//				TalonControlMode.PercentVbus, RobotMap.turntableEncoderInverted);
+//		turntableMotor = new TalonSRXPositionHardware(simpleTurntable, RobotMap.turnTableTicksPerRotation);
 		
 		
 		//ball manipulator
