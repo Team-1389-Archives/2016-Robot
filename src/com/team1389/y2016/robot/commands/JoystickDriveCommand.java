@@ -41,7 +41,6 @@ public class JoystickDriveCommand extends Command {
 		extraTurn = joyStick.getAxis(0).read();
 		
 		int pov = joyStick.getDPad(0).getDirection();
-		System.out.println(pov);
 		
 		final double smallTurnVoltage = 0.35;
 		
@@ -56,7 +55,6 @@ public class JoystickDriveCommand extends Command {
 		double x = absMax(absMax(normalTurn, smallTurn), extraTurn);
 		left = y - x;
 		right = y + x;
-//		System.out.println("left: " + left + " right: " + right);
 		driveTrain.set(left * speedMod, right * speedMod);
 
 		return false;

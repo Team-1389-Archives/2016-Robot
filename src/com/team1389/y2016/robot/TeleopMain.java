@@ -67,7 +67,7 @@ public class TeleopMain extends TeleopBase{
 		
 		SpeedControllerSetCommand flywheelSpeed = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
 		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
-		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
+		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel/*, flywheelSpeed*/);
 		
 		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 //		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
@@ -95,7 +95,7 @@ public class TeleopMain extends TeleopBase{
 		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel");
 		
 		//uncomment for turntable
-		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll, monitorArm);
+		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

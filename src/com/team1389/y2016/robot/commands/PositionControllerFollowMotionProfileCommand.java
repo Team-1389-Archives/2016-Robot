@@ -27,7 +27,6 @@ public class PositionControllerFollowMotionProfileCommand extends Command{
 	@Override
 	public boolean execute() {
 		double setpoint = profile.getPosition(timer.get());
-		System.out.println("setpt: " + setpoint + " pos:" + controller.getPosition());
 		return false;
 	}
 

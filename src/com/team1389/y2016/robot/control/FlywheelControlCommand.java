@@ -12,7 +12,7 @@ import com.team1389.y2016.robot.RobotMap;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 
-public class FlywheelControlCommand extends Command{
+public class FlywheelControlCommand extends Command {
 	final int SPIN_UP_BUTTON = 5;
 	SpeedControllerSetCommand speedControlCommand;
 	InputDevice joystick;
@@ -27,7 +27,7 @@ public class FlywheelControlCommand extends Command{
 		batterFly = new AxisAsButton(joystick.getAxis(2));
 		batterArm = new AxisAsButton(joystick.getAxis(3));
 	}
-	
+
 	@Override
 	public void initialize() {
 	}
@@ -36,47 +36,53 @@ public class FlywheelControlCommand extends Command{
 	public boolean execute() {
 		speed = RobotMap.flySpeed.get();
 		boolean spinning = joystick.getButton(SPIN_UP_BUTTON).isTriggered();
-		
-		if (spinning){
-			speedControlCommand.setSpeed(speed);
+
+		// if (spinning){
+		// speedControlCommand.setSpeed(speed);
+		// } else {
+		// speedControlCommand.setSpeed(0);
+		// if (joystick.getAxis(1).read() < -0.9){//-0.5
+		//// speedControlCommand.setSpeed(2500);
+		// speedControlCommand.hackVoltageSet(-1);
+		// }
+		// }
+		if (joystick.getAxis(1).read() < -0.9) {// -0.5
+			// speedControlCommand.setSpeed(2500);
+			speedControlCommand.hackVoltageSet(-1);
 		} else {
-			speedControlCommand.setSpeed(0);
-			if (joystick.getAxis(1).read() < -0.5){
-				speedControlCommand.setSpeed(2500);
-			}
+			speedControlCommand.hackVoltageSet(0);
 		}
-		
+
 		boolean rumble;
-		if (Math.abs(speed * .90) < Math.abs(speedControlCommand.getController().getSpeed())){
+		if (Math.abs(speed * .90) < Math.abs(speedControlCommand.getController().getSpeed())) {
 			rumble = true;
 		} else {
 			rumble = false;
 		}
-		
-		if (rumble){
+
+		if (rumble) {
 			rumble(1.0f);
 		} else {
 			rumble(0.0f);
 		}
-		
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void end() {
 		speedControlCommand.setSpeed(0);
 		rumble(0.0f);
 	}
-	
+
 	@Override
 	public void interrupted() {
 		end();
 	}
-	
-	private void rumble(float rumb){
-			rumbler.setRumble(RumbleType.kLeftRumble, rumb);
-			rumbler.setRumble(RumbleType.kRightRumble, rumb);
+
+	private void rumble(float rumb) {
+		rumbler.setRumble(RumbleType.kLeftRumble, rumb);
+		rumbler.setRumble(RumbleType.kRightRumble, rumb);
 	}
 
 }

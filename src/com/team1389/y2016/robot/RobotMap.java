@@ -21,13 +21,13 @@ public class RobotMap {
 	public static final int rightMotorC_CAN = 3; public static final boolean rightMotorC_isInverted = false;
 	//Arm
 	public static final int turntableMotor_CAN = 9; public static final boolean turntableMotor_isInverted = false;
-	public static final int elevatorMotorA_CAN = 5; public static final boolean elevatorMotorA_isInverted = true;
+	public static final int elevatorMotorA_CAN = 12; public static final boolean elevatorMotorA_isInverted = true;
 	public static final int elevatorMotorB_CAN = 6; public static final boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
 	public static final int intakeMotor_CAN = 11; public static final boolean intakeMotor_isInverted = false;
 	//DONT COMMIT THIS
-	public static final int flywheelMotorA_CAN = 10; public static final boolean flywheelMotorA_isInverted = false;
-	public static final int flywheelMotorB_CAN = 12; public static final boolean flywheelMotorB_isInverted = true;
+	public static final int flywheelMotorA_CAN = 5; public static final boolean flywheelMotorA_isInverted = false;
+	public static final int flywheelMotorB_CAN = 10; public static final boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static final double encoderTicksPerRotation = 4096;
@@ -63,6 +63,6 @@ public class RobotMap {
 	//Arm
 	
 	public static DoubleConstant highGoalPoint = new DoubleConstant("high goal setpoint", 0.12);
-	public static DoubleConstant flySpeed = new DoubleConstant("flywheel speed", -27000.0);
+	public static DoubleConstant flySpeed = new DoubleConstant("flywheel speed", -29000.0);
 }
 

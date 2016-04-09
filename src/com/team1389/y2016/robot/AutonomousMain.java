@@ -34,6 +34,7 @@ public class AutonomousMain extends AutonomousBase {
 	DoubleConstant autonForwardFirst;
 	DoubleConstant autonTurn;
 	DoubleConstant autonForwardSecond;
+	DoubleConstant autonArcMod;
 	
 	public static final double rotationsPerInch = 1.0 / 22.5;
 	public static final double rotationsPerDegree = 1.0 / 360.0;
@@ -48,8 +49,12 @@ public class AutonomousMain extends AutonomousBase {
 		autonForwardFirst = new DoubleConstant("auton forward first", -8.66);
 		autonTurn = new DoubleConstant("auton turn", .159);
 		autonForwardSecond = new DoubleConstant("auton straight second", -3.85);
+		autonArcMod = new DoubleConstant("auton arc mod", 1.0);
 		construct();
-		setSelectedAuton("high goal motion but don't shoot");
+		setSelectedAuton("ball denial");
+//		setSelectedAuton("arm down drive forward");
+//		setSelectedAuton("arm down drive forward");
+//		setSelectedAuton("arm down, low bar, low goal,back to neutral");
 	}
 
 	@Override
@@ -170,25 +175,59 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});
-		
+
 		modes.add(new AutonMode() {
 			
 			@Override
 			public String getName() {
-				return "arm down, low bar, low goal";
+				return "testArc";
 			}
 			
 			@Override
 			public Command getCommand() {
 				Command waitThenDrive = CommandsUtil.combineSequential(
 						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
-						layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get()),
-						layout.subsystems.drive.turnAmount(autonTurn.get()),
-						layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()));
+						layout.subsystems.drive.driveArcCommand(3, 5));
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});
 		
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "arm down, low bar, low goal,back to neutral";
+			}
+			
+			@Override
+			public Command getCommand() {
+				final double speedMod = 1.7;
+				final double accMod = 1.4;
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
+						CommandsUtil.combineSequential(
+								CommandsUtil.combineSimultaneous(
+										layout.subsystems.drive.driveDistanceCommand(-autonForwardFirst.get(),speedMod,accMod),
+										CommandsUtil.combineSequential(
+												new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()/ 2,speedMod,accMod) ),
+												new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
+
+						layout.subsystems.drive.turnAmount(autonTurn.get()),
+						layout.subsystems.drive.driveDistanceCommand(-autonForwardSecond.get(), speedMod, accMod),
+						layout.subsystems.drive.driveDistanceCommand(1.5, 0.4, 1.0),
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+					//	new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -.1, .01),
+						new WaitTimeCommand(1.15),
+						new SetMotorCommand(layout.io.intakeMotor, -1.0),
+						new WaitTimeCommand(1),
+						new SetMotorCommand(layout.io.intakeMotor, 0),
+						layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()-1.8, speedMod, accMod),
+						layout.subsystems.drive.turnAmount(-autonTurn.get()),
+						layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get(), speedMod, accMod)
+				));
+				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
+			}
+		});
 		modes.add(new AutonMode() {
 			
 			@Override
@@ -220,9 +259,9 @@ public class AutonomousMain extends AutonomousBase {
 						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
 								CommandsUtil.combineSequential(
 										CommandsUtil.combineSimultaneous(
-												layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get()),
+												layout.subsystems.drive.driveArcCommand(autonForwardFirst.get() * autonArcMod.get(), autonForwardFirst.get()),
 												CommandsUtil.combineSequential(
-														new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()) / 2.0 - 0.5),
+														new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()) / 2.0 - 0.2),
 														new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
 										layout.subsystems.drive.turnAmount(autonTurn.get()),
 										Command.create(() -> {System.out.println("arm set to zero");}),
@@ -242,6 +281,33 @@ public class AutonomousMain extends AutonomousBase {
 			}
 		});
 
+
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "low bar back turn forward high goal";
+			}
+			
+			@Override
+			public Command getCommand() {
+				SpeedControllerSetCommand flywheelSpeedControl =
+						new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+								CommandsUtil.combineSequential(
+										CommandsUtil.combineSimultaneous(
+												layout.subsystems.drive.driveArcCommand(autonForwardFirst.get() * autonArcMod.get(), autonForwardFirst.get()),
+												CommandsUtil.combineSequential(
+														new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()) / 2.0 - 0.2),
+														new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
+										layout.subsystems.drive.turnAmount(autonTurn.get()),
+										Command.create(() -> {System.out.println("arm set to zero");}),
+										makeShootCommand(flywheelSpeedControl)
+						));
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
+			}
+		});
 		modes.add(new AutonMode() {
 			
 			@Override
@@ -265,7 +331,9 @@ public class AutonomousMain extends AutonomousBase {
 										Command.create(() -> {System.out.println("arm set to zero");}),
 										layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()),
 										layout.subsystems.drive.turnAmount(.5),
-										new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0)
+										new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+										layout.subsystems.drive.driveDistanceCommand(2),
+										new SetMotorCommand(layout.io.intakeMotor, -1.0)
 						));
 				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
 			}
@@ -314,13 +382,30 @@ public class AutonomousMain extends AutonomousBase {
 	}
 
 	private Command waitTillSetpoint(TalonSRXPositionHardware controller, double point) {
-		return new WaitUntilControllerWithinRangeCommand(controller, point - 0.06, point + 0.06);
+		return new WaitUntilControllerWithinRangeCommand(controller, point - 0.08, point + 0.06);
 	}
 
 	private Command waitTillSpeedSetpoint(TalonSRXSpeedHardware controller, double point) {
 		double absPoint = Math.abs(point);
 		return new WaitUntilSpeedControllerWithinRange(controller, absPoint - (absPoint * .10),
 				absPoint + (absPoint * .10));
+	}
+	
+	private Command makeShootCommand(SpeedControllerSetCommand flywheelSpeedControl){
+		Command shoot = CommandsUtil.combineSequential(
+				new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+				layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()),
+				new SetASetpointCommand(layout.subsystems.armSetpointProvider, RobotMap.highGoalPoint.get()),
+				waitTillSetpoint(layout.io.armElevationMotor, RobotMap.highGoalPoint.get()),
+				new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
+				waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
+				Command.create(() -> {System.out.println("on to intake");}),
+				new SetMotorCommand(layout.io.intakeMotor, 1.0),
+				new WaitTimeCommand(2),
+				new SetMotorCommand(layout.io.intakeMotor, 0.0),
+				new SpeedControlSetCommandSetCommand(flywheelSpeedControl, 0.0)
+		);
+		return shoot;
 	}
 
 	@Override

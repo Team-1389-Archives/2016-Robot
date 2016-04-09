@@ -20,7 +20,6 @@ public class ButtonMotorCommand extends Command{
 		if (button.isTriggered()){
 			speed = invert? 1.0: -1.0;
 		}
-		System.out.println("speeed: " + speed);
 		motor.setSpeed(speed);
 		return false;
 	}
