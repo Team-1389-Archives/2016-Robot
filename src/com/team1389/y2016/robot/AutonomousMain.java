@@ -51,10 +51,10 @@ public class AutonomousMain extends AutonomousBase {
 		autonForwardSecond = new DoubleConstant("auton straight second", -3.85);
 		autonArcMod = new DoubleConstant("auton arc mod", 1.0);
 		construct();
-		setSelectedAuton("ball denial");
+//		setSelectedAuton("ball denial");
 //		setSelectedAuton("arm down drive forward");
 //		setSelectedAuton("arm down drive forward");
-//		setSelectedAuton("arm down, low bar, low goal,back to neutral");
+		setSelectedAuton("arm down, low bar, low goal,back to neutral");
 	}
 
 	@Override

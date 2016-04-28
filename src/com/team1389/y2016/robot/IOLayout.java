@@ -4,10 +4,12 @@ import org.strongback.components.Motor;
 import org.strongback.components.Switch;
 import org.strongback.components.ui.InputDevice;
 
+import com.team1389.base.wpiWrappers.SmartCANTalon;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Servo;
 
 public abstract class IOLayout{
 	//driveTrain
@@ -46,6 +48,10 @@ public abstract class IOLayout{
 	public InputDevice controllerDriver;
 	public InputDevice controllerManip;
 	public InputDevice controllerFake;
+	
+	//Climbing Mechanism
+	Servo winchRelease;
+	SmartCANTalon secondArm;
 	
 	public abstract void configFollowerTalonsToWorkAroundDumbGlitch();
 }

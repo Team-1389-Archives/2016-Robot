@@ -16,6 +16,7 @@ import com.team1389.base.util.testing.PositionControllerMonitorCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.commands.WinchServoControl;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
 import com.team1389.y2016.robot.control.FlywheelControlCommand;
@@ -67,35 +68,20 @@ public class TeleopMain extends TeleopBase{
 		
 		SpeedControllerSetCommand flywheelSpeed = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
 		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
-		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel/*, flywheelSpeed*/);
+		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
 		
 		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
-//		return CommandsUtil.combineSimultaneous(testIntake, flywheelBasic, monitorFlywheel);
-		
-		
-//		Command monitorTurntable = new TalonMonitorCommand(layout.io.simpleTurntable, "turntable");
 
 		SetpointProvider xAxis = new JoystickSetpointControlWithSafety(layout.io.controllerManip.getAxis(4),
 				 layout.io.controllerManip.getButton(10), -.3, .3, 0.003, 0);
-		
-		//comment out this section for arm control
-//		xAxis = new SetpointProvider() {
-//			
-//			@Override
-//			public double getSetpoint() {
-//				return 0;
-//			}
-//		};
 
 		//uncomment for turntable
 //		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 //				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
 		
-		Command monitorArm = new PositionControllerMonitorCommand(layout.io.armElevationMotor, "arm");
-		Command monitorFlywheel = new TalonMonitorCommand(layout.io.flywheelMotorA, "flywheel");
-		
-		//uncomment for turntable
-		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll);
+//		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll);
+//		return CommandsUtil.combineSimultaneous(new WinchServoControl(layout.io.winchRelease, layout.io.controllerDriver.getButton(0)));
+		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelAll);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

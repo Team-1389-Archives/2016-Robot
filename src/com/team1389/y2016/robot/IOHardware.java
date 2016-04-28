@@ -3,11 +3,13 @@ package com.team1389.y2016.robot;
 import org.strongback.components.Switch;
 import org.strongback.hardware.Hardware;
 
+import com.team1389.base.wpiWrappers.SmartCANTalon;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Servo;
 
 public class IOHardware extends IOLayout{
 	public IOHardware() {
@@ -62,6 +64,10 @@ public class IOHardware extends IOLayout{
 				TalonControlMode.Follower, false);
 		
 		flywheelFancy = new TalonSRXPositionHardware(flywheelMotorA, 4096 * (18.0 / 42.0));
+		
+		//Climber
+		winchRelease = new Servo(RobotMap.winchRelease_PWM);
+		secondArm = new SmartCANTalon(new CANTalon(RobotMap.secondArmTalon_CAN));
 		
 
 		configFollowerTalonsToWorkAroundDumbGlitch();
