@@ -36,14 +36,16 @@ public class FlywheelControlCommand extends Command {
 	public boolean execute() {
 		speed = RobotMap.flySpeed.get();
 		boolean spinning = joystick.getButton(SPIN_UP_BUTTON).isTriggered();
+		
+		double mult = -1;
 
 		if (spinning) {
-			speedControlCommand.setSpeed(speed);
+			speedControlCommand.setSpeed(speed * mult);
 		} else {
 			speedControlCommand.setSpeed(0);
 			if (joystick.getAxis(1).read() < -0.9) {// -0.5
-				// speedControlCommand.setSpeed(2500);
-				speedControlCommand.hackVoltageSet(-1);
+				speedControlCommand.setSpeed(2500 * mult);
+				//speedControlCommand.hackVoltageSet(-1);
 			}
 		}
 //		if (joystick.getAxis(1).read() < -0.9) {// -0.5

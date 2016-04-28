@@ -6,24 +6,18 @@ import org.strongback.components.ui.ContinuousRange;
 
 import com.team1389.base.TeleopBase;
 import com.team1389.base.util.CommandsUtil;
-import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.ConfigurablePid;
-import com.team1389.base.util.control.ConfigurablePid.PIDConstants;
-import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.util.control.SpeedControllerSetCommand;
-import com.team1389.base.util.testing.PositionControllerMonitorCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
-import com.team1389.y2016.robot.commands.WinchServoControl;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
 import com.team1389.y2016.robot.control.FlywheelControlCommand;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.JoystickSetpointControlWithSafety;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
-import com.team1389.y2016.robot.control.TurntableControl;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -74,7 +68,7 @@ public class TeleopMain extends TeleopBase{
 
 		SetpointProvider xAxis = new JoystickSetpointControlWithSafety(layout.io.controllerManip.getAxis(4),
 				 layout.io.controllerManip.getButton(10), -.3, .3, 0.003, 0);
-
+		
 		//uncomment for turntable
 //		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 //				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);

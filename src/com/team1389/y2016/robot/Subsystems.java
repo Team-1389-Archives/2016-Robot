@@ -14,9 +14,10 @@ public class Subsystems {
 //	ArmControl arm;
 	final SetableSetpointProvider armSetpointProvider;
 	PositionControllerRampCommand elevation;
+	PositionControllerRampCommand climber;
 	IOLayout io;
 	ConfigurablePid armPid;
-	
+	ConfigurablePid climberArmPid;
 	//flywheel
 	TalonSRXSpeedHardware flywheelSpeedController;
 	ConfigurablePid flywheelPid;

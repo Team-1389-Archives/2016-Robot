@@ -29,8 +29,8 @@ public class RobotMap {
 	public static final int winchRelease_PWM = 2;
 	public static final int secondArmTalon_CAN = 9;
 	//DONT COMMIT THIS //lol looks like i commited it anyway
-	public static final int flywheelMotorA_CAN = 5; public static final boolean flywheelMotorA_isInverted = false;
-	public static final int flywheelMotorB_CAN = 10; public static final boolean flywheelMotorB_isInverted = false;
+	public static final int flywheelMotorA_CAN = 5; public static final boolean flywheelMotorA_isInverted = true;
+	public static final int flywheelMotorB_CAN = 10; public static final boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static final double encoderTicksPerRotation = 4096;
@@ -39,7 +39,7 @@ public class RobotMap {
 	public static final boolean rightEncoderInverted = false;
 	public static final boolean elevatorEncoderInverted = true;
 	public static final boolean turntableEncoderInverted = false;
-	public static final boolean flywheelEncoderInverted = true;
+	public static final boolean flywheelEncoderInverted = false;
 	
 	//Ball Manipulator
 	public static final int ballHolderIR1_DIO = 0; public static final boolean ballHolderIR1_isInverted = false;
