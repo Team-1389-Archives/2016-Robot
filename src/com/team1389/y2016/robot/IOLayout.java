@@ -4,12 +4,12 @@ import org.strongback.components.Motor;
 import org.strongback.components.Switch;
 import org.strongback.components.ui.InputDevice;
 
-import com.team1389.base.wpiWrappers.SmartCANTalon;
-import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
+import com.kauailabs.navx.frc.AHRS;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public abstract class IOLayout{
 	//driveTrain
@@ -43,7 +43,7 @@ public abstract class IOLayout{
 	//Inputs
 	public Switch ballHolderIR1;
 	public Switch ballHolderIR2;
-	
+	public AHRS imu;
 	//Human Controlls
 	public InputDevice controllerDriver;
 	public InputDevice controllerManip;
@@ -51,7 +51,11 @@ public abstract class IOLayout{
 	
 	//Climbing Mechanism
 	Servo winchRelease;
-	SmartCANTalon secondArm;
+	CANTalon climberTalon;
+	TalonSRXPositionHardware climber;
 	
+	//Vision
+	Solenoid ringLight;
+
 	public abstract void configFollowerTalonsToWorkAroundDumbGlitch();
 }

@@ -5,19 +5,24 @@ import org.strongback.components.Switch;
 import org.strongback.components.ui.ContinuousRange;
 
 import com.team1389.base.TeleopBase;
+import com.team1389.base.control.AxisWithSafety;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.control.ConfigurablePid;
 import com.team1389.base.util.control.SetpointProvider;
 import com.team1389.base.util.control.SpeedControllerSetCommand;
+import com.team1389.base.util.testing.JoystickTalonCommand;
 import com.team1389.base.util.testing.TalonMonitorCommand;
 import com.team1389.y2016.robot.commands.JoystickDriveCommand;
 import com.team1389.y2016.robot.commands.JoystickMotorCommand;
+import com.team1389.y2016.robot.commands.JoystickPositionControl;
 import com.team1389.y2016.robot.control.ArmSetpointProvider;
 import com.team1389.y2016.robot.control.FlywheelControl;
 import com.team1389.y2016.robot.control.FlywheelControlCommand;
 import com.team1389.y2016.robot.control.IntakeControlCommand;
 import com.team1389.y2016.robot.control.JoystickSetpointControlWithSafety;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
+import com.team1389.y2016.robot.control.WinchDeployControl;
+import com.team1389.y2016.robot.test.ServoTestCommand;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -53,7 +58,10 @@ public class TeleopMain extends TeleopBase{
 //		Command turntable = new TurntableControl(layout.io.controllerManip, layout.io.simpleTurntable);
 
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
-
+		Command climbPidDo=layout.subsystems.climber;
+		Command climbControl = new JoystickPositionControl(layout.subsystems.climberSetpointProvider,layout.io.controllerManip.getAxis(5));
+		Command climber = CommandsUtil.combineSimultaneous(climbPidDo,climbControl);
+		
 		Switch ballHolderIr = Switch.or(layout.io.ballHolderIR1, layout.io.ballHolderIR2);
 		Command intake = new IntakeControlCommand(layout.io.intakeMotor, layout.io.controllerManip.getAxis(1),
 				layout.io.controllerManip.getButton(9), ballHolderIr);
@@ -72,9 +80,16 @@ public class TeleopMain extends TeleopBase{
 		//uncomment for turntable
 //		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 //				new PIDConstants(1, 0, 0, 0, 0), .3, -.3, .12);
+
+		Command climberTests = CommandsUtil.combineSimultaneous(/*new TalonMonitorCommand(layout.io.climberTalon, "climber"),*/
+				new JoystickTalonCommand(layout.io.climberTalon,
+						new AxisWithSafety(layout.io.controllerManip.getAxis(5),
+								layout.io.controllerManip.getButton(7)), .25));
 		
-//		return CommandsUtil.combineSimultaneous(drive, /*yaw,*/ elevation, intake, flywheelAll);
-//		return CommandsUtil.combineSimultaneous(new WinchServoControl(layout.io.winchRelease, layout.io.controllerDriver.getButton(0)));
+		Command winchDeploy = new WinchDeployControl(
+				Switch.and(layout.io.controllerDriver.getButton(8),layout.io.controllerManip.getButton(8)),
+				layout.io.winchRelease);
+		
 		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelAll);
 	}
 	

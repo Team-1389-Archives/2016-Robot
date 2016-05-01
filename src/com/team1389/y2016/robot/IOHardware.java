@@ -1,15 +1,17 @@
 package com.team1389.y2016.robot;
 
-import org.strongback.components.Switch;
 import org.strongback.hardware.Hardware;
 
-import com.team1389.base.wpiWrappers.SmartCANTalon;
+import com.kauailabs.navx.frc.AHRS;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
+import com.team1389.y2016.robot.control.CombinedSolenoid;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class IOHardware extends IOLayout{
 	public IOHardware() {
@@ -37,7 +39,7 @@ public class IOHardware extends IOLayout{
 		
 		rightDriveController = new TalonSRXPositionHardware(rightDriveA, RobotMap.wheelTicksPerRotation);
 
-		
+		ringLight=new CombinedSolenoid(RobotMap.ringLightA_Sol,RobotMap.ringLightB_Sol);
 		//arm
 		
 		simpleElevationA = createCANTalon(RobotMap.elevatorMotorA_CAN, RobotMap.elevatorMotorA_isInverted,
@@ -67,14 +69,15 @@ public class IOHardware extends IOLayout{
 		
 		//Climber
 		winchRelease = new Servo(RobotMap.winchRelease_PWM);
-		secondArm = new SmartCANTalon(new CANTalon(RobotMap.secondArmTalon_CAN));
-		
-
+		climberTalon = createCANTalon(RobotMap.secondArmTalon_CAN,false,TalonControlMode.Position,false);		
+		climber = new TalonSRXPositionHardware(climberTalon, RobotMap.encoderTicksPerRotation);
+				
 		configFollowerTalonsToWorkAroundDumbGlitch();
 		
 		//Inputs
 		ballHolderIR1 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR1_DIO);
 		ballHolderIR2 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR2_DIO);
+		imu = new AHRS(SPI.Port.kMXP);
 		
 		//Human Inputs
 		controllerDriver = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.driveJoystickPort);

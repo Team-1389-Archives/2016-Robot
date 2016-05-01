@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="/Team1389-Robot-Code-Base/lib/jetty-util-9.3.2.v20150730.jar"/>
 	<classpathentry kind="lib" path="/Team1389-Robot-Code-Base/lib/strongback.jar" sourcepath="/Team1389-Robot-Code-Base/lib/strongback-sources.jar"/>
 	<classpathentry kind="lib" path="/Team1389-Robot-Code-Base/lib/strongback-testing.jar" sourcepath="/Team1389-Robot-Code-Base/lib/strongback-testing-sources.jar"/>
+	<classpathentry kind="lib" path="/Team1389-Robot-Code-Base/lib/navx_frc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

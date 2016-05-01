@@ -26,7 +26,7 @@ public class RobotMap {
 	//Ball Manipulator
 	public static final int intakeMotor_CAN = 11; public static final boolean intakeMotor_isInverted = true;
 	//Climber
-	public static final int winchRelease_PWM = 2;
+	public static final int winchRelease_PWM = 0;
 	public static final int secondArmTalon_CAN = 9;
 	//DONT COMMIT THIS //lol looks like i commited it anyway
 	public static final int flywheelMotorA_CAN = 5; public static final boolean flywheelMotorA_isInverted = true;
@@ -45,6 +45,8 @@ public class RobotMap {
 	public static final int ballHolderIR1_DIO = 0; public static final boolean ballHolderIR1_isInverted = false;
 	public static final int ballHolderIR2_DIO = 1; public static final boolean ballHolderIR2_isInverted = false;
 	
+	public static final int ringLightA_Sol=0;
+	public static final int ringLightB_Sol=1;
 	//Misc
 	public static final int driveJoystickPort = 0;
 	public static final int manipJoystickPort = 1;
@@ -62,7 +64,7 @@ public class RobotMap {
 	public static final double maxAutonAcceleration = 1.5;
 	public static final ConfigurablePid driveForwardPid = new ConfigurablePid("driveForwardPID", new PIDConstants(.2, 0, 0, 0, 0));
 	public static final ConfigurablePid driveTurnPid = new ConfigurablePid("driveTurnPID", new PIDConstants(2, 0, 0, 0, 0));
-	
+	public static final ConfigurablePid imuTurnPid = new ConfigurablePid("imuTurnPID", new PIDConstants(.1,0,0,0,0));
 	//Arm
 	
 	public static DoubleConstant highGoalPoint = new DoubleConstant("high goal setpoint", 0.12);

@@ -9,6 +9,7 @@ import org.strongback.hardware.Hardware;
 
 import com.team1389.base.auton.AutonMode;
 import com.team1389.base.auton.AutonomousBase;
+import com.team1389.base.control.IMUAnglePIDSource;
 import com.team1389.base.util.CommandsUtil;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetASetpointCommand;
@@ -35,6 +36,7 @@ public class AutonomousMain extends AutonomousBase {
 	DoubleConstant autonTurn;
 	DoubleConstant autonForwardSecond;
 	DoubleConstant autonArcMod;
+	DoubleConstant chevalDisance;
 	
 	public static final double rotationsPerInch = 1.0 / 22.5;
 	public static final double rotationsPerDegree = 1.0 / 360.0;
@@ -47,14 +49,15 @@ public class AutonomousMain extends AutonomousBase {
 		final double rotationsPerDegree = 1.0 / 360.0;
 
 		autonForwardFirst = new DoubleConstant("auton forward first", -8.66);
-		autonTurn = new DoubleConstant("auton turn", .159);
+		autonTurn = new DoubleConstant("auton turn", 15d);
 		autonForwardSecond = new DoubleConstant("auton straight second", -3.85);
 		autonArcMod = new DoubleConstant("auton arc mod", 1.0);
+		chevalDisance = new DoubleConstant("cheval", 1.95);
 		construct();
 //		setSelectedAuton("ball denial");
 //		setSelectedAuton("arm down drive forward");
 //		setSelectedAuton("arm down drive forward");
-		setSelectedAuton("arm down, low bar, low goal,back to neutral");
+		setSelectedAuton("vision shot");
 	}
 
 	@Override
@@ -141,6 +144,25 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(moveArmTo60, waitThenDrive);
 			}
 		});
+		modes.add(new AutonMode(){
+
+			@Override
+			public Command getCommand() {
+				return CommandsUtil.combineSimultaneous(
+					layout.subsystems.vision.lightsOn(),
+					Command.create(()->{
+						layout.subsystems.vision.getCorrectionAngle();
+						System.out.println("checking...");
+						return false;
+					}));
+			}
+
+			@Override
+			public String getName() {
+				return "vision shot";
+			}
+			
+		});
 		modes.add(new AutonMode() {
 
 			@Override
@@ -169,11 +191,9 @@ public class AutonomousMain extends AutonomousBase {
 			
 			@Override
 			public Command getCommand() {
-				Command waitThenDrive = CommandsUtil.combineSequential(
-						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
-						layout.subsystems.drive.turnAmount(autonTurn.get()));
-				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
+				return layout.subsystems.drive.turnWithPidSource(new IMUAnglePIDSource(layout.io.imu), autonTurn.get(),RobotMap.imuTurnPid.get());
 			}
+			
 		});
 
 		modes.add(new AutonMode() {
@@ -205,26 +225,28 @@ public class AutonomousMain extends AutonomousBase {
 				final double accMod = 1.4;
 				Command waitThenDrive = CommandsUtil.combineSequential(
 						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -0.03, 0.03),
-						CommandsUtil.combineSequential(
-								CommandsUtil.combineSimultaneous(
-										layout.subsystems.drive.driveDistanceCommand(-autonForwardFirst.get(),speedMod,accMod),
-										CommandsUtil.combineSequential(
-												new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()/ 2,speedMod,accMod) ),
-												new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
-
-						layout.subsystems.drive.turnAmount(autonTurn.get()),
+						//CommandsUtil.combineSequential(
+//								CommandsUtil.combineSimultaneous(
+//										layout.subsystems.drive.driveDistanceCommand(-autonForwardFirst.get(),speedMod,accMod),
+//										CommandsUtil.combineSequential(
+//												new WaitTimeCommand(layout.subsystems.drive.timeForDistance(autonForwardFirst.get()/ 2,speedMod,accMod) ),
+//												new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.25))),
+						layout.subsystems.drive.driveDistanceCommand(-autonForwardFirst.get(),speedMod,accMod),
+						layout.subsystems.drive.turnWithPidSource(layout.io.imu, autonTurn.get(), RobotMap.imuTurnPid.get()),
 						layout.subsystems.drive.driveDistanceCommand(-autonForwardSecond.get(), speedMod, accMod),
 						layout.subsystems.drive.driveDistanceCommand(1.5, 0.4, 1.0),
-						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
-					//	new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -.1, .01),
-						new WaitTimeCommand(1.15),
+//						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+//						Command.create(() -> {System.out.println("set it");return true;}),
+//					//	new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -.1, .01),
+//						Command.create(() -> {System.out.println("finished driving and commanded arm to move down");return true;}),
+//						new WaitTimeCommand(1.15),
 						new SetMotorCommand(layout.io.intakeMotor, -1.0),
 						new WaitTimeCommand(1),
 						new SetMotorCommand(layout.io.intakeMotor, 0),
 						layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()-1.8, speedMod, accMod),
 						layout.subsystems.drive.turnAmount(-autonTurn.get()),
 						layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get(), speedMod, accMod)
-				));
+				/*)*/);
 				return CommandsUtil.combineSimultaneous(moveArmDown, waitThenDrive);
 			}
 		});
@@ -360,6 +382,28 @@ public class AutonomousMain extends AutonomousBase {
 				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
 			}
 		});
+		
+		modes.add(new AutonMode() {
+			
+			@Override
+			public String getName() {
+				return "cheval de friasdf";
+			}
+			
+			@Override
+			public Command getCommand() {
+
+				Command waitThenDrive = CommandsUtil.combineSequential(
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.2),
+//						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .15, .25),
+						layout.subsystems.drive.driveDistanceCommand(chevalDisance.get()),
+						new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
+						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -.3, .3),
+						layout.subsystems.drive.driveDistanceCommand(3));
+				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, waitThenDrive);
+			}
+		});
+
 
 		// add modes to mode list here
 
