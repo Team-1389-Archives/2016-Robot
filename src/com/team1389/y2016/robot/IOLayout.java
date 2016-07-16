@@ -25,13 +25,13 @@ public abstract class IOLayout{
 	
 	//arm
 		//uncomment for turntable
-//	public TalonSRXPositionHardware turntableMotor;
+	public TalonSRXPositionHardware turntableMotor;
 	public TalonSRXPositionHardware armElevationMotor;
 	
 	public CANTalon simpleElevationA;
 	public CANTalon simpleElevationB;
 		//uncomment for turntable
-//	public CANTalon simpleTurntable;
+	public CANTalon simpleTurntable;
 	
 	//Ball Manipulator
 	public Motor intakeMotor;

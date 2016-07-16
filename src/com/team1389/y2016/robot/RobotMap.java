@@ -20,7 +20,7 @@ public class RobotMap {
 	public static final int rightMotorB_CAN = 1; public static final boolean rightMotorB_isInverted = false;
 	public static final int rightMotorC_CAN = 3; public static final boolean rightMotorC_isInverted = false;
 	//Arm
-//	public static final int turntableMotor_CAN = 9; public static final boolean turntableMotor_isInverted = false;
+	public static final int turntableMotor_CAN = 9; public static final boolean turntableMotor_isInverted = false;
 	public static final int elevatorMotorA_CAN = 12; public static final boolean elevatorMotorA_isInverted = true;
 	public static final int elevatorMotorB_CAN = 6; public static final boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
