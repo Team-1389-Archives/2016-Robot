@@ -14,23 +14,23 @@ public class RobotMap {
 	//Outputs:
 	//Drivetrain
 	public static final int leftMotorA_CAN = 4; public static final boolean leftMotorA_isInverted = true;
-	public static final int leftMotorB_CAN = 8; public static final boolean leftMotorB_isInverted = true;
-	public static final int leftMotorC_CAN = 7; public static final boolean leftMotorC_isInverted = true;
+	public static final int leftMotorB_CAN = 5; public static final boolean leftMotorB_isInverted = true;
+	public static final int leftMotorC_CAN = 6; public static final boolean leftMotorC_isInverted = true;
 	public static final int rightMotorA_CAN = 2; public static final boolean rightMotorA_isInverted = false;
 	public static final int rightMotorB_CAN = 1; public static final boolean rightMotorB_isInverted = false;
 	public static final int rightMotorC_CAN = 3; public static final boolean rightMotorC_isInverted = false;
 	//Arm
-	public static final int turntableMotor_CAN = 9; public static final boolean turntableMotor_isInverted = false;
+	public static final int turntableMotor_CAN = 10; public static final boolean turntableMotor_isInverted = false;
 	public static final int elevatorMotorA_CAN = 12; public static final boolean elevatorMotorA_isInverted = true;
-	public static final int elevatorMotorB_CAN = 6; public static final boolean elevatorMotorB_isInverted = true;
+	public static final int elevatorMotorB_CAN = 8; public static final boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
-	public static final int intakeMotor_CAN = 11; public static final boolean intakeMotor_isInverted = true;
+	public static final int intakeMotor_CAN = 9; public static final boolean intakeMotor_isInverted = true;
 	//Climber
 	public static final int winchRelease_PWM = 0;
 	public static final int secondArmTalon_CAN = 9;
 	//DONT COMMIT THIS //lol looks like i commited it anyway
-	public static final int flywheelMotorA_CAN = 5; public static final boolean flywheelMotorA_isInverted = true;
-	public static final int flywheelMotorB_CAN = 10; public static final boolean flywheelMotorB_isInverted = true;
+	public static final int flywheelMotorA_CAN = 11; public static final boolean flywheelMotorA_isInverted = true;
+	public static final int flywheelMotorB_CAN = 7; public static final boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static final double encoderTicksPerRotation = 4096;
@@ -42,7 +42,7 @@ public class RobotMap {
 	public static final boolean flywheelEncoderInverted = false;
 	
 	//Ball Manipulator
-	public static final int ballHolderIR1_DIO = 0; public static final boolean ballHolderIR1_isInverted = false;
+	public static final int ballHolderIR1_DIO = 7; public static final boolean ballHolderIR1_isInverted = false;
 	public static final int ballHolderIR2_DIO = 1; public static final boolean ballHolderIR2_isInverted = false;
 	
 	public static final int ringLightA_Sol=0;
