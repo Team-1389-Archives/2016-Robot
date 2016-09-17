@@ -18,7 +18,7 @@ public class WaitUntilSpeedControllerWithinRange extends Command{
 	@Override
 	public boolean execute() {
 		double speed = controller.getSpeed();
-		System.out.println("in WaitUntilSpeedControllerWithinRange: " + speed);
+		//System.out.println("in WaitUntilSpeedControllerWithinRange: " + speed);
 		return Math.abs(speed) < Math.abs(max) && Math.abs(speed) > Math.abs(min);
 	}
 

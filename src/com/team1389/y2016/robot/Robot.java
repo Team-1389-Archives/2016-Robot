@@ -32,7 +32,7 @@ public class Robot implements RobotCode{
 
 	@Override
 	public void setup() {
-		System.out.println("Robot is initialized");
+		//System.out.println("Robot is initialized");
 	}
 
 	@Override

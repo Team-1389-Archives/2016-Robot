@@ -16,7 +16,7 @@ public class MonitorStrongbackTalonCommand extends Command{
 	@Override
 	public boolean execute() {
 		double speed = talon.getEncoderInput().getRate();
-		System.out.println("Talon " + name + ": " + speed);
+	//S	System.out.println("Talon " + name + ": " + speed);
 		return false;
 	}
 

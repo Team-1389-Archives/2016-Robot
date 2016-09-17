@@ -30,7 +30,6 @@ public class TeleopMain extends TeleopBase{
 	
 	public TeleopMain(RobotLayout layout) {
 		this.layout = layout;
-		System.out.println("layout in teleop:" + layout);
 //		pidC = new ConfigurablePid("pid config", new PIDConstants(0, 0, 0, 0, 0));
 //		target = new DoubleConstant("maxChange", 0.1);
 	}

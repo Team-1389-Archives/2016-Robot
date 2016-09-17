@@ -31,7 +31,7 @@ public class FlywheelControlRPS extends Command{
 			speed = joy.getAxis(1).read();
 		}
 		double moddedSpeed = speed * speedMod.get();
-		System.out.println("speed in FlywheelControlRPM: " + moddedSpeed);
+	//	System.out.println("speed in FlywheelControlRPM: " + moddedSpeed);
 		motor.setSpeed(moddedSpeed);
 		return false;
 	}

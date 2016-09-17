@@ -3,8 +3,10 @@ package com.team1389.y2016.robot.control;
 import org.strongback.command.Command;
 import org.strongback.components.ui.InputDevice;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.team1389.y2016.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 
@@ -12,14 +14,23 @@ public class TurntableControl extends Command {
 	boolean zeroing;
 	InputDevice joy;
 	CANTalon turn;
+	AHRS imu;
+	AnalogGyro gyro;
 
 	public TurntableControl(InputDevice joy, CANTalon turn) {
 		this.joy = joy;
 		this.turn = turn;
+		this.imu=imu;
+		this.gyro=gyro;
+		//gyro.initGyro();
+		//gyro.calibrate();
 	}
 
 	@Override
 	public boolean execute() {
+		//System.out.println("reconciled angle: "+gyro.getAngle()+imu.getAngle());
+		//System.out.println("imu:"+imu.getAngle());
+		//System.out.println("gyro: "+gyro.getAngle());
 		if(joy.getButton(10).isTriggered()){
 			zeroing=true;
 		}

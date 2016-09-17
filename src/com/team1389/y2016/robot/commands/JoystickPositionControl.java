@@ -17,7 +17,6 @@ public class JoystickPositionControl extends Command{
 	}
 	@Override
 	public boolean execute() {
-		System.out.println("Joystick Position Control thinks "+pos);
 		pos+=rng.read()*speedMod;
 		provider.setSetpoint(pos);
 		return false;

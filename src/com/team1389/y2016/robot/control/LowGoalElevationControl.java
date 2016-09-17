@@ -24,7 +24,7 @@ public class LowGoalElevationControl implements SetpointProvider{
 			value = 0.0;
 		}
 		
-		System.out.println("value is " + value);
+	//	System.out.println("value is " + value);
 		return value;
 	}
 

@@ -61,7 +61,6 @@ public class Subsystems {
 		//uncomment for turntable
 		io.turntableMotor.setCurrentPositionAs(io.turntableMotor.getPosition());
 		
-		System.out.println("setting flywheel pid in Subsystems");
 		io.flywheelFancy.setPID(flywheelPid.get());
 		
 		elevation.setPID(armPid.get());

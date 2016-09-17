@@ -47,7 +47,7 @@ public class IOHardware extends IOLayout{
 		simpleElevationB = new CANTalon(RobotMap.elevatorMotorB_CAN);
 		
 		armElevationMotor = new TalonSRXPositionHardware(simpleElevationA, RobotMap.armElevationTicksPerRotation);
-		System.out.println("ELEVATOR CONFIGURED AND READY");
+		//System.out.println("ELEVATOR CONFIGURED AND READY");
 		
 		//uncomment for turntable
 		simpleTurntable = createCANTalon(RobotMap.turntableMotor_CAN, RobotMap.turntableMotor_isInverted,					TalonControlMode.PercentVbus, RobotMap.turntableEncoderInverted);
@@ -104,7 +104,6 @@ public class IOHardware extends IOLayout{
 	 */
 	@Override
 	public void configFollowerTalonsToWorkAroundDumbGlitch() {
-		System.out.println("configging talons");
 		configFollowerTalon(leftDriveB, RobotMap.leftMotorB_isInverted, leftDriveA);
 		configFollowerTalon(leftDriveC, RobotMap.leftMotorC_isInverted, leftDriveA);
 		
