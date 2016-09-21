@@ -10,14 +10,15 @@ import com.team1389.y2016.robot.RobotLayout;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionModule {
 	TurntableControl turntable;
-	final int ImgWidth=520;
-	final int FOV=80;
-    private final NetworkTable grip = NetworkTable.getTable("grip");
+	final int ImgWidth=170;
+	final int FOV=60;
 	Solenoid ringLight;
 	public VisionModule(Solenoid ringLight){
+	//	NetworkTable.setPort(8080);
 		this.ringLight=ringLight;
 	}
 	public Command lightsOn(){
@@ -31,26 +32,38 @@ public class VisionModule {
 
 			@Override
 			public boolean execute() {
-				if(joy.getButton(6).isTriggered())
-				 CommandsUtil.combineSequential(
+				SmartDashboard.putString("data",NetworkTable.getTable("GRIP").getSubTable("myContoursReport").getKeys().toString());
+				SmartDashboard.putNumber("correction Angle", getCorrectionAngle());
+				lightsOn().execute();
+				if(joy.getButton(6).isTriggered()){
+				/* CommandsUtil.combineSequential(
 							new SetASetpointCommand(layout.subsystems.armSetpointProvider, .12),
 							new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .10, .3),
 							lightsOn(),
 							layout.subsystems.turntable.moveAngle(getCorrectionAngle()))
-				 .execute();
+				 .execute();*/
+					layout.subsystems.turntable.moveAngle(getCorrectionAngle()).execute();
+				}
 				 return false;
 			}
 
 		};
 	}
 	public double getCorrectionAngle(){
-		System.out.println(NetworkTable.getTable("grip").getSubTables());
+		NetworkTable grip=NetworkTable.getTable("GRIP");
 		//int targetIndex=getLargestArea(grip.getNumberArray("targets/area", new double[2]));
-		double[] areas=grip.getSubTable("targets").getNumberArray("area",new double[0]);
-		System.out.println("hai");
-		for(double area:areas){
-			System.out.println(area);
+		double[] areas=grip.getSubTable("myContoursReport").getNumberArray("area",new double[0]);
+		if(areas.length>0){
+			double centerX= (int)grip.getSubTable("myContoursReport").getNumberArray("centerX",new double[0])[getLargestArea(areas)];
+			double pixelOffset=centerX-ImgWidth/2;
+			double percentOffset=pixelOffset/ImgWidth;
+			double angleOffset=percentOffset*FOV;
+			return -angleOffset;
 		}
+		return 0;
+		/*for(double area:areas){
+			System.out.println(area);
+		}*/
 		/*System.out.println(grip.getNumberArray("targets/area", new double[0])[0]);
 		int centerX = (int) grip.getNumberArray("targets/centerX", new double[0])[targetIndex];
 		int pixelOffset=centerX-ImgWidth/2;
@@ -59,7 +72,6 @@ public class VisionModule {
 		double angleOffset=percentOffset*FOV;
 		System.out.println("off by "+angleOffset+"degrees");
 		return angleOffset;*/
-		return 35;
 	}
 	public int getLargestArea(double[] area){
 		System.out.println(area);

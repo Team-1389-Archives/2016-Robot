@@ -88,7 +88,7 @@ public class TeleopMain extends TeleopBase{
 		Command winchDeploy = new WinchDeployControl(
 				Switch.and(layout.io.controllerDriver.getButton(8),layout.io.controllerManip.getButton(8)),
 				layout.io.winchRelease);
-		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelBasic,turntable,vision);
+		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelAll,turntable,vision);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

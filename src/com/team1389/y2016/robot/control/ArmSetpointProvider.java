@@ -35,7 +35,7 @@ public class ArmSetpointProvider extends Command{
 		} else if (joystick.getButton(3).isTriggered()){
 			point = 0.07;
 		} else if (joystick.getButton(6).isTriggered()){
-			point = RobotMap.highGoalPoint.get();
+			//point = RobotMap.highGoalPoint.get();
 		}
 		
 		return point;
