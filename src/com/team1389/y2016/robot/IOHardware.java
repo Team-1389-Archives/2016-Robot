@@ -6,12 +6,12 @@ import com.kauailabs.navx.frc.AHRS;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.y2016.robot.control.CombinedSolenoid;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class IOHardware extends IOLayout{
 	public IOHardware() {
@@ -55,7 +55,7 @@ public class IOHardware extends IOLayout{
 		
 		
 		//ball manipulator
-		intakeMotor = Hardware.Motors.talonSRX(new CANTalon(RobotMap.intakeMotor_CAN));
+		intakeMotor = Hardware.Motors.victorSP(RobotMap.intakeMotor_CAN);
 			if(RobotMap.intakeMotor_isInverted) {intakeMotor = intakeMotor.invert();}
 			
 		flywheelMotorA = createCANTalon(RobotMap.flywheelMotorA_CAN, RobotMap.flywheelMotorA_isInverted,
@@ -77,7 +77,9 @@ public class IOHardware extends IOLayout{
 		ballHolderIR1 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR1_DIO);
 		ballHolderIR2 = Hardware.Switches.normallyClosed(RobotMap.ballHolderIR2_DIO);
 		imu = new AHRS(SPI.Port.kMXP);
-		
+		gyro=new AnalogGyro(0);
+		gyro.initGyro();
+		gyro.calibrate();
 		//Human Inputs
 		controllerDriver = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.driveJoystickPort);
 		controllerManip = Hardware.HumanInterfaceDevices.driverStationJoystick(RobotMap.manipJoystickPort);

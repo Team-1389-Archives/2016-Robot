@@ -1,14 +1,18 @@
 package com.team1389.y2016.robot.control;
 
 
-import java.util.concurrent.SynchronousQueue;
-
 import org.strongback.command.Command;
+import org.strongback.components.ui.InputDevice;
+
+import com.team1389.base.util.CommandsUtil;
+import com.team1389.base.util.control.SetASetpointCommand;
+import com.team1389.y2016.robot.RobotLayout;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class VisionModule {
+	TurntableControl turntable;
 	final int ImgWidth=520;
 	final int FOV=80;
     private final NetworkTable grip = NetworkTable.getTable("grip");
@@ -21,6 +25,23 @@ public class VisionModule {
 	}
 	public Command lightsOff(){
 		return new SolenoidControlCommand(false,ringLight);
+	}
+	public Command autoAim(RobotLayout layout,InputDevice joy){
+		return new Command(){
+
+			@Override
+			public boolean execute() {
+				if(joy.getButton(6).isTriggered())
+				 CommandsUtil.combineSequential(
+							new SetASetpointCommand(layout.subsystems.armSetpointProvider, .12),
+							new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .10, .3),
+							lightsOn(),
+							layout.subsystems.turntable.moveAngle(getCorrectionAngle()))
+				 .execute();
+				 return false;
+			}
+
+		};
 	}
 	public double getCorrectionAngle(){
 		System.out.println(NetworkTable.getTable("grip").getSubTables());
@@ -38,7 +59,7 @@ public class VisionModule {
 		double angleOffset=percentOffset*FOV;
 		System.out.println("off by "+angleOffset+"degrees");
 		return angleOffset;*/
-		return 0;
+		return 35;
 	}
 	public int getLargestArea(double[] area){
 		System.out.println(area);

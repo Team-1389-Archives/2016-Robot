@@ -6,6 +6,7 @@ import com.team1389.base.util.control.PositionControllerRampCommand;
 import com.team1389.base.util.control.SetableSetpointProvider;
 import com.team1389.base.util.control.TalonDriveControl;
 import com.team1389.base.wpiWrappers.TalonSRXSpeedHardware;
+import com.team1389.y2016.robot.control.TurntableControl;
 import com.team1389.y2016.robot.control.VisionModule;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
 
@@ -14,7 +15,7 @@ public class Subsystems {
 	Drivetrain drivetrain;
 	VisionModule vision;
 //	ArmControl arm;
-	final SetableSetpointProvider armSetpointProvider;
+	public final SetableSetpointProvider armSetpointProvider;
 	final SetableSetpointProvider climberSetpointProvider;
 	PositionControllerRampCommand elevation;
 	PositionControllerRampCommand climber;
@@ -24,6 +25,7 @@ public class Subsystems {
 	//flywheel
 	TalonSRXSpeedHardware flywheelSpeedController;
 	ConfigurablePid flywheelPid;
+	public TurntableControl turntable;
 	
 	
 	
@@ -32,6 +34,7 @@ public class Subsystems {
 		flywheelPid = new ConfigurablePid("flywheel pid", new PIDConstants(.501, 0, 0, 0, 0));
 		armPid = new ConfigurablePid("arm pid", new PIDConstants(.8, 0, 0, 0, 0));
 		climberArmPid =new ConfigurablePid("climber arm pid", new PIDConstants(.1,0,0,0,0));
+		turntable = new TurntableControl(io.simpleTurntable,io.imu,io.gyro);
 
 		this.io = io;
 		drive = new TalonDriveControl(io.leftDriveController, io.rightDriveController, RobotMap.maxAutonVelocity,

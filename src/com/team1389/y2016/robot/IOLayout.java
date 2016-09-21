@@ -7,6 +7,7 @@ import org.strongback.components.ui.InputDevice;
 import com.kauailabs.navx.frc.AHRS;
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -44,6 +45,7 @@ public abstract class IOLayout{
 	public Switch ballHolderIR1;
 	public Switch ballHolderIR2;
 	public AHRS imu;
+	public AnalogGyro gyro;
 	//Human Controlls
 	public InputDevice controllerDriver;
 	public InputDevice controllerManip;

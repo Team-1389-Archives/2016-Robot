@@ -24,13 +24,13 @@ public class RobotMap {
 	public static final int elevatorMotorA_CAN = 12; public static final boolean elevatorMotorA_isInverted = true;
 	public static final int elevatorMotorB_CAN = 8; public static final boolean elevatorMotorB_isInverted = true;
 	//Ball Manipulator
-	public static final int intakeMotor_CAN = 9; public static final boolean intakeMotor_isInverted = true;
+	public static final int intakeMotor_CAN = 0; public static final boolean intakeMotor_isInverted = true;
 	//Climber
-	public static final int winchRelease_PWM = 0;
+	public static final int winchRelease_PWM = 1;
 	public static final int secondArmTalon_CAN = 9;
 	//DONT COMMIT THIS //lol looks like i commited it anyway
-	public static final int flywheelMotorA_CAN = 11; public static final boolean flywheelMotorA_isInverted = true;
-	public static final int flywheelMotorB_CAN = 7; public static final boolean flywheelMotorB_isInverted = true;
+	public static final int flywheelMotorA_CAN = 9; public static final boolean flywheelMotorA_isInverted = true;
+	public static final int flywheelMotorB_CAN = 11; public static final boolean flywheelMotorB_isInverted = true;
 	
 	//Inputs:
 	public static final double encoderTicksPerRotation = 4096;

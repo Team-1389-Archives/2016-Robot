@@ -3,20 +3,25 @@ package com.team1389.y2016.robot.control;
 import org.strongback.command.Command;
 import org.strongback.components.ui.InputDevice;
 
-import com.team1389.base.util.DoubleConstant;
 import com.team1389.base.util.control.SetableSetpointProvider;
+import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 import com.team1389.y2016.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmSetpointProvider extends Command{
 	
 	InputDevice joystick;
 	SetableSetpointProvider setpoint;
 	double point;
-
-	public ArmSetpointProvider(InputDevice joystick, SetableSetpointProvider setpoint) {
+	TalonSRXPositionHardware armMotor;
+	TurntableControl control;
+	public ArmSetpointProvider(InputDevice joystick, SetableSetpointProvider setpoint, TurntableControl control,TalonSRXPositionHardware armMotor) {
 		this.joystick = joystick;
 		this.setpoint = setpoint;
 		this.point = 0;
+		this.control=control;
+		this.armMotor=armMotor;
 	}
 
 	private double getSetpoint() {
@@ -38,8 +43,16 @@ public class ArmSetpointProvider extends Command{
 
 	@Override
 	public boolean execute() {
-		setpoint.setSetpoint(getSetpoint());
+		SmartDashboard.putNumber("Arm setpoint",setpoint.getSetpoint());
+		SmartDashboard.putNumber("Arm position",setpoint.getSetpoint());
+		setpoint.setSetpoint(armMotor.getPosition());
+
+		if(control.isClear()||armMotor.getPosition()>.12||getSetpoint()>.12){
+			setpoint.setSetpoint(getSetpoint());
+		}else{
+			setpoint.setSetpoint(armMotor.getPosition()+.05);
+		}
 		return false;
 	}
-
+		
 }

@@ -135,9 +135,9 @@ public class AutonomousMain extends AutonomousBase {
 				Command waitThenDrive = CommandsUtil.combineSequential(
 						new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .12, .18),
 						layout.subsystems.drive.driveDistanceCommand(7),
-						new SetMotorCommand(layout.io.intakeMotor, -1.0),
+		//				new SetMotorCommand(layout.io.intakeMotor, -1.0),
 						new WaitTimeCommand(2),
-						new SetMotorCommand(layout.io.intakeMotor, 0.0),
+			//			new SetMotorCommand(layout.io.intakeMotor, 0.0),
 						layout.subsystems.drive.turnAmount(.5),
 						layout.subsystems.drive.driveDistanceCommand(5.5)
 						);
@@ -242,9 +242,9 @@ public class AutonomousMain extends AutonomousBase {
 //					//	new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, -.1, .01),
 //						Command.create(() -> {System.out.println("finished driving and commanded arm to move down");return true;}),
 //						new WaitTimeCommand(1.15),
-						new SetMotorCommand(layout.io.intakeMotor, -1.0),
+//						new SetMotorCommand(layout.io.intakeMotor, -1.0),
 						new WaitTimeCommand(1),
-						new SetMotorCommand(layout.io.intakeMotor, 0),
+	//					new SetMotorCommand(layout.io.intakeMotor, 0),
 						layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()-1.8, speedMod, accMod),
 						layout.subsystems.drive.turnAmount(-autonTurn.get()),
 						layout.subsystems.drive.driveDistanceCommand(autonForwardFirst.get(), speedMod, accMod)
@@ -296,9 +296,9 @@ public class AutonomousMain extends AutonomousBase {
 										new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
 										waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
 										Command.create(() -> {System.out.println("on to intake");}),
-										new SetMotorCommand(layout.io.intakeMotor, 1.0),
+					//					new SetMotorCommand(layout.io.intakeMotor, 1.0),
 										new WaitTimeCommand(2),
-										new SetMotorCommand(layout.io.intakeMotor, 0.0),
+						//				new SetMotorCommand(layout.io.intakeMotor, 0.0),
 										new SpeedControlSetCommandSetCommand(flywheelSpeedControl, 0.0)
 						));
 				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
@@ -356,8 +356,8 @@ public class AutonomousMain extends AutonomousBase {
 										layout.subsystems.drive.driveDistanceCommand(autonForwardSecond.get()),
 										layout.subsystems.drive.turnAmount(.5),
 										new SetASetpointCommand(layout.subsystems.armSetpointProvider, 0.0),
-										layout.subsystems.drive.driveDistanceCommand(2),
-										new SetMotorCommand(layout.io.intakeMotor, -1.0)
+										layout.subsystems.drive.driveDistanceCommand(2)
+										//new SetMotorCommand(layout.io.intakeMotor, -1.0)
 						));
 				return CommandsUtil.combineSimultaneous(layout.subsystems.elevation, flywheelSpeedControl, waitThenDrive);
 			}
@@ -420,9 +420,9 @@ public class AutonomousMain extends AutonomousBase {
 				new SpeedControlSetCommandSetCommand(flywheel, RobotMap.flySpeed.get()),
 				waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
 				Command.create(() -> {System.out.println("on to intake");}),
-				new SetMotorCommand(layout.io.intakeMotor, 1.0),
+			//	new SetMotorCommand(layout.io.intakeMotor, 1.0),
 				new WaitTimeCommand(2),
-				new SetMotorCommand(layout.io.intakeMotor, 0.0),
+				//new SetMotorCommand(layout.io.intakeMotor, 0.0),
 				new SpeedControlSetCommandSetCommand(flywheel, 0.0)
 				);
 	}
@@ -446,9 +446,9 @@ public class AutonomousMain extends AutonomousBase {
 				new SpeedControlSetCommandSetCommand(flywheelSpeedControl, RobotMap.flySpeed.get()),
 				waitTillSpeedSetpoint(layout.subsystems.flywheelSpeedController, RobotMap.flySpeed.get()),
 				Command.create(() -> {System.out.println("on to intake");}),
-				new SetMotorCommand(layout.io.intakeMotor, 1.0),
+			//	new SetMotorCommand(layout.io.intakeMotor, 1.0),
 				new WaitTimeCommand(2),
-				new SetMotorCommand(layout.io.intakeMotor, 0.0),
+			//	new SetMotorCommand(layout.io.intakeMotor, 0.0),
 				new SpeedControlSetCommandSetCommand(flywheelSpeedControl, 0.0)
 		);
 		return shoot;

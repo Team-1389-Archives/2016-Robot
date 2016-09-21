@@ -16,7 +16,7 @@ public class FlywheelControl extends Command{
 	}
 	@Override
 	public boolean execute() {
-		if (joy.getButton(1).isTriggered()){
+		if (joy.getButton(5).isTriggered()){
 			motor.set(-1);
 		} else {
 			motor.set(joy.getAxis(1).read());

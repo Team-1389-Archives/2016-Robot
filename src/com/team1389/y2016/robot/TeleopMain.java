@@ -36,6 +36,8 @@ public class TeleopMain extends TeleopBase{
 
 	@Override
 	public void setupTeleop() {
+		layout.io.gyro.reset();
+		layout.io.imu.reset();
 		layout.io.configFollowerTalonsToWorkAroundDumbGlitch();
 //		layout.subsystems.armSetpointProvider.setSetpoint(layout.io.armElevationMotor.getPosition());
 		layout.subsystems.initAll();
@@ -50,12 +52,15 @@ public class TeleopMain extends TeleopBase{
 //				yAxis, new PIDConstants(.6, 0, 0, 0, 0), .24, 0, .12);
 		
 		//uncomment
-		Command elevationPidDo = layout.subsystems.elevation;
-		Command elevationControl = new ArmSetpointProvider(layout.io.controllerManip, layout.subsystems.armSetpointProvider);
-		Command elevation = CommandsUtil.combineSimultaneous(elevationControl, elevationPidDo);
-		//uncomment for turntable
-		Command turntable = new TurntableControl(layout.io.controllerManip, layout.io.simpleTurntable);
 
+		//uncomment for turntable
+
+		Command elevationPidDo = layout.subsystems.elevation;
+		Command elevationControl = new ArmSetpointProvider(layout.io.controllerManip, layout.subsystems.armSetpointProvider,layout.subsystems.turntable,layout.io.armElevationMotor);
+		Command elevation = CommandsUtil.combineSimultaneous(elevationControl, elevationPidDo);
+		
+		Command turntable=layout.subsystems.turntable.teleopTurntable(layout.io.controllerManip);
+		
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
 		Command climbPidDo=layout.subsystems.climber;
 		Command climbControl = new JoystickPositionControl(layout.subsystems.climberSetpointProvider,layout.io.controllerManip.getAxis(5));
@@ -71,7 +76,7 @@ public class TeleopMain extends TeleopBase{
 		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
 		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
 		
-		Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
+		//Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 
 		SetpointProvider xAxis = new JoystickSetpointControlWithSafety(layout.io.controllerManip.getAxis(4),
 				 layout.io.controllerManip.getButton(10), -.3, .3, 0.003, 0);
@@ -79,12 +84,11 @@ public class TeleopMain extends TeleopBase{
 		//uncomment for turntable
 		Command yaw = new PositionControllerRampCommand(layout.io.turntableMotor, xAxis,
 				new PIDConstants(1, 0, 0, 0, 0), .01, -.01, .02);
-
-
+		Command vision=layout.subsystems.vision.autoAim(layout,layout.io.controllerManip);
 		Command winchDeploy = new WinchDeployControl(
 				Switch.and(layout.io.controllerDriver.getButton(8),layout.io.controllerManip.getButton(8)),
 				layout.io.winchRelease);
-		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelAll,turntable);
+		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelBasic,turntable,vision);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){
