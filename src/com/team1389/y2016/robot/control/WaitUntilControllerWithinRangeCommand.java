@@ -4,6 +4,8 @@ import org.strongback.command.Command;
 
 import com.team1389.base.wpiWrappers.TalonSRXPositionHardware;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class WaitUntilControllerWithinRangeCommand extends Command{
 	
 	TalonSRXPositionHardware controller;
@@ -18,6 +20,7 @@ public class WaitUntilControllerWithinRangeCommand extends Command{
 	@Override
 	public boolean execute() {
 		double pos = controller.getPosition();
+		SmartDashboard.putString("Status", "Waiting for controller... "+pos+" from "+max+"-"+min);
 		return pos < max && pos > min;
 	}
 

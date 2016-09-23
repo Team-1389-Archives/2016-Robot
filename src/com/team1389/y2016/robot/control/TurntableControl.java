@@ -83,7 +83,12 @@ public class TurntableControl {
 	public void moveAngle(double angle) {
 		setAngle(reconciled + angle);
 	}
-
+	public Command moveAngleCommand(double angle){
+		return Command.create(()->{
+			moveAngle(angle);
+			return true;
+		});
+	}
 	public void setAngle(double angle) {
 		target = angle;
 		setting = true;

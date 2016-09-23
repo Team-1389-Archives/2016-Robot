@@ -23,7 +23,7 @@ public class Subsystems {
 	ConfigurablePid armPid;
 	ConfigurablePid climberArmPid;
 	//flywheel
-	TalonSRXSpeedHardware flywheelSpeedController;
+	public TalonSRXSpeedHardware flywheelSpeedController;
 	ConfigurablePid flywheelPid;
 	public TurntableControl turntable;
 	

@@ -32,22 +32,15 @@ public class VisionModule {
 
 			@Override
 			public boolean execute() {
-				SmartDashboard.putString("data",NetworkTable.getTable("GRIP").getSubTable("myContoursReport").getKeys().toString());
-				SmartDashboard.putNumber("correction Angle", getCorrectionAngle());
 				lightsOn().execute();
 				boolean inView=getCorrectionAngle()!=-1;
 				SmartDashboard.putBoolean("Target in View", inView);
-				if(joy.getButton(6).isTriggered()){
-				/* CommandsUtil.combineSequential(
+				if(joy.getButton(6).isTriggered()&&inView){
+				CommandsUtil.combineSequential(
 							new SetASetpointCommand(layout.subsystems.armSetpointProvider, .12),
-							new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .10, .3),
-							lightsOn(),
-							layout.subsystems.turntable.moveAngle(getCorrectionAngle()))
-				 .execute();*/
-					if(inView){
-						
-						layout.subsystems.turntable.moveAngle(getCorrectionAngle());
-					}
+							new WaitUntilControllerWithinRangeCommand(layout.io.armElevationMotor, .1, .3),
+							layout.subsystems.turntable.moveAngleCommand(getCorrectionAngle()))		
+				 .execute();
 				}
 				return false;
 			}
