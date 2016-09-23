@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurntableControl {
-	boolean zeroing;
 	CANTalon turn;
 	AHRS imu;
 	AnalogGyro gyro;
@@ -20,6 +19,7 @@ public class TurntableControl {
 	double setpoint;
 	boolean setting;
 	double maxSpeed = .5;
+	double target;
 
 	public TurntableControl(CANTalon turn, AHRS imu, AnalogGyro gyro) {
 		this.turn = turn;
@@ -42,31 +42,28 @@ public class TurntableControl {
 				SmartDashboard.putNumber("imu", imu.getAngle());
 				if (joy.getButton(10).isTriggered() || joy.getButton(1).isTriggered()
 						|| joy.getButton(3).isTriggered()) {
-					zeroing = true;
-					setting=false;
+					setAngle(0);
 				}
 				if (joy.getButton(8).isTriggered()) {
-					setting=false;
+					setting = false;
 					gyro.calibrate();
 					gyro.reset();
 					imu.reset();
-					zeroing = false;
 				}
 				if (Math.abs(joy.getAxis(4).read()) > .1) {
-					zeroing = false;
-					setting=false;
+					setting = false;
 				}
-				if (zeroing&&!setting) {
-					if (Math.abs(reconciled) < 1) {
-						zeroing = false;
+				if (setting) {
+					if (Math.abs(reconciled - target) < 1) {
+						setting = false;
 					} else {
-						double setSpeed = Math.abs(reconciled) / 30;
+						double setSpeed = Math.abs(reconciled - target) / 70;
 						if (setSpeed > maxSpeed)
 							setSpeed = maxSpeed;
-						setSpeed *= Math.signum(reconciled);
+						setSpeed *= Math.signum(reconciled - target);
 						turn.set(setSpeed);
 					}
-				} else if(!setting){
+				} else {
 					turn.changeControlMode(TalonControlMode.PercentVbus);
 					if (Math.abs(reconciled) >= 90) {
 						if (Math.signum(joy.getAxis(4).read()) != -Math.signum(reconciled)) {
@@ -83,30 +80,13 @@ public class TurntableControl {
 		};
 	}
 
-	public Command moveAngle(double angle) {
-		return new Command() {
-			double target = reconciled + angle;
+	public void moveAngle(double angle) {
+		setAngle(reconciled + angle);
+	}
 
-			@Override
-			public boolean execute() {
-				setting = true;
-				while (setting&&Math.abs(reconciled-target) > 3) {
-					reconciled = gyro.getAngle() + imu.getAngle();
-					if (reconciled < -180)
-						reconciled += 360;
-					if (reconciled > 180)
-						reconciled -= 360;
-					double setSpeed = Math.abs(reconciled-target) / 70;
-					if (setSpeed > maxSpeed)
-						setSpeed = maxSpeed;
-					setSpeed *=Math.signum(reconciled-target);
-					turn.set(setSpeed);
-				}
-				setting=false;
-				return true;
-			}
-
-		};
+	public void setAngle(double angle) {
+		target = angle;
+		setting = true;
 	}
 
 	public boolean isClear() {
