@@ -60,10 +60,10 @@ public class AutonomousMain extends AutonomousBase {
 		
 	
 		
-//		setSelectedAuton("ball denial");
+	//setSelectedAuton("arm up drive forward");
 //		setSelectedAuton("arm down drive forward");
-//		setSelectedAuton("arm down drive forward");
-		setSelectedAuton("vision shot");
+	//setSelectedAuton("arm down drive forward");
+		//setSelectedAuton("vision shot");
 	}
 
 	@Override
@@ -413,13 +413,10 @@ public class AutonomousMain extends AutonomousBase {
 		});
 
 
-		// add modes to mode list here
 
-		SendableChooser chooser = new SendableChooser();
 		for(AutonMode mode : modes){
-			chooser.addObject(mode.getName(), mode);
+			autonModeChooser.addObject(mode.getName(), mode);
 		}
-		SmartDashboard.putData("Auton Mode Choice", chooser);
 		
 		return modes;
 	}

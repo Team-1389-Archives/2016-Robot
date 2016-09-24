@@ -23,6 +23,7 @@ import com.team1389.y2016.robot.control.JoystickSetpointControlWithSafety;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
 import com.team1389.y2016.robot.control.WinchDeployControl;
+import com.team1389.y2016.robot.test.TestMotors;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -62,6 +63,9 @@ public class TeleopMain extends TeleopBase{
 		Command turntable=layout.subsystems.turntable.teleopTurntable(layout.io.controllerManip);
 		
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
+		Command encoder = new TestMotors(layout.io.leftDriveA);
+		Command driveAndMeasure = CommandsUtil.combineSimultaneous(encoder, drive);
+		
 		Command climbPidDo=layout.subsystems.climber;
 		Command climbControl = new JoystickPositionControl(layout.subsystems.climberSetpointProvider,layout.io.controllerManip.getAxis(5));
 		Command climber = CommandsUtil.combineSimultaneous(climbPidDo,climbControl);
@@ -88,7 +92,8 @@ public class TeleopMain extends TeleopBase{
 		Command winchDeploy = new WinchDeployControl(
 				Switch.and(layout.io.controllerDriver.getButton(8),layout.io.controllerManip.getButton(8)),
 				layout.io.winchRelease);
-		return CommandsUtil.combineSimultaneous(drive, intake, elevation, flywheelAll,turntable,vision);
+		
+		return CommandsUtil.combineSimultaneous(driveAndMeasure, intake, elevation, flywheelAll,turntable,vision);
 	}
 	
 	private SetpointProvider joystickSetpointProvider(ContinuousRange joystickAxis, double max, double min){

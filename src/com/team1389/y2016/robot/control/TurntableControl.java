@@ -40,7 +40,7 @@ public class TurntableControl {
 				SmartDashboard.putNumber("gyro", -gyro.getAngle());
 				SmartDashboard.putNumber("reconciled", reconciled);
 				SmartDashboard.putNumber("imu", imu.getAngle());
-				if (joy.getButton(10).isTriggered() || joy.getButton(1).isTriggered()
+				if (joy.getButton(10).isTriggered() /*|| joy.getButton(1).isTriggered()*/
 						|| joy.getButton(3).isTriggered()) {
 					setAngle(0);
 				}

@@ -6,6 +6,8 @@ import org.strongback.components.ui.InputDevice;
 import com.team1389.base.util.DoubleConstant;
 import com.team1389.y2016.robot.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 //This class commands the drive train to set the motors to the specified speeds in order to turn
 public class JoystickDriveCommand extends Command {
 
