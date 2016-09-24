@@ -24,6 +24,10 @@ import com.team1389.y2016.robot.control.SetMotorCommand;
 import com.team1389.y2016.robot.control.WaitUntilControllerWithinRangeCommand;
 import com.team1389.y2016.robot.control.WaitUntilSpeedControllerWithinRange;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 /**
  * This class defines which autonomous modes are available to be run. The first
  * in the list returned will be the default.
@@ -43,10 +47,8 @@ public class AutonomousMain extends AutonomousBase {
 	// Should we move these to RobotMap?
 
 	public AutonomousMain(RobotLayout io) {
+		
 		this.layout = io;
-
-		final double rotationsPerInch = 1.0 / 22.5;
-		final double rotationsPerDegree = 1.0 / 360.0;
 
 		autonForwardFirst = new DoubleConstant("auton forward first", -8.66);
 		autonTurn = new DoubleConstant("auton turn", 15d);
@@ -54,6 +56,10 @@ public class AutonomousMain extends AutonomousBase {
 		autonArcMod = new DoubleConstant("auton arc mod", 1.0);
 		chevalDisance = new DoubleConstant("cheval", 1.95);
 		construct();
+		
+		
+	
+		
 //		setSelectedAuton("ball denial");
 //		setSelectedAuton("arm down drive forward");
 //		setSelectedAuton("arm down drive forward");
@@ -409,6 +415,12 @@ public class AutonomousMain extends AutonomousBase {
 
 		// add modes to mode list here
 
+		SendableChooser chooser = new SendableChooser();
+		for(AutonMode mode : modes){
+			chooser.addObject(mode.getName(), mode);
+		}
+		SmartDashboard.putData("Auton Mode Choice", chooser);
+		
 		return modes;
 	}
 	
