@@ -23,7 +23,9 @@ import com.team1389.y2016.robot.control.JoystickSetpointControlWithSafety;
 import com.team1389.y2016.robot.control.LowGoalElevationControl;
 import com.team1389.y2016.robot.control.TurntableControl;
 import com.team1389.y2016.robot.control.WinchDeployControl;
-import com.team1389.y2016.robot.test.TestMotors;
+import com.team1389.y2016.robot.test.MonitorDoubleCommand;
+
+import edu.wpi.first.wpilibj.CANTalon;
 
 public class TeleopMain extends TeleopBase{
 	RobotLayout layout;
@@ -63,8 +65,9 @@ public class TeleopMain extends TeleopBase{
 		Command turntable=layout.subsystems.turntable.teleopTurntable(layout.io.controllerManip);
 		
 		Command drive = new JoystickDriveCommand(layout.subsystems.drivetrain, layout.io.controllerDriver, 1.0);
-		Command encoder = new TestMotors(layout.io.leftDriveA);
-		Command driveAndMeasure = CommandsUtil.combineSimultaneous(encoder, drive);
+		Command rightEncoder = new MonitorDoubleCommand<CANTalon>(layout.io.rightDriveA, "Right Encoder:", (CANTalon t) -> t.getPosition());
+		Command leftEncoder = new MonitorDoubleCommand<CANTalon>(layout.io.rightDriveA, "Right Encoder:", (CANTalon t) -> t.getPosition());
+		Command driveAndMeasure = CommandsUtil.combineSimultaneous(leftEncoder, rightEncoder, drive);
 		
 		Command climbPidDo=layout.subsystems.climber;
 		Command climbControl = new JoystickPositionControl(layout.subsystems.climberSetpointProvider,layout.io.controllerManip.getAxis(5));
@@ -76,9 +79,10 @@ public class TeleopMain extends TeleopBase{
 		
 		Command flywheelBasic = new FlywheelControl(layout.io.flywheelMotorA, layout.io.controllerManip);
 		
-		SpeedControllerSetCommand flywheelSpeed = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
-		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, flywheelSpeed);
-		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed);
+		Command flywheelSpeed = new SpeedControllerSetCommand(layout.subsystems.flywheelSpeedController, 0.0);
+		Command flywheel = new FlywheelControlCommand(layout.io.controllerManip, (SpeedControllerSetCommand) flywheelSpeed);
+		Command flywheelMonitor = new MonitorDoubleCommand<CANTalon>(layout.io.flywheelMotorA, "FlyWheel Encoder:", (CANTalon t) -> t.getSpeed());
+		Command flywheelAll = CommandsUtil.combineSimultaneous(flywheel, flywheelSpeed, flywheelMonitor);
 		
 		//Command testIntake = new JoystickMotorCommand(layout.io.intakeMotor, layout.io.controllerDriver.getAxis(0), 1.0);
 
